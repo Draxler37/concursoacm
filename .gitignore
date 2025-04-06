@@ -1,4 +1,6 @@
 HELP.md
+auto_push.bat
+wProxy_auto_push.bat
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

@@ -1,15 +1,29 @@
 package com.concursoacm.dtos;
 
+/**
+ * *DTO que representa los detalles de una pregunta.
+ */
 public class PreguntaDetalleDTO {
+
     private int idPregunta;
     private String texto;
 
+    /**
+     * *Constructor que inicializa el DTO con los datos de la pregunta.
+     *
+     * @param idPregunta ID de la pregunta.
+     * @param texto      Texto de la pregunta.
+     */
     public PreguntaDetalleDTO(int idPregunta, String texto) {
         this.idPregunta = idPregunta;
         this.texto = texto;
     }
 
-    // Getters y Setters
+    /**
+     * *Obtiene el ID de la pregunta.
+     *
+     * @return ID de la pregunta.
+     */
     public int getIdPregunta() {
         return idPregunta;
     }
@@ -18,6 +32,11 @@ public class PreguntaDetalleDTO {
         this.idPregunta = idPregunta;
     }
 
+    /**
+     * *Obtiene el texto de la pregunta.
+     *
+     * @return Texto de la pregunta.
+     */
     public String getTexto() {
         return texto;
     }
@@ -26,4 +45,3 @@ public class PreguntaDetalleDTO {
         this.texto = texto;
     }
 }
-

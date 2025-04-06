@@ -1,7 +1,12 @@
 package com.concursoacm.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+/**
+ * *Entidad que representa una pregunta en el sistema.
+ */
 @Entity
 @Table(name = "preguntas")
 public class Pregunta {
@@ -11,18 +16,25 @@ public class Pregunta {
     private int idPregunta;
 
     @Column(nullable = false)
+    @NotBlank(message = "El texto de la pregunta no puede estar vacío.")
     private String texto;
 
     @Column(nullable = false)
+    @NotNull(message = "La puntuación máxima es obligatoria.")
     private int puntuacionMaxima;
 
     @Column(nullable = false)
+    @NotBlank(message = "La clase de la pregunta es obligatoria.")
     private String clase; // Clase A o B
 
     @Column(nullable = false)
     private boolean usada; // Indica si la pregunta ya fue utilizada
 
-    // Getters y Setters
+    /**
+     * *Obtiene el ID de la pregunta.
+     *
+     * @return ID de la pregunta.
+     */
     public int getIdPregunta() {
         return idPregunta;
     }
@@ -31,6 +43,11 @@ public class Pregunta {
         this.idPregunta = idPregunta;
     }
 
+    /**
+     * *Obtiene el texto de la pregunta.
+     *
+     * @return Texto de la pregunta.
+     */
     public String getTexto() {
         return texto;
     }
@@ -39,6 +56,11 @@ public class Pregunta {
         this.texto = texto;
     }
 
+    /**
+     * *Obtiene la puntuación máxima de la pregunta.
+     *
+     * @return Puntuación máxima.
+     */
     public int getPuntuacionMaxima() {
         return puntuacionMaxima;
     }
@@ -47,6 +69,11 @@ public class Pregunta {
         this.puntuacionMaxima = puntuacionMaxima;
     }
 
+    /**
+     * *Obtiene la clase de la pregunta.
+     *
+     * @return Clase de la pregunta (A o B).
+     */
     public String getClase() {
         return clase;
     }
@@ -55,6 +82,11 @@ public class Pregunta {
         this.clase = clase;
     }
 
+    /**
+     * *Indica si la pregunta ya fue utilizada.
+     *
+     * @return true si la pregunta fue utilizada, false en caso contrario.
+     */
     public boolean isUsada() {
         return usada;
     }
@@ -63,5 +95,3 @@ public class Pregunta {
         this.usada = usada;
     }
 }
-
-

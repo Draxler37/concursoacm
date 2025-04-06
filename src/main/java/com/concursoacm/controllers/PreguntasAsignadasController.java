@@ -1,40 +1,54 @@
 package com.concursoacm.controllers;
 
 import com.concursoacm.dtos.PreguntasAsignadasDetalleDTO;
-import com.concursoacm.services.PreguntasAsignadasService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.concursoacm.services.interfaces.IPreguntasAsignadasService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * *Controlador REST para la gestión de preguntas asignadas.
+ */
 @RestController
 @RequestMapping("/preguntas-asignadas")
 public class PreguntasAsignadasController {
 
-    @Autowired
-    private PreguntasAsignadasService preguntasAsignadasService;
+    private final IPreguntasAsignadasService preguntasAsignadasService;
 
-    // Endpoint para asignar preguntas a TODOS los equipos sin asignación previa
-    @PostMapping("/asignar-todos")
-    public ResponseEntity<?> asignarPreguntasATodos() {
-        try {
-            preguntasAsignadasService.asignarPreguntasATodosLosEquipos();
-            return ResponseEntity.ok("Preguntas asignadas a todos los equipos sin asignación previa.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    /**
+     * *Constructor que inyecta el servicio de preguntas asignadas.
+     *
+     * @param preguntasAsignadasService Servicio para la gestión de preguntas
+     *                                  asignadas.
+     */
+    public PreguntasAsignadasController(IPreguntasAsignadasService preguntasAsignadasService) {
+        this.preguntasAsignadasService = preguntasAsignadasService;
     }
-    
-    // Endpoint para consultar las preguntas asignadas a un equipo
+
+    /**
+     * *Asigna preguntas a todos los equipos sin asignación previa.
+     *
+     * @return Mensaje de éxito o error.
+     */
+    @PostMapping("/asignar-todos")
+    public ResponseEntity<String> asignarPreguntasATodos() {
+        preguntasAsignadasService.asignarPreguntasATodosLosEquipos();
+        return ResponseEntity.ok("Preguntas asignadas a todos los equipos sin asignación previa.");
+    }
+
+    /**
+     * *Obtiene los detalles de las preguntas asignadas a un equipo.
+     *
+     * @param idEquipo       ID del equipo.
+     * @param authentication Información del usuario autenticado.
+     * @return DTO con los detalles de las preguntas asignadas.
+     */
     @GetMapping("/equipo/{idEquipo}")
-    public ResponseEntity<?> obtenerDetallesPreguntasAsignadas(@PathVariable int idEquipo, Authentication authentication) {
-        try {
-            String usuarioNormalizado = authentication.getName();
-            PreguntasAsignadasDetalleDTO dto = preguntasAsignadasService.obtenerDetallesPreguntasAsignadas(idEquipo, usuarioNormalizado);
-            return ResponseEntity.ok(dto);
-        } catch (IllegalArgumentException | SecurityException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<PreguntasAsignadasDetalleDTO> obtenerDetallesPreguntasAsignadas(
+            @PathVariable int idEquipo, Authentication authentication) {
+        String usuarioNormalizado = authentication.getName();
+        PreguntasAsignadasDetalleDTO dto = preguntasAsignadasService.obtenerDetallesPreguntasAsignadas(idEquipo,
+                usuarioNormalizado);
+        return ResponseEntity.ok(dto);
     }
 }
-

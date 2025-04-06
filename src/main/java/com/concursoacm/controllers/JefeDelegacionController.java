@@ -2,47 +2,82 @@ package com.concursoacm.controllers;
 
 import com.concursoacm.dtos.JefeDelegacionDTO;
 import com.concursoacm.models.JefeDelegacion;
-import com.concursoacm.services.JefeDelegacionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.concursoacm.services.interfaces.IJefeDelegacionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 
+/**
+ * *Controlador REST para la gestión de jefes de delegación.
+ */
 @RestController
 @RequestMapping("/jefes-delegacion")
 public class JefeDelegacionController {
 
-    @Autowired
-    private JefeDelegacionService jefeDelegacionService;
+    private final IJefeDelegacionService jefeDelegacionService;
 
-    // Endpoint para listar todos los jefes de delegación
+    /**
+     * *Constructor que inyecta el servicio de jefes de delegación.
+     *
+     * @param jefeDelegacionService Servicio para la gestión de jefes de delegación.
+     */
+    public JefeDelegacionController(IJefeDelegacionService jefeDelegacionService) {
+        this.jefeDelegacionService = jefeDelegacionService;
+    }
+
+    /**
+     * *Obtiene una lista de todos los jefes de delegación.
+     *
+     * @return Lista de objetos JefeDelegacionDTO.
+     */
     @GetMapping
-    public List<JefeDelegacionDTO> obtenerTodosLosJefes() {
-        return jefeDelegacionService.obtenerTodosLosJefes();
+    public ResponseEntity<List<JefeDelegacionDTO>> obtenerTodosLosJefes() {
+        List<JefeDelegacionDTO> jefes = jefeDelegacionService.obtenerTodosLosJefes();
+        return ResponseEntity.ok(jefes);
     }
 
-    // Endpoint para obtener un jefe de delegación por ID
+    /**
+     * *Obtiene un jefe de delegación por su ID.
+     *
+     * @param idJefe ID del jefe de delegación.
+     * @return Objeto JefeDelegacionDTO si se encuentra.
+     */
     @GetMapping("/{idJefe}")
-    public ResponseEntity<?> obtenerJefePorId(@PathVariable int idJefe) {
-        Optional<JefeDelegacionDTO> jefe = jefeDelegacionService.obtenerJefePorId(idJefe);
-        return jefe.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<JefeDelegacionDTO> obtenerJefePorId(@PathVariable int idJefe) {
+        return jefeDelegacionService.obtenerJefePorId(idJefe)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Endpoint para crear un jefe de delegación
+    /**
+     * *Crea un nuevo jefe de delegación.
+     *
+     * @param idParticipante ID del participante que será jefe de delegación.
+     * @param contraseña     Contraseña del jefe de delegación.
+     * @return Objeto JefeDelegacion creado.
+     */
     @PostMapping("/{idParticipante}")
-    public ResponseEntity<?> crearJefeDelegacion(@PathVariable int idParticipante, @RequestBody String contraseña) {
+    public ResponseEntity<JefeDelegacion> crearJefeDelegacion(@PathVariable int idParticipante,
+            @RequestBody String contraseña) {
         JefeDelegacion nuevoJefe = jefeDelegacionService.crearJefeDelegacion(idParticipante, contraseña);
-        return ResponseEntity.ok(nuevoJefe);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoJefe);
     }
-    
-    // Endpoint para actualizar un jefe de delegación(contraseña)
+
+    /**
+     * *Actualiza la contraseña de un jefe de delegación.
+     *
+     * @param id             ID del jefe de delegación.
+     * @param requestBody    Mapa con las claves "contraseñaActual" y
+     *                       "nuevaContraseña".
+     * @param authentication Información del usuario autenticado.
+     * @return Mensaje de éxito o error.
+     */
     @PutMapping("/{id}/cambiar-contrasena")
-    public ResponseEntity<?> cambiarContraseña(
+    public ResponseEntity<String> cambiarContraseña(
             @PathVariable int id,
             @RequestBody Map<String, String> requestBody,
             Authentication authentication) {
@@ -51,14 +86,13 @@ public class JefeDelegacionController {
         String nuevaContraseña = requestBody.get("nuevaContraseña");
 
         if (contraseñaActual == null || nuevaContraseña == null) {
-            return ResponseEntity.badRequest().body("Las claves 'contraseñaActual' y 'nuevaContraseña' son obligatorias.");
+            return ResponseEntity.badRequest()
+                    .body("Las claves 'contraseñaActual' y 'nuevaContraseña' son obligatorias.");
         }
 
-        // Obtener el usuario autenticado
         String usuarioNormalizado = authentication.getName();
-
-        // Llamar al servicio para cambiar la contraseña
-        boolean cambiada = jefeDelegacionService.cambiarContraseña(id, usuarioNormalizado, contraseñaActual, nuevaContraseña);
+        boolean cambiada = jefeDelegacionService.cambiarContraseña(id, usuarioNormalizado, contraseñaActual,
+                nuevaContraseña);
 
         if (cambiada) {
             return ResponseEntity.ok("Contraseña actualizada correctamente.");
@@ -67,14 +101,15 @@ public class JefeDelegacionController {
         }
     }
 
-    // Endpoint para eliminar un jefe de delegación
+    /**
+     * *Elimina un jefe de delegación por su ID.
+     *
+     * @param idJefe ID del jefe de delegación a eliminar.
+     * @return Mensaje de éxito.
+     */
     @DeleteMapping("/{idJefe}")
-    public ResponseEntity<?> eliminarJefeDelegacion(@PathVariable int idJefe) {
+    public ResponseEntity<String> eliminarJefeDelegacion(@PathVariable int idJefe) {
         jefeDelegacionService.eliminarJefeDelegacion(idJefe);
         return ResponseEntity.ok("Jefe de delegación eliminado correctamente.");
     }
 }
-
-
-
-

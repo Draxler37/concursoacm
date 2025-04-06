@@ -2,16 +2,30 @@ package com.concursoacm.dtos;
 
 import java.util.List;
 
+/**
+ * *DTO que representa los detalles de las preguntas asignadas a un equipo.
+ */
 public class PreguntasAsignadasDetalleDTO {
+
     private String nombreEquipo;
     private List<PreguntaDetalleDTO> preguntas;
 
+    /**
+     * *Constructor que inicializa el DTO con los datos de las preguntas asignadas.
+     *
+     * @param nombreEquipo Nombre del equipo.
+     * @param preguntas    Lista de preguntas asignadas.
+     */
     public PreguntasAsignadasDetalleDTO(String nombreEquipo, List<PreguntaDetalleDTO> preguntas) {
         this.nombreEquipo = nombreEquipo;
         this.preguntas = preguntas;
     }
 
-    // Getters y Setters
+    /**
+     * *Obtiene el nombre del equipo.
+     *
+     * @return Nombre del equipo.
+     */
     public String getNombreEquipo() {
         return nombreEquipo;
     }
@@ -20,6 +34,11 @@ public class PreguntasAsignadasDetalleDTO {
         this.nombreEquipo = nombreEquipo;
     }
 
+    /**
+     * *Obtiene la lista de preguntas asignadas.
+     *
+     * @return Lista de preguntas.
+     */
     public List<PreguntaDetalleDTO> getPreguntas() {
         return preguntas;
     }
@@ -28,4 +47,3 @@ public class PreguntasAsignadasDetalleDTO {
         this.preguntas = preguntas;
     }
 }
-

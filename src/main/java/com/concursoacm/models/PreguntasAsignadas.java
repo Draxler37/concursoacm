@@ -2,6 +2,9 @@ package com.concursoacm.models;
 
 import jakarta.persistence.*;
 
+/**
+ * *Entidad que representa las preguntas asignadas a un equipo.
+ */
 @Entity
 @Table(name = "preguntas_asignadas")
 public class PreguntasAsignadas {
@@ -29,7 +32,11 @@ public class PreguntasAsignadas {
     @Column(name = "pregunta_5", nullable = false)
     private int pregunta5;
 
-    // Getters y Setters
+    /**
+     * *Obtiene el ID de la asignación.
+     *
+     * @return ID de la asignación.
+     */
     public int getId() {
         return id;
     }
@@ -38,6 +45,11 @@ public class PreguntasAsignadas {
         this.id = id;
     }
 
+    /**
+     * *Obtiene el equipo asociado a la asignación.
+     *
+     * @return Objeto Equipo.
+     */
     public Equipo getEquipo() {
         return equipo;
     }
@@ -46,6 +58,11 @@ public class PreguntasAsignadas {
         this.equipo = equipo;
     }
 
+    /**
+     * *Obtiene el ID de la primera pregunta asignada.
+     *
+     * @return ID de la pregunta 1.
+     */
     public int getPregunta1() {
         return pregunta1;
     }
@@ -54,6 +71,11 @@ public class PreguntasAsignadas {
         this.pregunta1 = pregunta1;
     }
 
+    /**
+     * *Obtiene el ID de la segunda pregunta asignada.
+     *
+     * @return ID de la pregunta 2.
+     */
     public int getPregunta2() {
         return pregunta2;
     }
@@ -62,6 +84,11 @@ public class PreguntasAsignadas {
         this.pregunta2 = pregunta2;
     }
 
+    /**
+     * *Obtiene el ID de la tercera pregunta asignada.
+     *
+     * @return ID de la pregunta 3.
+     */
     public int getPregunta3() {
         return pregunta3;
     }
@@ -70,6 +97,11 @@ public class PreguntasAsignadas {
         this.pregunta3 = pregunta3;
     }
 
+    /**
+     * *Obtiene el ID de la cuarta pregunta asignada.
+     *
+     * @return ID de la pregunta 4.
+     */
     public int getPregunta4() {
         return pregunta4;
     }
@@ -78,6 +110,11 @@ public class PreguntasAsignadas {
         this.pregunta4 = pregunta4;
     }
 
+    /**
+     * *Obtiene el ID de la quinta pregunta asignada.
+     *
+     * @return ID de la pregunta 5.
+     */
     public int getPregunta5() {
         return pregunta5;
     }
@@ -86,4 +123,3 @@ public class PreguntasAsignadas {
         this.pregunta5 = pregunta5;
     }
 }
-
