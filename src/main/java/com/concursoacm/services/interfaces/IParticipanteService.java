@@ -57,7 +57,7 @@ public interface IParticipanteService {
      * @param participante Objeto Participante a agregar.
      * @return Objeto ParticipanteDTO del participante agregado.
      */
-    ParticipanteDTO addParticipante(Participante participante);
+    ParticipanteDTO crearParticipante(Participante participante);
 
     /**
      * *Asigna un participante a un equipo.

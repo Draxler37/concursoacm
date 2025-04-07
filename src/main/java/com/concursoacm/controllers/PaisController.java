@@ -32,7 +32,7 @@ public class PaisController {
      * @return Lista de objetos PaisDTO.
      */
     @GetMapping
-    public List<PaisDTO> listarPaises() {
+    public List<PaisDTO> obtenerTodosLosPaises() {
         return paisService.obtenerTodosLosPaises();
     }
 

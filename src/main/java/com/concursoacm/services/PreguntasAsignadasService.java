@@ -11,6 +11,8 @@ import com.concursoacm.repositories.JefeDelegacionRepository;
 import com.concursoacm.repositories.PreguntaRepository;
 import com.concursoacm.repositories.PreguntasAsignadasRepository;
 import com.concursoacm.services.interfaces.IPreguntasAsignadasService;
+import com.concursoacm.utils.Constantes;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -95,12 +97,12 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
      */
     private String determinarClasePorCategoria(String categoria) {
         switch (categoria.toLowerCase()) {
-            case "competencia":
-                return "A";
-            case "junior":
-                return "B";
+            case Constantes.CATEGORIA_COMPETENCIA:
+                return Constantes.CLASE_A;
+            case Constantes.CATEGORIA_JUNIOR:
+                return Constantes.CLASE_B;
             default:
-                throw new IllegalArgumentException("Categoría de equipo no válida.");
+                throw new IllegalArgumentException(Constantes.ERROR_CATEGORIA_INVALIDA);
         }
     }
 

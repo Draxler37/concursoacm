@@ -1,10 +1,10 @@
 package com.concursoacm.dtos;
 
-public class GanadoresDTO {
+public class GanadoresPorCategoriaDTO  {
     private EquipoPuntuacionDTO ganadorCompetencia;
     private EquipoPuntuacionDTO ganadorJunior;
 
-    public GanadoresDTO(EquipoPuntuacionDTO ganadorCompetencia, EquipoPuntuacionDTO ganadorJunior) {
+    public GanadoresPorCategoriaDTO (EquipoPuntuacionDTO ganadorCompetencia, EquipoPuntuacionDTO ganadorJunior) {
         this.ganadorCompetencia = ganadorCompetencia;
         this.ganadorJunior = ganadorJunior;
     }

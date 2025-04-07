@@ -1,15 +1,17 @@
 package com.concursoacm.controllers;
 
 import com.concursoacm.dtos.EquipoPuntuacionDTO;
-import com.concursoacm.dtos.GanadoresDTO;
+import com.concursoacm.dtos.GanadoresPorCategoriaDTO;
+import com.concursoacm.dtos.PaisConPuntuacionDTO;
 import com.concursoacm.dtos.PreguntaDTO;
-import com.concursoacm.dtos.PaisPuntuacionDTO;
 import com.concursoacm.dtos.RegionPuntuacionDTO;
 import com.concursoacm.services.CalculoResultadosService;
 import com.concursoacm.services.ResultadoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -41,8 +43,8 @@ public class ResultadoController {
     }
 
     @GetMapping("/ganadores")
-    public ResponseEntity<GanadoresDTO> obtenerGanadores() {
-        GanadoresDTO ganadores = resultadoService.obtenerGanadores();
+    public ResponseEntity<GanadoresPorCategoriaDTO> obtenerGanadoresPorCategoria() {
+        GanadoresPorCategoriaDTO ganadores = resultadoService.obtenerGanadores();
         return ResponseEntity.ok(ganadores);
     }
 
@@ -53,8 +55,8 @@ public class ResultadoController {
     }
 
     @GetMapping("/pais-mayor-puntuacion")
-    public ResponseEntity<PaisPuntuacionDTO> obtenerPaisMayorPuntuacion() {
-        PaisPuntuacionDTO dto = resultadoService.obtenerPaisMayorPuntuacion();
+    public ResponseEntity<PaisConPuntuacionDTO> obtenerPaisMayorPuntuacion() {
+        PaisConPuntuacionDTO dto = resultadoService.obtenerPaisMayorPuntuacion();
         if (dto == null) {
             return ResponseEntity.notFound().build();
         }

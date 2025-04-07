@@ -31,8 +31,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/equipos/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/equipos/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/jefes-delegacion/**").authenticated()
-                        .anyRequest().permitAll()
-                )
+                        .anyRequest().permitAll())
                 .httpBasic();
 
         return http.build();

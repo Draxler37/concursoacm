@@ -63,7 +63,7 @@ public class ParticipanteService implements IParticipanteService {
      */
     @Override
     public ParticipantesPorPaisDTO getParticipantesPorPaisDTO(int idPais) {
-        List<Participante> participantes = participanteRepository.findByPaisIdPais(idPais);
+        List<Participante> participantes = participanteRepository.findParticipantesPorPaisId(idPais);
         if (participantes.isEmpty()) {
             throw new IllegalArgumentException("No se encontraron participantes para el país con ID " + idPais);
         }
@@ -79,7 +79,7 @@ public class ParticipanteService implements IParticipanteService {
      */
     @Override
     public ParticipantesPorRegionDTO getParticipantesPorRegionDTO(int idRegion) {
-        List<Participante> participantes = participanteRepository.findByPaisRegionIdRegion(idRegion);
+        List<Participante> participantes = participanteRepository.findParticipantesPorRegionId(idRegion);
         if (participantes.isEmpty()) {
             throw new IllegalArgumentException("No se encontraron participantes para la región con ID " + idRegion);
         }
@@ -95,7 +95,7 @@ public class ParticipanteService implements IParticipanteService {
      */
     @Override
     public List<ParticipanteDTO> getParticipantesPorEquipoDTO(int idEquipo) {
-        List<Participante> participantes = participanteRepository.findByEquipoIdEquipo(idEquipo);
+        List<Participante> participantes = participanteRepository.findParticipantesPorEquipoId(idEquipo);
         return participantes.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -115,7 +115,7 @@ public class ParticipanteService implements IParticipanteService {
      * {@inheritDoc}
      */
     @Override
-    public ParticipanteDTO addParticipante(Participante participante) {
+    public ParticipanteDTO crearParticipante(Participante participante) {
         PaisDTO paisDTO = paisService.obtenerPaisPorId(participante.getPais().getIdPais())
                 .orElseThrow(() -> new RuntimeException("País no encontrado"));
         Pais pais = new Pais();

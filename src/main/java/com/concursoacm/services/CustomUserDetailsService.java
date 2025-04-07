@@ -2,6 +2,8 @@ package com.concursoacm.services;
 
 import com.concursoacm.models.JefeDelegacion;
 import com.concursoacm.repositories.JefeDelegacionRepository;
+import com.concursoacm.utils.Constantes;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,18 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Busca al jefe de delegación usando la columna usuario_normalizado
-        JefeDelegacion jefe = jefeDelegacionRepository.findByUsuarioNormalizado(username)
+        JefeDelegacion jefeDelegacion = jefeDelegacionRepository.findByUsuarioNormalizado(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-                
+
         return User.builder()
-                .username(jefe.getUsuarioNormalizado())
-                .password(jefe.getContrasena())        
-                .roles("JEFE_DELEGACION")              
+                .username(jefeDelegacion.getUsuarioNormalizado())
+                .password(jefeDelegacion.getContrasena())
+                .roles(Constantes.ROL_JEFE_DELEGACION)
                 .build();
     }
 }
-
-
-
-
-

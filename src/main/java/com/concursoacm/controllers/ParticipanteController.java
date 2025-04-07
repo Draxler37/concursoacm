@@ -47,8 +47,8 @@ public class ParticipanteController {
     @GetMapping("/pais/{idPais}")
     public ResponseEntity<?> getParticipantesPorPais(@PathVariable int idPais) {
         try {
-            ParticipantesPorPaisDTO dto = participanteService.getParticipantesPorPaisDTO(idPais);
-            return ResponseEntity.ok(dto);
+            ParticipantesPorPaisDTO participanteDTO = participanteService.getParticipantesPorPaisDTO(idPais);
+            return ResponseEntity.ok(participanteDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -108,9 +108,9 @@ public class ParticipanteController {
      * @return Objeto ParticipanteDTO del participante agregado.
      */
     @PostMapping
-    public ResponseEntity<?> addParticipante(@RequestBody Participante participante) {
+    public ResponseEntity<?> crearParticipante(@RequestBody Participante participante) {
         participante.setEquipo(null); // Forzar a que no tenga equipo
-        ParticipanteDTO nuevoParticipante = participanteService.addParticipante(participante);
+        ParticipanteDTO nuevoParticipante = participanteService.crearParticipante(participante);
         return ResponseEntity.ok(nuevoParticipante);
     }
 
