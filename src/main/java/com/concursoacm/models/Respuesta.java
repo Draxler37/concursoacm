@@ -2,6 +2,9 @@ package com.concursoacm.models;
 
 import jakarta.persistence.*;
 
+/**
+ * *Entidad que representa una respuesta en el sistema.
+ */
 @Entity
 @Table(name = "respuestas")
 public class Respuesta {
@@ -13,7 +16,6 @@ public class Respuesta {
     @Column(nullable = false)
     private String respuestaParticipante;
 
-    // Se guardan en la BD solo los IDs (sin FK)
     @Column(nullable = false)
     private int idParticipante;
 
@@ -21,13 +23,16 @@ public class Respuesta {
     private int idEquipo;
 
     @Column(nullable = false)
-    private int idPregunta;  // Campo para identificar la pregunta respondida
+    private int idPregunta;
 
-    // La puntuación se asigna posteriormente por el jurado (inicialmente 0)
     @Column(nullable = false)
     private int puntuacionObtenida = 0;
 
-    // Getters y Setters
+    /**
+     * *Obtiene el ID de la respuesta.
+     *
+     * @return ID de la respuesta.
+     */
     public int getIdRespuesta() {
         return idRespuesta;
     }
@@ -36,6 +41,11 @@ public class Respuesta {
         this.idRespuesta = idRespuesta;
     }
 
+    /**
+     * *Obtiene el texto de la respuesta del participante.
+     *
+     * @return Texto de la respuesta.
+     */
     public String getRespuestaParticipante() {
         return respuestaParticipante;
     }
@@ -44,6 +54,11 @@ public class Respuesta {
         this.respuestaParticipante = respuestaParticipante;
     }
 
+    /**
+     * *Obtiene el ID del participante que respondió.
+     *
+     * @return ID del participante.
+     */
     public int getIdParticipante() {
         return idParticipante;
     }
@@ -52,6 +67,11 @@ public class Respuesta {
         this.idParticipante = idParticipante;
     }
 
+    /**
+     * *Obtiene el ID del equipo asociado a la respuesta.
+     *
+     * @return ID del equipo.
+     */
     public int getIdEquipo() {
         return idEquipo;
     }
@@ -60,6 +80,11 @@ public class Respuesta {
         this.idEquipo = idEquipo;
     }
 
+    /**
+     * *Obtiene el ID de la pregunta respondida.
+     *
+     * @return ID de la pregunta.
+     */
     public int getIdPregunta() {
         return idPregunta;
     }
@@ -68,6 +93,11 @@ public class Respuesta {
         this.idPregunta = idPregunta;
     }
 
+    /**
+     * *Obtiene la puntuación obtenida por la respuesta.
+     *
+     * @return Puntuación obtenida.
+     */
     public int getPuntuacionObtenida() {
         return puntuacionObtenida;
     }

@@ -2,6 +2,9 @@ package com.concursoacm.models;
 
 import jakarta.persistence.*;
 
+/**
+ * *Entidad que representa el resultado de un participante en el sistema.
+ */
 @Entity
 @Table(name = "resultados")
 public class Resultado {
@@ -16,7 +19,11 @@ public class Resultado {
     @Column(name = "puntuacion_total", nullable = false)
     private int puntuacionTotal;
 
-    // Getters y Setters
+    /**
+     * *Obtiene el ID del resultado.
+     *
+     * @return ID del resultado.
+     */
     public int getIdResultado() {
         return idResultado;
     }
@@ -25,6 +32,11 @@ public class Resultado {
         this.idResultado = idResultado;
     }
 
+    /**
+     * *Obtiene el ID del participante asociado al resultado.
+     *
+     * @return ID del participante.
+     */
     public int getIdParticipante() {
         return idParticipante;
     }
@@ -33,6 +45,11 @@ public class Resultado {
         this.idParticipante = idParticipante;
     }
 
+    /**
+     * *Obtiene la puntuación total del participante.
+     *
+     * @return Puntuación total.
+     */
     public int getPuntuacionTotal() {
         return puntuacionTotal;
     }

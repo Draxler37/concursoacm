@@ -21,7 +21,7 @@ public class ResultadoController {
 
     @Autowired
     private CalculoResultadosService calculoResultadosService;
-    
+
     @PostMapping("/calcular")
     public ResponseEntity<String> calcularResultados() {
         String mensaje = calculoResultadosService.calcularResultados();
@@ -70,6 +70,3 @@ public class ResultadoController {
         return ResponseEntity.ok(dto);
     }
 }
-
-
-
