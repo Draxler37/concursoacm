@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * *Servicio que implementa la lógica de negocio para la gestión de preguntas
- * asignadas.
+ * *asignadas.
  */
 @Service
 public class PreguntasAsignadasService implements IPreguntasAsignadasService {

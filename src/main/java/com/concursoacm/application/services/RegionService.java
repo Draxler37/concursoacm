@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Servicio que implementa la lógica de negocio para la gestión de regiones.
+ * *Servicio que implementa la lógica de negocio para la gestión de regiones.
  */
 @Service
 public class RegionService implements IRegionService {

@@ -1,9 +1,19 @@
 package com.concursoacm.application.dtos.jefedelegacion;
 
+/**
+ * *DTO que representa un jefe de delegación.
+ */
 public class JefeDelegacionDTO {
     private int idJefe;
     private String nombreParticipante;
 
+    /**
+     * *Constructor que inicializa el DTO con los datos del jefe de delegación.
+     *
+     * @param idJefe             ID del jefe de delegación.
+     * @param nombreParticipante Nombre del participante asociado al jefe de
+     *                           delegación.
+     */
     public JefeDelegacionDTO(int idJefe, String nombreParticipante) {
         this.idJefe = idJefe;
         this.nombreParticipante = nombreParticipante;
@@ -26,5 +36,3 @@ public class JefeDelegacionDTO {
         this.nombreParticipante = nombreParticipante;
     }
 }
-
-

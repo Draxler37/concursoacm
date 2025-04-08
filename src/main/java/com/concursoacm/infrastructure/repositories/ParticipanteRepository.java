@@ -16,12 +16,12 @@ public interface ParticipanteRepository extends JpaRepository<Participante, Inte
 
     /**
      * *Obtiene una lista de participantes filtrados por el ID de la región (a
-     * través del país).
+     * *través del país).
      *
      * @param idRegion ID de la región.
      * @return Lista de participantes en la región.
      */
-    List<Participante> findByRegionId(int idRegion);
+    List<Participante> findByPaisRegionIdRegion(int idRegion);
 
     /**
      * *Obtiene una lista de participantes filtrados por el ID del país.
@@ -29,7 +29,7 @@ public interface ParticipanteRepository extends JpaRepository<Participante, Inte
      * @param idPais ID del país.
      * @return Lista de participantes en el país.
      */
-    List<Participante> findByPaisId(int idPais);
+    List<Participante> findByPaisIdPais(int idPais);
 
     /**
      * *Obtiene una lista de participantes que pertenecen a un equipo específico.
@@ -37,7 +37,7 @@ public interface ParticipanteRepository extends JpaRepository<Participante, Inte
      * @param idEquipo ID del equipo.
      * @return Lista de participantes en el equipo.
      */
-    List<Participante> findByEquipoId(int idEquipo);
+    List<Participante> findByEquipoIdEquipo(int idEquipo);
 
     /**
      * *Cuenta el número de participantes asociados a un país específico.

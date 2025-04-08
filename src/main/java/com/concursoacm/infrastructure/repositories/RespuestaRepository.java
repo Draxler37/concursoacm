@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  * *Repositorio para la gestión de la entidad Respuesta.
- * Proporciona métodos para realizar operaciones CRUD y consultas
- * personalizadas.
+ * *Proporciona métodos para realizar operaciones CRUD y consultas
+ * *personalizadas.
  */
 @Repository
 public interface RespuestaRepository extends JpaRepository<Respuesta, Integer> {

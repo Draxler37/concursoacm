@@ -3,7 +3,7 @@ package com.concursoacm.application.dtos.pais;
 import com.concursoacm.domain.models.Pais;
 
 /**
- * Data Transfer Object (DTO) para la entidad Pais.
+ * *Data Transfer Object (DTO) para la entidad Pais.
  */
 public class PaisDTO {
 
@@ -13,7 +13,7 @@ public class PaisDTO {
     private String nombreRegion;
 
     /**
-     * Constructor que inicializa el DTO a partir de un objeto Pais.
+     * *Constructor que inicializa el DTO a partir de un objeto Pais.
      *
      * @param pais Objeto Pais.
      */

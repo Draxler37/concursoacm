@@ -1,9 +1,18 @@
 package com.concursoacm.application.dtos.resultados;
 
+/**
+ * *DTO que representa la puntuación total de un país.
+ */
 public class PuntuacionPorPaisDTO {
     private String nombrePais;
     private int totalPuntos;
 
+    /**
+     * *Constructor que inicializa el DTO con los datos del país y su puntuación.
+     *
+     * @param nombrePais      Nombre del país.
+     * @param puntuacionTotal Puntuación total del país.
+     */
     public PuntuacionPorPaisDTO(String nombrePais, int totalPuntos) {
         this.nombrePais = nombrePais;
         this.totalPuntos = totalPuntos;

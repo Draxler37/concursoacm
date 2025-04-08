@@ -9,6 +9,8 @@ import java.util.Optional;
 
 /**
  * *Repositorio para la gestión de la entidad PreguntasAsignadas.
+ * *Proporciona métodos para realizar operaciones CRUD y consultas
+ * *personalizadas.
  */
 @Repository
 public interface PreguntasAsignadasRepository extends JpaRepository<PreguntasAsignadas, Integer> {

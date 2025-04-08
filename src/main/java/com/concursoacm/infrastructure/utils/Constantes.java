@@ -1,7 +1,7 @@
 package com.concursoacm.infrastructure.utils;
 
 /**
- * Clase que contiene constantes utilizadas en todo el proyecto.
+ * *Clase que contiene constantes utilizadas en todo el proyecto.
  */
 public final class Constantes {
 

@@ -8,7 +8,6 @@ import com.concursoacm.application.dtos.resultados.PuntuacionPorRegionDTO;
 import com.concursoacm.application.services.ResultadoCalculoService;
 import com.concursoacm.application.services.ResultadoConsultaService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +29,6 @@ public class ResultadoController {
      * @param resultadoConsultaService Servicio para la consulta de resultados.
      * @param resultadoCalculoService  Servicio para el cálculo de resultados.
      */
-    @Autowired
     public ResultadoController(ResultadoConsultaService resultadoConsultaService,
             ResultadoCalculoService resultadoCalculoService) {
         this.resultadoConsultaService = resultadoConsultaService;

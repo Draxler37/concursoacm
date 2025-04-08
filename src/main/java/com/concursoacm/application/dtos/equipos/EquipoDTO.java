@@ -1,5 +1,8 @@
 package com.concursoacm.application.dtos.equipos;
 
+/**
+ * *Data Transfer Object (DTO) para la entidad Equipo.
+ */
 public class EquipoDTO {
 
     private int idEquipo;
@@ -7,7 +10,11 @@ public class EquipoDTO {
     private String categoria;
     private String nombrePais;
 
-    // Constructor
+    /**
+     * *Constructor que inicializa el DTO a partir de un objeto Equipo.
+     *
+     * @param equipo Objeto Equipo.
+     */
     public EquipoDTO(int idEquipo, String nombreEquipo, String categoria, String nombrePais) {
         this.idEquipo = idEquipo;
         this.nombreEquipo = nombreEquipo;
@@ -45,6 +52,5 @@ public class EquipoDTO {
     }
 
     public void setNombrePais(String nombrePais) {
-        this.nombrePais = nombrePais;
     }
 }
