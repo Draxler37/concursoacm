@@ -25,7 +25,11 @@ public class JefeDelegacion implements Serializable {
     @JoinColumn(name = "id_participante", nullable = false)
     private Participante participante;
 
-    // Constructor
+    // Constructor por defecto requerido por JPA
+    public JefeDelegacion() {
+    }
+
+    // Constructor con argumentos
     public JefeDelegacion(String usuarioNormalizado, String contrasena, Participante participante) {
         this.usuarioNormalizado = usuarioNormalizado;
         this.contrasena = contrasena;

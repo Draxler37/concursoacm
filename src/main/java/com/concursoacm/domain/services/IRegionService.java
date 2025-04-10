@@ -1,6 +1,7 @@
 package com.concursoacm.domain.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.concursoacm.domain.models.Region;
 
@@ -15,6 +16,14 @@ public interface IRegionService {
      * @return Lista de objetos Region.
      */
     List<Region> obtenerTodasLasRegiones();
+
+    /**
+     * *Obtiene una región por su ID.
+     *
+     * @param id ID de la región.
+     * @return Un Objeto Region.
+     */
+    Optional<Region> obtenerRegionPorId(int id);
 
     /**
      * *Guarda una nueva región en la base de datos.

@@ -1,6 +1,8 @@
 package com.concursoacm.presentation.controllers;
 
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
+import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
+import com.concursoacm.application.dtos.jefedelegacion.CambiarContraseñaDTO;
 import com.concursoacm.domain.models.JefeDelegacion;
 import com.concursoacm.domain.services.IJefeDelegacionService;
 
@@ -57,15 +59,18 @@ public class JefeDelegacionController {
      * *Crea un nuevo jefe de delegación.
      *
      * @param idParticipante ID del participante que será jefe de delegación.
-     * @param contraseña     Contraseña del jefe de delegación.
+     * @param request        DTO con los datos del nuevo jefe.
      * @return Objeto JefeDelegacion creado.
      */
     @PostMapping("/{idParticipante}")
-    public ResponseEntity<JefeDelegacion> crearJefeDelegacion(@PathVariable int idParticipante,
-            @RequestBody String usuario,
-            @RequestBody String contraseña) {
+    public ResponseEntity<JefeDelegacion> crearJefeDelegacion(
+            @PathVariable int idParticipante,
+            @RequestBody CrearJefeDelegacionDTO request) {
 
-        JefeDelegacion nuevoJefe = jefeDelegacionService.crearJefeDelegacion(idParticipante, usuario, contraseña);
+        JefeDelegacion nuevoJefe = jefeDelegacionService.crearJefeDelegacion(
+                idParticipante,
+                request.getUsuario(),
+                request.getContraseña());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoJefe);
     }
@@ -74,22 +79,28 @@ public class JefeDelegacionController {
      * *Actualiza la contraseña de un jefe de delegación.
      *
      * @param id             ID del jefe de delegación.
-     * @param requestBody    Mapa con las claves "contraseñaActual" y
-     *                       "nuevaContraseña".
+     * @param request        DTO con las contraseñas actual y nueva.
      * @param authentication Información del usuario autenticado.
      * @return Mensaje de éxito o error.
      */
     @PutMapping("/{id}/cambiar-contrasena")
     public ResponseEntity<String> cambiarContraseña(
             @PathVariable int id,
-            @RequestBody String contraseñaActual,
-            @RequestBody String nuevaContraseña,
+            @RequestBody CambiarContraseñaDTO request,
             Authentication authentication) {
 
-        return jefeDelegacionService.cambiarContraseña(id, authentication.getName(),
-                contraseñaActual, nuevaContraseña)
-                        ? ResponseEntity.ok("Contraseña actualizada correctamente.")
-                        : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas.");
+        String usuarioNormalizado = authentication.getName();
+        boolean cambiada = jefeDelegacionService.cambiarContraseña(
+                id,
+                usuarioNormalizado,
+                request.getContraseñaActual(),
+                request.getNuevaContraseña());
+
+        if (cambiada) {
+            return ResponseEntity.ok("Contraseña actualizada correctamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas.");
+        }
     }
 
     /**

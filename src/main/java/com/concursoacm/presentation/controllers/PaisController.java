@@ -80,7 +80,7 @@ public class PaisController {
      * @return true si el país fue eliminado, false en caso contrario.
      */
     @DeleteMapping("/{id}")
-    public boolean eliminarPais(@PathVariable int id) {
+    public String eliminarPais(@PathVariable int id) {
         return paisService.eliminarPais(id);
     }
 }

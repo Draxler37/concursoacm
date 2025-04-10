@@ -7,6 +7,7 @@ import com.concursoacm.infrastructure.repositories.RegionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * *Servicio que implementa la lógica de negocio para la gestión de regiones.
@@ -37,6 +38,17 @@ public class RegionService implements IRegionService {
      * {@inheritDoc}
      */
     @Override
+    public Optional<Region> obtenerRegionPorId(int id) {
+        if (!regionRepository.existsById(id)) {
+            throw new IllegalArgumentException("La región con el ID " + id + " no existe.");
+        }
+        return regionRepository.findById(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Region guardarRegion(Region region) {
         return regionRepository.save(region);
     }
@@ -46,10 +58,9 @@ public class RegionService implements IRegionService {
      */
     @Override
     public Region actualizarRegion(int id, Region nuevaRegion) {
-        return regionRepository.findById(id).map(region -> {
-            region.setNombreRegion(nuevaRegion.getNombreRegion());
-            return regionRepository.save(region);
-        }).orElse(null);
+        Region regionExistente = buscarRegionPorId(id); // Reutilizamos el método privado
+        regionExistente.setNombreRegion(nuevaRegion.getNombreRegion());
+        return regionRepository.save(regionExistente);
     }
 
     /**
@@ -57,6 +68,19 @@ public class RegionService implements IRegionService {
      */
     @Override
     public void eliminarRegion(int id) {
-        regionRepository.deleteById(id);
+        Region regionExistente = buscarRegionPorId(id); // Reutilizamos el método privado
+        regionRepository.delete(regionExistente);
+    }
+
+    /**
+     * *Método privado para buscar una región por su ID.
+     *
+     * @param id ID de la región.
+     * @return Objeto Region si se encuentra.
+     * @throws IllegalArgumentException si no se encuentra la región.
+     */
+    private Region buscarRegionPorId(int id) {
+        return regionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("La región con ID " + id + " no existe."));
     }
 }

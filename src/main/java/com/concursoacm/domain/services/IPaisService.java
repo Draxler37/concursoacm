@@ -49,5 +49,5 @@ public interface IPaisService {
      * @param id ID del país a eliminar.
      * @return true si el país fue eliminado, false en caso contrario.
      */
-    boolean eliminarPais(int id);
+    String eliminarPais(int id);
 }

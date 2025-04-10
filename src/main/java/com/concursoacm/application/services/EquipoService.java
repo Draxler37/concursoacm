@@ -7,6 +7,7 @@ import com.concursoacm.domain.services.IEquipoService;
 import com.concursoacm.infrastructure.repositories.EquipoRepository;
 import com.concursoacm.infrastructure.repositories.JefeDelegacionRepository;
 import com.concursoacm.infrastructure.repositories.PaisRepository;
+import com.concursoacm.infrastructure.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 
@@ -118,13 +119,14 @@ public class EquipoService implements IEquipoService {
      */
     private void validarRestriccionesPorCategoria(Equipo equipo) {
         int idPais = equipo.getPais().getIdPais();
-        if (equipo.getCategoria().equalsIgnoreCase("Competencia")) {
-            int countCompetencia = equipoRepository.countByPaisIdPaisAndCategoria(idPais, "Competencia");
+        if (equipo.getCategoria().equalsIgnoreCase(Constantes.CATEGORIA_COMPETENCIA)) {
+            int countCompetencia = equipoRepository.countByPaisIdPaisAndCategoria(idPais,
+                    Constantes.CATEGORIA_COMPETENCIA);
             if (countCompetencia >= 2) {
                 throw new IllegalArgumentException("Ya existen 2 equipos de competencia para este país.");
             }
         } else if (equipo.getCategoria().equalsIgnoreCase("Junior")) {
-            int countJunior = equipoRepository.countByPaisIdPaisAndCategoria(idPais, "Junior");
+            int countJunior = equipoRepository.countByPaisIdPaisAndCategoria(idPais, Constantes.CATEGORIA_JUNIOR);
             if (countJunior >= 1) {
                 throw new IllegalArgumentException("Ya existe un equipo Junior para este país.");
             }

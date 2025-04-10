@@ -57,10 +57,8 @@ public class JefeDelegacionService implements IJefeDelegacionService {
      */
     @Override
     public Optional<JefeDelegacionDTO> obtenerJefePorId(int idJefe) {
-        return jefeDelegacionRepository.findById(idJefe)
-                .map(jefe -> new JefeDelegacionDTO(
-                        jefe.getIdJefe(),
-                        jefe.getParticipante().getNombre()));
+        JefeDelegacion jefe = buscarJefePorId(idJefe); // Reutilizamos el método privado
+        return Optional.of(new JefeDelegacionDTO(jefe.getIdJefe(), jefe.getParticipante().getNombre()));
     }
 
     /**
@@ -95,10 +93,8 @@ public class JefeDelegacionService implements IJefeDelegacionService {
      */
     @Override
     public void eliminarJefeDelegacion(int idJefe) {
-        if (!jefeDelegacionRepository.existsById(idJefe)) {
-            throw new IllegalArgumentException("El jefe de delegación con ID " + idJefe + " no existe.");
-        }
-        jefeDelegacionRepository.deleteById(idJefe);
+        JefeDelegacion jefe = buscarJefePorId(idJefe); // Reutilizamos el método privado
+        jefeDelegacionRepository.delete(jefe);
     }
 
     /**
@@ -184,5 +180,17 @@ public class JefeDelegacionService implements IJefeDelegacionService {
         return Normalizer.normalize(texto, Normalizer.Form.NFD)
                 .replaceAll("[^\\p{ASCII}]", "")
                 .toLowerCase();
+    }
+
+    /**
+     * *Método privado para buscar un jefe de delegación por su ID.
+     *
+     * @param idJefe ID del jefe de delegación.
+     * @return Objeto JefeDelegacion si se encuentra.
+     * @throws IllegalArgumentException si no se encuentra el jefe de delegación.
+     */
+    private JefeDelegacion buscarJefePorId(int idJefe) {
+        return jefeDelegacionRepository.findById(idJefe)
+                .orElseThrow(() -> new IllegalArgumentException("El jefe de delegación con ID " + idJefe + " no existe."));
     }
 }

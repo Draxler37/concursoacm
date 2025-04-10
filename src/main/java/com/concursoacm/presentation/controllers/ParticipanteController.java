@@ -5,8 +5,11 @@ import com.concursoacm.application.dtos.participantes.ParticipantesPorPaisDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorRegionDTO;
 import com.concursoacm.domain.models.Participante;
 import com.concursoacm.domain.services.IParticipanteService;
+import com.concursoacm.infrastructure.repositories.JefeDelegacionRepository;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -21,14 +24,17 @@ import java.util.List;
 public class ParticipanteController {
 
     private final IParticipanteService participanteService;
+    private final JefeDelegacionRepository jefeDelegacionRepository;
 
     /**
      * *Constructor que inyecta el servicio de participantes.
      *
      * @param participanteService Servicio para la gestión de participantes.
      */
-    public ParticipanteController(IParticipanteService participanteService) {
+    public ParticipanteController(IParticipanteService participanteService,
+            JefeDelegacionRepository jefeDelegacionRepository) {
         this.participanteService = participanteService;
+        this.jefeDelegacionRepository = jefeDelegacionRepository;
     }
 
     /**
@@ -122,14 +128,26 @@ public class ParticipanteController {
      *
      * @param idParticipante ID del participante.
      * @param idEquipo       ID del equipo.
-     * @return Objeto Participante actualizado.
+     * @return Objeto ParticipanteDTO actualizado.
      */
-    @PutMapping("/{idParticipante}/asignar-equipo")
-    public ResponseEntity<Participante> asignarParticipanteAEquipo(
+    @PutMapping("/{idParticipante}/asignar-equipo/{idEquipo}")
+    public ResponseEntity<?> asignarEquipo(
             @PathVariable int idParticipante,
-            @RequestParam int idEquipo) {
-        Participante actualizado = participanteService.asignarParticipanteAEquipo(idParticipante, idEquipo);
-        return ResponseEntity.ok(actualizado);
+            @PathVariable int idEquipo,
+            Authentication authentication) {
+
+        try {
+            int idJefeDelegacion = obtenerIdJefeDelegacion(authentication);
+            ParticipanteDTO participanteDTO = participanteService.asignarAlEquipo(idParticipante, idEquipo,
+                    idJefeDelegacion);
+            return ResponseEntity.ok(participanteDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado.");
+        }
     }
 
     /**
@@ -137,15 +155,25 @@ public class ParticipanteController {
      *
      * @param idParticipante ID del participante.
      * @param idEquipo       ID del equipo.
-     * @return Objeto Participante actualizado.
+     * @return Objeto ParticipanteDTO actualizado.
      */
-    @PutMapping("/{idParticipante}/quitar-equipo")
-    public ResponseEntity<Participante> quitarEquipo(@PathVariable int idParticipante, @RequestParam int idEquipo) {
+    @PutMapping("/{idParticipante}/quitar-equipo/{idEquipo}")
+    public ResponseEntity<?> quitarEquipo(
+            @PathVariable int idParticipante,
+            @PathVariable int idEquipo,
+            Authentication authentication) {
+
         try {
-            Participante actualizado = participanteService.quitarParticipanteDeEquipo(idParticipante, idEquipo);
-            return ResponseEntity.ok(actualizado);
+            int idJefeDelegacion = obtenerIdJefeDelegacion(authentication);
+            ParticipanteDTO participanteDTO = participanteService.quitarDelEquipo(idParticipante, idEquipo,
+                    idJefeDelegacion);
+            return ResponseEntity.ok(participanteDTO);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado.");
         }
     }
 
@@ -181,5 +209,23 @@ public class ParticipanteController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * *Obtiene el ID del jefe de delegación autenticado a partir del nombre de
+     * *usuario proporcionado en la autenticación.
+     *
+     * @param authentication Objeto de autenticación proporcionado por Spring
+     *                       Security.
+     * @return ID del jefe de delegación autenticado.
+     * @throws IllegalArgumentException si no se encuentra un jefe de delegación con
+     *                                  el usuario proporcionado.
+     */
+    private int obtenerIdJefeDelegacion(Authentication authentication) {
+        String usuarioNormalizado = authentication.getName(); // Nombre de usuario autenticado
+        return jefeDelegacionRepository.findByUsuarioNormalizado(usuarioNormalizado)
+                .map(jefe -> jefe.getIdJefe())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No se encontró un jefe de delegación con el usuario: " + usuarioNormalizado));
     }
 }

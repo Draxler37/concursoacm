@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * *Controlador REST para la gestión de regiones.
@@ -35,6 +36,17 @@ public class RegionController {
     @GetMapping
     public List<Region> obtenerRegiones() {
         return regionService.obtenerTodasLasRegiones();
+    }
+
+    /**
+     * *Obtiene una región por su ID.
+     *
+     * @param id ID de la Región.
+     * @return Un Optional con el objeto Región si se encuentra.
+     */
+    @GetMapping("/{id}")
+    public Optional<Region> obtenerRegionPorId(@PathVariable int id) {
+        return regionService.obtenerRegionPorId(id);
     }
 
     /**

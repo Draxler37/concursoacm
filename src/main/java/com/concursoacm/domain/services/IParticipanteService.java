@@ -62,20 +62,22 @@ public interface IParticipanteService {
     /**
      * *Asigna un participante a un equipo.
      *
-     * @param idParticipante ID del participante.
-     * @param idEquipo       ID del equipo.
+     * @param idParticipante   ID del participante.
+     * @param idEquipo         ID del equipo.
+     * @param idJefeDelegacion ID del jefe de delegación.
      * @return Objeto Participante actualizado.
      */
-    Participante asignarParticipanteAEquipo(int idParticipante, int idEquipo);
+    ParticipanteDTO asignarAlEquipo(int idParticipante, int idEquipo, int idJefeDelegacion);
 
     /**
      * *Quita un participante de un equipo.
      *
-     * @param idParticipante ID del participante.
-     * @param idEquipo       ID del equipo.
+     * @param idParticipante   ID del participante.
+     * @param idJefeDelegacion ID del jefe de delegación.
+     * @param idEquipo         ID del equipo.
      * @return Objeto Participante actualizado.
      */
-    Participante quitarParticipanteDeEquipo(int idParticipante, int idEquipo);
+    ParticipanteDTO quitarDelEquipo(int idParticipante, int idJefeDelegacion, int idEquipo);
 
     /**
      * *Actualiza un participante existente.

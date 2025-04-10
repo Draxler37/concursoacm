@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Servicio que implementa la lógica de negocio para la gestión de países.
+ * *Servicio que implementa la lógica de negocio para la gestión de países.
  */
 @Service
 public class PaisService implements IPaisService {
@@ -23,7 +23,7 @@ public class PaisService implements IPaisService {
     private final RegionRepository regionRepository;
 
     /**
-     * Constructor que inyecta las dependencias necesarias.
+     * *Constructor que inyecta las dependencias necesarias.
      *
      * @param paisRepository   Repositorio para la gestión de países.
      * @param regionRepository Repositorio para la gestión de regiones.
@@ -48,7 +48,7 @@ public class PaisService implements IPaisService {
      */
     @Override
     public Optional<PaisDTO> obtenerPaisPorId(int id) {
-        return paisRepository.findById(id).map(PaisDTO::new);
+        return Optional.of(new PaisDTO(buscarPaisPorId(id)));
     }
 
     /**
@@ -56,8 +56,7 @@ public class PaisService implements IPaisService {
      */
     @Override
     public PaisDTO guardarPais(Pais pais) {
-        Region region = regionRepository.findById(pais.getRegion().getIdRegion())
-                .orElseThrow(() -> new RuntimeException("Región no encontrada"));
+        Region region = buscarRegionPorId(pais.getRegion().getIdRegion());
         pais.setRegion(region);
         return new PaisDTO(paisRepository.save(pais));
     }
@@ -67,25 +66,44 @@ public class PaisService implements IPaisService {
      */
     @Override
     public PaisDTO actualizarPais(int id, Pais nuevoPais) {
-        return paisRepository.findById(id).map(pais -> {
-            pais.setNombrePais(nuevoPais.getNombrePais());
-            pais.setCodigoTelefonico(nuevoPais.getCodigoTelefonico());
-            Region region = regionRepository.findById(nuevoPais.getRegion().getIdRegion())
-                    .orElseThrow(() -> new RuntimeException("Región no encontrada"));
-            pais.setRegion(region);
-            return new PaisDTO(paisRepository.save(pais));
-        }).orElseThrow(() -> new RuntimeException("País no encontrado"));
+        Pais paisExistente = buscarPaisPorId(id);
+        paisExistente.setNombrePais(nuevoPais.getNombrePais());
+        paisExistente.setCodigoTelefonico(nuevoPais.getCodigoTelefonico());
+        Region region = buscarRegionPorId(nuevoPais.getRegion().getIdRegion());
+        paisExistente.setRegion(region);
+        return new PaisDTO(paisRepository.save(paisExistente));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean eliminarPais(int id) {
-        if (paisRepository.existsById(id)) {
-            paisRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public String eliminarPais(int id) {
+        paisRepository.delete(buscarPaisPorId(id));
+        return "Eliminado con éxito.";
+    }
+
+    /**
+     * *Método privado para buscar un país por su ID.
+     *
+     * @param id ID del país.
+     * @return Objeto Pais si se encuentra.
+     * @throws RuntimeException si no se encuentra el país.
+     */
+    private Pais buscarPaisPorId(int id) {
+        return paisRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El país con ID " + id + " no existe."));
+    }
+
+    /**
+     * *Método privado para buscar una región por su ID.
+     *
+     * @param idRegion ID de la región.
+     * @return Objeto Region si se encuentra.
+     * @throws RuntimeException si no se encuentra la región.
+     */
+    private Region buscarRegionPorId(int idRegion) {
+        return regionRepository.findById(idRegion)
+                .orElseThrow(() -> new RuntimeException("La región con ID " + idRegion + " no existe."));
     }
 }
