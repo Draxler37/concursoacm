@@ -35,9 +35,11 @@ public class RespuestaController {
      * @return Objeto Respuesta creado o mensaje de error.
      */
     @PostMapping("/responder/{idParticipante}")
-    public ResponseEntity<?> responderPregunta(@PathVariable int idParticipante, @RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<?> responderPregunta(@PathVariable int idParticipante,
+            @RequestBody Map<String, Object> requestBody) {
         if (!requestBody.containsKey("idPregunta") || !requestBody.containsKey("respuestaParticipante")) {
-            return ResponseEntity.badRequest().body("Los campos 'idPregunta' y 'respuestaParticipante' son obligatorios.");
+            return ResponseEntity.badRequest()
+                    .body("Los campos 'idPregunta' y 'respuestaParticipante' son obligatorios.");
         }
 
         try {
@@ -67,6 +69,3 @@ public class RespuestaController {
         return ResponseEntity.ok(respuestas);
     }
 }
-
-
-

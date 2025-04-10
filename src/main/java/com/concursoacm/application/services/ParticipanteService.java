@@ -4,14 +4,18 @@ import com.concursoacm.application.dtos.pais.PaisDTO;
 import com.concursoacm.application.dtos.participantes.ParticipanteDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorPaisDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorRegionDTO;
+import com.concursoacm.application.dtos.participantes.ParticipantesPorEquipoDTO;
 import com.concursoacm.domain.models.Equipo;
-import com.concursoacm.domain.models.JefeDelegacion;
 import com.concursoacm.domain.models.Pais;
+import com.concursoacm.domain.models.Region;
 import com.concursoacm.domain.models.Participante;
 import com.concursoacm.domain.services.IParticipanteService;
 import com.concursoacm.infrastructure.repositories.EquipoRepository;
 import com.concursoacm.infrastructure.repositories.JefeDelegacionRepository;
+import com.concursoacm.infrastructure.repositories.PaisRepository;
 import com.concursoacm.infrastructure.repositories.ParticipanteRepository;
+import com.concursoacm.infrastructure.repositories.RegionRepository;
+import com.concursoacm.infrastructure.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,8 @@ public class ParticipanteService implements IParticipanteService {
     private final ParticipanteRepository participanteRepository;
     private final PaisService paisService;
     private final EquipoRepository equipoRepository;
+    private final PaisRepository paisRepository;
+    private final RegionRepository regionRepository;
     private final JefeDelegacionRepository jefeDelegacionRepository;
 
     /**
@@ -36,17 +42,21 @@ public class ParticipanteService implements IParticipanteService {
      * @param participanteRepository   Repositorio para la gestión de participantes.
      * @param paisService              Servicio para la gestión de países.
      * @param equipoRepository         Repositorio para la gestión de equipos.
+     * @param regionRepository         Repositorio para la gestión de regiones.
      * @param jefeDelegacionRepository Repositorio para la gestión de jefes de
      *                                 delegación.
      */
 
     public ParticipanteService(ParticipanteRepository participanteRepository,
             PaisService paisService,
-            EquipoRepository equipoRepository,
+            EquipoRepository equipoRepository, RegionRepository regionRepository,
+            PaisRepository paisRepository,
             JefeDelegacionRepository jefeDelegacionRepository) {
         this.participanteRepository = participanteRepository;
         this.paisService = paisService;
         this.equipoRepository = equipoRepository;
+        this.paisRepository = paisRepository;
+        this.regionRepository = regionRepository;
         this.jefeDelegacionRepository = jefeDelegacionRepository;
     }
 
@@ -65,15 +75,13 @@ public class ParticipanteService implements IParticipanteService {
      */
     @Override
     public ParticipantesPorPaisDTO getParticipantesPorPaisDTO(int idPais) {
-        List<Participante> participantes = participanteRepository.findByPaisIdPais(idPais);
-        if (participantes.isEmpty()) {
-            throw new IllegalArgumentException("No se encontraron participantes para el país con ID " + idPais);
-        }
-        String nombrePais = participantes.get(0).getPais().getNombrePais();
-        List<ParticipanteDTO> dtos = participantes.stream()
-                .map(this::convertirAParticipanteDTO)
-                .collect(Collectors.toList());
-        return new ParticipantesPorPaisDTO(nombrePais, dtos);
+        Pais pais = paisRepository.findById(idPais)
+                .orElseThrow(() -> new IllegalArgumentException("El pais con ID " + idPais + " no existe."));
+
+        List<ParticipanteDTO> participanteDTO = participanteRepository.findByPaisIdPais(idPais).stream()
+                .map(this::convertirAParticipanteDTO).collect(Collectors.toList());
+
+        return new ParticipantesPorPaisDTO(pais.getNombrePais(), participanteDTO);
     }
 
     /**
@@ -81,26 +89,28 @@ public class ParticipanteService implements IParticipanteService {
      */
     @Override
     public ParticipantesPorRegionDTO getParticipantesPorRegionDTO(int idRegion) {
-        List<Participante> participantes = participanteRepository.findByPaisRegionIdRegion(idRegion);
-        if (participantes.isEmpty()) {
-            throw new IllegalArgumentException("No se encontraron participantes para la región con ID " + idRegion);
-        }
-        String nombreRegion = participantes.get(0).getPais().getRegion().getNombreRegion();
-        List<ParticipanteDTO> dtos = participantes.stream()
-                .map(this::convertirAParticipanteDTO)
-                .collect(Collectors.toList());
-        return new ParticipantesPorRegionDTO(nombreRegion, dtos);
+        Region region = regionRepository.findById(idRegion)
+                .orElseThrow(() -> new IllegalArgumentException("La region con ID " + idRegion + " no existe."));
+
+        List<ParticipanteDTO> participanteDTO = participanteRepository.findByPaisRegionIdRegion(idRegion).stream()
+                .map(this::convertirAParticipanteDTO).collect(Collectors.toList());
+
+        return new ParticipantesPorRegionDTO(region.getNombreRegion(), participanteDTO);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<ParticipanteDTO> getParticipantesPorEquipoDTO(int idEquipo) {
-        List<Participante> participantes = participanteRepository.findByEquipoIdEquipo(idEquipo);
-        return participantes.stream()
+    public ParticipantesPorEquipoDTO getParticipantesPorEquipoDTO(int idEquipo) {
+        Equipo equipo = equipoRepository.findById(idEquipo)
+                .orElseThrow(() -> new IllegalArgumentException("El equipo con ID " + idEquipo + " no existe."));
+
+        List<ParticipanteDTO> participanteDTO = participanteRepository.findByEquipoIdEquipo(idEquipo).stream()
                 .map(this::convertirAParticipanteDTO)
                 .collect(Collectors.toList());
+
+        return new ParticipantesPorEquipoDTO(equipo.getNombreEquipo(), participanteDTO);
     }
 
     /**
@@ -125,7 +135,6 @@ public class ParticipanteService implements IParticipanteService {
         pais.setNombrePais(paisDTO.getNombrePais());
 
         participante.setPais(pais);
-        participante.setPais(pais);
 
         int count = participanteRepository.countByPaisIdPais(participante.getPais().getIdPais());
         if (count >= 15) {
@@ -140,21 +149,22 @@ public class ParticipanteService implements IParticipanteService {
      * {@inheritDoc}
      */
     @Override
-    public ParticipanteDTO asignarAlEquipo(int idParticipante, int idEquipo, int idJefeDelegacion) {
+    public ParticipanteDTO asignarAlEquipo(int idParticipante, int idEquipo, String usuarioNormalizado) {
         Participante participante = buscarParticipantePorId(idParticipante);
         Equipo equipo = equipoRepository.findById(idEquipo)
                 .orElseThrow(() -> new IllegalArgumentException("El equipo con ID " + idEquipo + " no existe."));
-        JefeDelegacion jefeDelegacion = jefeDelegacionRepository.findById(idJefeDelegacion)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "El jefe de delegación con ID " + idJefeDelegacion + " no existe."));
 
-        // Validar que el jefe de delegación no esté asignado a ningún equipo
-        if (jefeDelegacion.getParticipante().getIdParticipante() == idParticipante) {
-            throw new IllegalArgumentException("El jefe de delegación no puede estar asignado a ningún equipo.");
+        // Validar que el jefe de delegacion autentificado no pueda ser asignado a un
+        // equipo
+        if (jefeDelegacionRepository.existsByParticipanteIdParticipante(idParticipante)) {
+            throw new IllegalArgumentException(
+                    "El jefe de delegación no puede ser asignado como participante a un equipo.");
         }
 
-        // Validar que el jefe de delegación solo pueda asignar participantes de su país
-        if (jefeDelegacion.getParticipante().getPais().getIdPais() != participante.getPais().getIdPais()) {
+        // Validar que el jefe de delegación autenticado solo pueda asignar
+        // participantes de su país
+        String paisJefe = obtenerPaisDadoUsuario(usuarioNormalizado);
+        if (!paisJefe.equalsIgnoreCase(participante.getPais().getNombrePais())) {
             throw new SecurityException("No tienes permiso para asignar participantes de otro país.");
         }
 
@@ -197,11 +207,12 @@ public class ParticipanteService implements IParticipanteService {
      * {@inheritDoc}
      */
     @Override
-    public ParticipanteDTO quitarDelEquipo(int idParticipante, int idEquipo, int idJefeDelegacion) {
+    public ParticipanteDTO quitarDelEquipo(int idParticipante, int idEquipo, String usuarioNormalizado) {
         Participante participante = buscarParticipantePorId(idParticipante);
-        JefeDelegacion jefeDelegacion = jefeDelegacionRepository.findById(idJefeDelegacion)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "El jefe de delegación con ID " + idJefeDelegacion + " no existe."));
+
+        if (!equipoRepository.findById(idEquipo).isPresent()) {
+            throw new IllegalArgumentException("El equipo con ID " + idEquipo + " no existe.");
+        }
 
         // Validar que el participante tenga un equipo asignado
         if (participante.getEquipo() == null) {
@@ -214,10 +225,11 @@ public class ParticipanteService implements IParticipanteService {
             throw new IllegalArgumentException("El participante no está asignado al equipo con ID " + idEquipo + ".");
         }
 
-        // Validar que el jefe de delegación solo pueda quitar participantes de equipos
+        // Validar que el jefe de delegación autenticado solo pueda quitar participantes
         // de su país
-        if (jefeDelegacion.getParticipante().getPais().getIdPais() != participante.getEquipo().getPais().getIdPais()) {
-            throw new SecurityException("No tienes permiso para quitar participantes de equipos de otro país.");
+        String paisJefe = obtenerPaisDadoUsuario(usuarioNormalizado);
+        if (!paisJefe.equalsIgnoreCase(participante.getPais().getNombrePais())) {
+            throw new SecurityException("No tienes permiso para quitar participantes de otro país.");
         }
 
         participante.setEquipo(null); // Quitar el equipo
@@ -292,5 +304,17 @@ public class ParticipanteService implements IParticipanteService {
                 participante.getSexo(),
                 participante.getPais().getNombrePais(),
                 participante.getEquipo() != null ? participante.getEquipo().getNombreEquipo() : "Sin equipo");
+    }
+
+    /**
+     * *Obtiene el nombre del país relacionado con el usuario normalizado.
+     * 
+     * @param usuarioNormalizado Usuario autenticado.
+     * @return Nombre del país relacionado.
+     */
+    private String obtenerPaisDadoUsuario(String usuarioNormalizado) {
+        return jefeDelegacionRepository.findByUsuarioNormalizado(usuarioNormalizado)
+                .map(jefe -> jefe.getParticipante().getPais().getNombrePais())
+                .orElseThrow(() -> new SecurityException(Constantes.ERROR_USUARIO_NO_ENCONTRADO));
     }
 }

@@ -48,7 +48,7 @@ public class PreguntasAsignadasController {
     public ResponseEntity<PreguntasAsignadasDetalleDTO> obtenerDetallesPreguntasAsignadas(
             @PathVariable int idEquipo, Authentication authentication) {
         String usuarioNormalizado = authentication.getName();
-        PreguntasAsignadasDetalleDTO dto = preguntasAsignadasService.obtenerDetallesPreguntasAsignadas(idEquipo,
+        PreguntasAsignadasDetalleDTO dto = preguntasAsignadasService.getPreguntasAsigandasAlEquipo(idEquipo,
                 usuarioNormalizado);
         return ResponseEntity.ok(dto);
     }

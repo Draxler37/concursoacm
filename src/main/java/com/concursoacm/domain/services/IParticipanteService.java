@@ -1,6 +1,7 @@
 package com.concursoacm.domain.services;
 
 import com.concursoacm.application.dtos.participantes.ParticipanteDTO;
+import com.concursoacm.application.dtos.participantes.ParticipantesPorEquipoDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorPaisDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorRegionDTO;
 import com.concursoacm.domain.models.Participante;
@@ -36,12 +37,12 @@ public interface IParticipanteService {
     ParticipantesPorRegionDTO getParticipantesPorRegionDTO(int idRegion);
 
     /**
-     * *Obtiene los participantes por equipo como DTOs.
+     * *Obtiene los participantes por equipo y los empaqueta en un DTO.
      *
      * @param idEquipo ID del equipo.
      * @return Lista de objetos ParticipanteDTO.
      */
-    List<ParticipanteDTO> getParticipantesPorEquipoDTO(int idEquipo);
+    ParticipantesPorEquipoDTO getParticipantesPorEquipoDTO(int idEquipo);
 
     /**
      * *Obtiene un participante por su ID como DTO.
@@ -62,22 +63,20 @@ public interface IParticipanteService {
     /**
      * *Asigna un participante a un equipo.
      *
-     * @param idParticipante   ID del participante.
-     * @param idEquipo         ID del equipo.
-     * @param idJefeDelegacion ID del jefe de delegación.
+     * @param idParticipante ID del participante.
+     * @param idEquipo       ID del equipo.
      * @return Objeto Participante actualizado.
      */
-    ParticipanteDTO asignarAlEquipo(int idParticipante, int idEquipo, int idJefeDelegacion);
+    ParticipanteDTO asignarAlEquipo(int idParticipante, int idEquipo, String usuarioNormalizado);
 
     /**
      * *Quita un participante de un equipo.
      *
-     * @param idParticipante   ID del participante.
-     * @param idJefeDelegacion ID del jefe de delegación.
-     * @param idEquipo         ID del equipo.
+     * @param idParticipante ID del participante.
+     * @param idEquipo       ID del equipo.
      * @return Objeto Participante actualizado.
      */
-    ParticipanteDTO quitarDelEquipo(int idParticipante, int idJefeDelegacion, int idEquipo);
+    ParticipanteDTO quitarDelEquipo(int idParticipante, int idEquipo, String usuarioNormalizado);
 
     /**
      * *Actualiza un participante existente.

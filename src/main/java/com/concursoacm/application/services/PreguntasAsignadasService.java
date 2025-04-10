@@ -76,16 +76,25 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
                     "No hay suficientes preguntas disponibles para asignar al equipo " + equipo.getNombreEquipo());
         }
 
+        // Mezclar todas las preguntas disponibles
         Collections.shuffle(preguntasDisponibles);
-        List<Pregunta> seleccion5 = preguntasDisponibles.subList(0, 5);
+
+        // Seleccionar un subconjunto de 25 preguntas
+        List<Pregunta> subconjunto25Preguntas = preguntasDisponibles.subList(0, 25);
+
+        // Mezclar el subconjunto de 25 preguntas
+        Collections.shuffle(subconjunto25Preguntas);
+
+        // Seleccionar 5 preguntas del subconjunto de 25
+        List<Pregunta> seleccion5Preguntas = subconjunto25Preguntas.subList(0, 5);
 
         PreguntasAsignadas asignacion = new PreguntasAsignadas();
         asignacion.setEquipo(equipo);
-        asignacion.setPregunta1(seleccion5.get(0).getIdPregunta());
-        asignacion.setPregunta2(seleccion5.get(1).getIdPregunta());
-        asignacion.setPregunta3(seleccion5.get(2).getIdPregunta());
-        asignacion.setPregunta4(seleccion5.get(3).getIdPregunta());
-        asignacion.setPregunta5(seleccion5.get(4).getIdPregunta());
+        asignacion.setPregunta1(seleccion5Preguntas.get(0).getIdPregunta());
+        asignacion.setPregunta2(seleccion5Preguntas.get(1).getIdPregunta());
+        asignacion.setPregunta3(seleccion5Preguntas.get(2).getIdPregunta());
+        asignacion.setPregunta4(seleccion5Preguntas.get(3).getIdPregunta());
+        asignacion.setPregunta5(seleccion5Preguntas.get(4).getIdPregunta());
 
         preguntasAsignadasRepository.save(asignacion);
     }
@@ -121,7 +130,7 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
      * {@inheritDoc}
      */
     @Override
-    public PreguntasAsignadasDetalleDTO obtenerDetallesPreguntasAsignadas(int idEquipo, String usuarioNormalizado) {
+    public PreguntasAsignadasDetalleDTO getPreguntasAsigandasAlEquipo(int idEquipo, String usuarioNormalizado) {
         Equipo equipo = equipoRepository.findById(idEquipo)
                 .orElseThrow(() -> new IllegalArgumentException("Equipo no encontrado."));
 
