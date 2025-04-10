@@ -55,4 +55,12 @@ public interface JefeDelegacionRepository extends JpaRepository<JefeDelegacion, 
      * @return Objeto JefeDelegacion si se encuentra.
      */
     Optional<JefeDelegacion> findByParticipanteIdParticipante(int idParticipante);
+
+    /**
+     * *Verifica si un usuario ya existe.
+     *
+     * @param usuarioNormalizado Nombre de usuario.
+     * @return true si el usuario existe, false en caso contrario.
+     */
+    boolean existsByUsuarioNormalizado(String usuarioNormalizado);
 }

@@ -3,6 +3,7 @@ package com.concursoacm.domain.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -14,9 +15,11 @@ public class Pais {
     private int idPais;
 
     @Column(nullable = false)
+    @NotBlank(message = "El nombre del país no puede estar vacío.")
     private String nombrePais;
 
     @Column(nullable = false)
+    @NotBlank(message = "El código telefónico no puede estar vacío.")
     private String codigoTelefonico;
 
     @ManyToOne
@@ -27,7 +30,6 @@ public class Pais {
     @JsonManagedReference(value = "pais-participantes") // Relación con Participante
     @JsonIgnore
     private List<Participante> participantes;
-
 
     // Getters y Setters
     public int getIdPais() {
@@ -70,7 +72,3 @@ public class Pais {
         this.participantes = participantes;
     }
 }
-
-
-
-

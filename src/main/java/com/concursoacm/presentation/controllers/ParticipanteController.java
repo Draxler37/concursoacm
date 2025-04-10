@@ -9,6 +9,8 @@ import com.concursoacm.domain.services.IParticipanteService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 /**
@@ -109,7 +111,7 @@ public class ParticipanteController {
      * @return Objeto ParticipanteDTO del participante agregado.
      */
     @PostMapping
-    public ResponseEntity<?> crearParticipante(@RequestBody Participante participante) {
+    public ResponseEntity<?> crearParticipante(@Valid @RequestBody Participante participante) {
         participante.setEquipo(null); // Forzar a que no tenga equipo
         ParticipanteDTO nuevoParticipante = participanteService.crearParticipante(participante);
         return ResponseEntity.ok(nuevoParticipante);
@@ -155,7 +157,7 @@ public class ParticipanteController {
      * @return Objeto ParticipanteDTO actualizado.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateParticipante(@PathVariable int id, @RequestBody Participante participante) {
+    public ResponseEntity<?> updateParticipante(@PathVariable int id, @Valid @RequestBody Participante participante) {
         participante.setEquipo(null); // Forzar a que no tenga equipo
         ParticipanteDTO participanteActualizado = participanteService.updateParticipante(id, participante);
         if (participanteActualizado != null) {

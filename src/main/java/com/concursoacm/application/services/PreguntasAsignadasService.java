@@ -14,6 +14,7 @@ import com.concursoacm.infrastructure.repositories.PreguntasAsignadasRepository;
 import com.concursoacm.infrastructure.utils.Constantes;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.Collections;
 import java.util.List;
@@ -128,7 +129,7 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
                 .orElseThrow(() -> new IllegalArgumentException("Jefe de delegación no encontrado."));
 
         if (jefe.getParticipante().getPais().getIdPais() != equipo.getPais().getIdPais()) {
-            throw new SecurityException("No estás autorizado para ver las preguntas de este equipo.");
+            throw new AccessDeniedException("No estás autorizado para ver las preguntas de este equipo.");
         }
 
         PreguntasAsignadas asignacion = preguntasAsignadasRepository.findByEquipoIdEquipo(idEquipo)

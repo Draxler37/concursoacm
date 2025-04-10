@@ -6,11 +6,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.concursoacm.infrastructure.security.CustomUserDetailsService;
+import com.concursoacm.infrastructure.utils.Constantes;
 
 @Configuration
 public class SecurityConfig {
@@ -26,12 +27,12 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/participantes/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/equipos/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/equipos/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/equipos/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/equipos/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT, "/jefes-delegacion/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/equipos/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
+                        .requestMatchers(HttpMethod.PUT, "/equipos/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
+                        .requestMatchers(HttpMethod.DELETE, "/equipos/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
+                        .requestMatchers(HttpMethod.POST, "/jefes-delegacion/**")
+                        .hasRole(Constantes.ROL_JEFE_DELEGACION)
+                        .requestMatchers(HttpMethod.PUT, "/jefes-delegacion/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
                         .anyRequest().permitAll())
                 .httpBasic();
 
@@ -40,7 +41,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder(); // Usa BCrypt para encriptar contraseñas
     }
 
     @Bean

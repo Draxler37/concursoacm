@@ -2,6 +2,7 @@ package com.concursoacm.domain.models;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "jefes_delegacion")
@@ -13,14 +14,23 @@ public class JefeDelegacion implements Serializable {
     private int idJefe;
 
     @Column(name = "usuario_normalizado", nullable = false, unique = true)
+    @NotBlank(message = "El usuario normalizado no puede estar vacío.")
     private String usuarioNormalizado;
 
     @Column(name = "contraseña", nullable = false)
+    @NotBlank(message = "La contraseña no puede estar vacía.")
     private String contrasena;
 
     @OneToOne
     @JoinColumn(name = "id_participante", nullable = false)
     private Participante participante;
+
+    // Constructor
+    public JefeDelegacion(String usuarioNormalizado, String contrasena, Participante participante) {
+        this.usuarioNormalizado = usuarioNormalizado;
+        this.contrasena = contrasena;
+        this.participante = participante;
+    }
 
     // Getters y setters
     public int getIdJefe() {
@@ -55,7 +65,3 @@ public class JefeDelegacion implements Serializable {
         this.participante = participante;
     }
 }
-
-
-
-

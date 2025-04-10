@@ -3,6 +3,8 @@ package com.concursoacm.presentation.controllers;
 import com.concursoacm.domain.models.Region;
 import com.concursoacm.domain.services.IRegionService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +44,7 @@ public class RegionController {
      * @return Objeto Region guardado.
      */
     @PostMapping
-    public Region guardarRegion(@RequestBody Region region) {
+    public Region guardarRegion(@Valid @RequestBody Region region) {
         return regionService.guardarRegion(region);
     }
 
@@ -54,7 +56,7 @@ public class RegionController {
      * @return Objeto Region actualizado.
      */
     @PutMapping("/{id}")
-    public Region actualizarRegion(@PathVariable int id, @RequestBody Region nuevaRegion) {
+    public Region actualizarRegion(@PathVariable int id, @Valid @RequestBody Region nuevaRegion) {
         return regionService.actualizarRegion(id, nuevaRegion);
     }
 

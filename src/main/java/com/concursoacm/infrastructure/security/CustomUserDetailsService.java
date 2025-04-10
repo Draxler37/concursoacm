@@ -19,14 +19,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Busca al jefe de delegación usando la columna usuario_normalizado
+        // Busca al jefe de delegación por usuario_normalizado
         JefeDelegacion jefeDelegacion = jefeDelegacionRepository.findByUsuarioNormalizado(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new UsernameNotFoundException(Constantes.ERROR_USUARIO_NO_ENCONTRADO));
 
         return User.builder()
                 .username(jefeDelegacion.getUsuarioNormalizado())
-                .password(jefeDelegacion.getContrasena())
-                .roles(Constantes.ROL_JEFE_DELEGACION)
+                .password(jefeDelegacion.getContrasena()) // Contraseña encriptada
+                .roles(Constantes.ROL_JEFE_DELEGACION) // Asigna el rol
                 .build();
     }
 }

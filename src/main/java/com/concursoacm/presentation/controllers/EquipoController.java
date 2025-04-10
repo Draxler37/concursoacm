@@ -4,6 +4,8 @@ import com.concursoacm.application.dtos.equipos.EquipoDTO;
 import com.concursoacm.domain.models.Equipo;
 import com.concursoacm.domain.services.IEquipoService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,7 +61,7 @@ public class EquipoController {
      * @return Objeto EquipoDTO del equipo creado.
      */
     @PostMapping
-    public ResponseEntity<EquipoDTO> crearEquipo(@RequestBody Equipo equipo, Authentication authentication) {
+    public ResponseEntity<EquipoDTO> crearEquipo(@Valid @RequestBody Equipo equipo, Authentication authentication) {
         String usuarioNormalizado = authentication.getName();
         EquipoDTO nuevoEquipo = equipoService.guardarEquipo(equipo, usuarioNormalizado);
         return ResponseEntity.ok(nuevoEquipo);
@@ -74,7 +76,7 @@ public class EquipoController {
      * @return Objeto EquipoDTO actualizado.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<EquipoDTO> actualizarEquipo(@PathVariable int id, @RequestBody Equipo equipo,
+    public ResponseEntity<EquipoDTO> actualizarEquipo(@PathVariable int id, @Valid @RequestBody Equipo equipo,
             Authentication authentication) {
         equipo.setIdEquipo(id);
         String usuarioNormalizado = authentication.getName();

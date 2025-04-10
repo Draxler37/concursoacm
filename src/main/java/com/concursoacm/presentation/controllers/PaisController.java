@@ -4,6 +4,8 @@ import com.concursoacm.application.dtos.pais.PaisDTO;
 import com.concursoacm.domain.models.Pais;
 import com.concursoacm.domain.services.IPaisService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,7 +57,7 @@ public class PaisController {
      * @return Objeto PaisDTO del país creado.
      */
     @PostMapping
-    public PaisDTO crearPais(@RequestBody Pais pais) {
+    public PaisDTO crearPais(@Valid @RequestBody Pais pais) {
         return paisService.guardarPais(pais);
     }
 
@@ -67,7 +69,7 @@ public class PaisController {
      * @return Objeto PaisDTO del país actualizado.
      */
     @PutMapping("/{id}")
-    public PaisDTO actualizarPais(@PathVariable int id, @RequestBody Pais pais) {
+    public PaisDTO actualizarPais(@PathVariable int id, @Valid @RequestBody Pais pais) {
         return paisService.actualizarPais(id, pais);
     }
 

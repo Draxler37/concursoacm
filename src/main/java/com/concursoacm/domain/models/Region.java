@@ -19,7 +19,7 @@ public class Region {
     private int idRegion;
 
     @Column(name = "nombre_region", nullable = false)
-    @NotBlank(message = "El nombre de la región es obligatorio")
+    @NotBlank(message = "El nombre de la región no puede estar vacío.")
     private String nombreRegion;
 
     @OneToMany(mappedBy = "region", cascade = CascadeType.ALL)

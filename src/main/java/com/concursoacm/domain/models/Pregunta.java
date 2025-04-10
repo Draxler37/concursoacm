@@ -2,7 +2,7 @@ package com.concursoacm.domain.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * *Entidad que representa una pregunta en el sistema.
@@ -20,11 +20,11 @@ public class Pregunta {
     private String texto;
 
     @Column(nullable = false)
-    @NotNull(message = "La puntuación máxima es obligatoria.")
+    @Positive(message = "La puntuación máxima debe ser un número positivo.")
     private int puntuacionMaxima;
 
     @Column(nullable = false)
-    @NotBlank(message = "La clase de la pregunta es obligatoria.")
+    @NotBlank(message = "La clase de la pregunta no puede estar vacía.")
     private String clase; // Clase A o B
 
     @Column(nullable = false)

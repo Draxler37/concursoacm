@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * *Controlador REST para la gestión de jefes de delegación.
@@ -63,8 +62,11 @@ public class JefeDelegacionController {
      */
     @PostMapping("/{idParticipante}")
     public ResponseEntity<JefeDelegacion> crearJefeDelegacion(@PathVariable int idParticipante,
+            @RequestBody String usuario,
             @RequestBody String contraseña) {
-        JefeDelegacion nuevoJefe = jefeDelegacionService.crearJefeDelegacion(idParticipante, contraseña);
+
+        JefeDelegacion nuevoJefe = jefeDelegacionService.crearJefeDelegacion(idParticipante, usuario, contraseña);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoJefe);
     }
 
@@ -80,26 +82,14 @@ public class JefeDelegacionController {
     @PutMapping("/{id}/cambiar-contrasena")
     public ResponseEntity<String> cambiarContraseña(
             @PathVariable int id,
-            @RequestBody Map<String, String> requestBody,
+            @RequestBody String contraseñaActual,
+            @RequestBody String nuevaContraseña,
             Authentication authentication) {
 
-        String contraseñaActual = requestBody.get("contraseñaActual");
-        String nuevaContraseña = requestBody.get("nuevaContraseña");
-
-        if (contraseñaActual == null || nuevaContraseña == null) {
-            return ResponseEntity.badRequest()
-                    .body("Las claves 'contraseñaActual' y 'nuevaContraseña' son obligatorias.");
-        }
-
-        String usuarioNormalizado = authentication.getName();
-        boolean cambiada = jefeDelegacionService.cambiarContraseña(id, usuarioNormalizado, contraseñaActual,
-                nuevaContraseña);
-
-        if (cambiada) {
-            return ResponseEntity.ok("Contraseña actualizada correctamente.");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas.");
-        }
+        return jefeDelegacionService.cambiarContraseña(id, authentication.getName(),
+                contraseñaActual, nuevaContraseña)
+                        ? ResponseEntity.ok("Contraseña actualizada correctamente.")
+                        : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas.");
     }
 
     /**

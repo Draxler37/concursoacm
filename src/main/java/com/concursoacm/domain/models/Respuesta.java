@@ -1,6 +1,9 @@
 package com.concursoacm.domain.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 /**
  * *Entidad que representa una respuesta en el sistema.
@@ -14,18 +17,23 @@ public class Respuesta {
     private int idRespuesta;
 
     @Column(nullable = false)
+    @NotBlank(message = "La respuesta del participante no puede estar vacía.")
     private String respuestaParticipante;
 
     @Column(nullable = false)
+    @Positive(message = "El ID del participante debe ser un número positivo.")
     private int idParticipante;
 
     @Column(nullable = false)
+    @Positive(message = "El ID del equipo debe ser un número positivo.")
     private int idEquipo;
 
     @Column(nullable = false)
+    @Positive(message = "El ID de la pregunta debe ser un número positivo.")
     private int idPregunta;
 
     @Column(nullable = false)
+    @PositiveOrZero(message = "La puntuación obtenida no puede ser negativa.")
     private int puntuacionObtenida = 0;
 
     /**
@@ -106,5 +114,3 @@ public class Respuesta {
         this.puntuacionObtenida = puntuacionObtenida;
     }
 }
-
-

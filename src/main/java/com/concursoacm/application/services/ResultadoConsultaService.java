@@ -6,6 +6,7 @@ import com.concursoacm.application.dtos.resultados.PuntuacionPorEquipoDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorPaisDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorRegionDTO;
 import com.concursoacm.infrastructure.repositories.ResultadoRepository;
+import com.concursoacm.infrastructure.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 
@@ -47,8 +48,8 @@ public class ResultadoConsultaService {
      * @return Objeto GanadoresDTO con los ganadores de ambas categorías.
      */
     public PuntuacionPorCategoriaDTO obtenerGanadores() {
-        List<PuntuacionPorEquipoDTO> competencia = obtenerPuntuacionesPorCategoria("Competencia");
-        List<PuntuacionPorEquipoDTO> junior = obtenerPuntuacionesPorCategoria("Junior");
+        List<PuntuacionPorEquipoDTO> competencia = obtenerPuntuacionesPorCategoria(Constantes.CATEGORIA_COMPETENCIA);
+        List<PuntuacionPorEquipoDTO> junior = obtenerPuntuacionesPorCategoria(Constantes.CATEGORIA_JUNIOR);
 
         PuntuacionPorEquipoDTO ganadorCompetencia = competencia.isEmpty() ? null : competencia.get(0);
         PuntuacionPorEquipoDTO ganadorJunior = junior.isEmpty() ? null : junior.get(0);

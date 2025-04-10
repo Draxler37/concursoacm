@@ -4,6 +4,15 @@ package com.concursoacm.infrastructure.utils;
  * *Clase que contiene constantes utilizadas en todo el proyecto.
  */
 public final class Constantes {
+    private static final Constantes INSTANCE = new Constantes();
+
+    private Constantes() {
+        // Constructor privado
+    }
+
+    public static Constantes getInstance() {
+        return INSTANCE;
+    }
 
     // Roles
     public static final String ROL_JEFE_DELEGACION = "JEFE_DELEGACION";
@@ -26,8 +35,4 @@ public final class Constantes {
 
     // Otros
     public static final int PREGUNTAS_MINIMAS = 25;
-
-    private Constantes() {
-        // Constructor privado para evitar instanciación
-    }
 }

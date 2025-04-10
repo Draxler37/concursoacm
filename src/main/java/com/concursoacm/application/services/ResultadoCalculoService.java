@@ -7,6 +7,7 @@ import com.concursoacm.infrastructure.repositories.PreguntaRepository;
 import com.concursoacm.infrastructure.repositories.PreguntasAsignadasRepository;
 import com.concursoacm.infrastructure.repositories.RespuestaRepository;
 import com.concursoacm.infrastructure.repositories.ResultadoRepository;
+import com.concursoacm.infrastructure.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,14 +128,14 @@ public class ResultadoCalculoService {
      * @return Puntos calculados.
      */
     private int calcularPuntos(int evaluacion, int maxPuntuacion, String clase) {
-        if ("A".equalsIgnoreCase(clase)) {
+        if (Constantes.CLASE_A.equalsIgnoreCase(clase)) {
             if (evaluacion >= 90)
                 return maxPuntuacion;
             if (evaluacion >= 70)
                 return maxPuntuacion / 2;
             if (evaluacion >= 50)
                 return maxPuntuacion / 3;
-        } else if ("B".equalsIgnoreCase(clase)) {
+        } else if (Constantes.CLASE_B.equalsIgnoreCase(clase)) {
             if (evaluacion >= 95)
                 return maxPuntuacion;
             if (evaluacion >= 80)

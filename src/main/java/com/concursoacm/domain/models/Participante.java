@@ -2,6 +2,8 @@ package com.concursoacm.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 /**
  * *Entidad que representa un participante en el sistema.
@@ -15,15 +17,19 @@ public class Participante {
     private int idParticipante;
 
     @Column(nullable = false)
+    @NotBlank(message = "El nombre no puede estar vacío.")
     private String nombre;
 
     @Column(nullable = false)
+    @NotBlank(message = "El número de carnet no puede estar vacío.")
     private String numCarnet;
 
     @Column(nullable = false)
+    @Positive(message = "La edad debe ser un número positivo mayor a 0.")
     private int edad;
 
     @Column(nullable = false)
+    @NotBlank(message = "El sexo no puede estar vacío.")
     private String sexo;
 
     @ManyToOne

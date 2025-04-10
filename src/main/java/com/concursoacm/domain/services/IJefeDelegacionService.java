@@ -29,11 +29,12 @@ public interface IJefeDelegacionService {
     /**
      * *Crea un nuevo jefe de delegación.
      *
-     * @param idParticipante ID del participante que será jefe de delegación.
-     * @param contraseña     Contraseña del jefe de delegación.
+     * @param idParticipante       ID del participante.
+     * @param usuario              Nombre de usuario único.
+     * @param contraseñaEncriptada Contraseña encriptada.
      * @return Objeto JefeDelegacion creado.
      */
-    JefeDelegacion crearJefeDelegacion(int idParticipante, String contraseña);
+    JefeDelegacion crearJefeDelegacion(int idParticipante, String usuario, String contraseñaEncriptada);
 
     /**
      * *Cambia la contraseña de un jefe de delegación.

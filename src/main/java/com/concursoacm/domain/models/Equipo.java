@@ -2,6 +2,7 @@ package com.concursoacm.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -16,9 +17,11 @@ public class Equipo {
     private int idEquipo;
 
     @Column(nullable = false)
+    @NotBlank(message = "El nombre del equipo no puede estar vacío.")
     private String nombreEquipo;
 
     @Column(nullable = false)
+    @NotBlank(message = "La categoría del equipo no puede estar vacía.")
     private String categoria;
 
     @ManyToOne
