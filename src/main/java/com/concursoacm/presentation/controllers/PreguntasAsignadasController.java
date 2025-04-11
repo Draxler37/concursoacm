@@ -6,6 +6,7 @@ import com.concursoacm.domain.services.IPreguntasAsignadasService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.AccessDeniedException;
 
 /**
  * *Controlador REST para la gestión de preguntas asignadas.
@@ -45,11 +46,17 @@ public class PreguntasAsignadasController {
      * @return DTO con los detalles de las preguntas asignadas.
      */
     @GetMapping("/equipo/{idEquipo}")
-    public ResponseEntity<PreguntasAsignadasDetalleDTO> obtenerDetallesPreguntasAsignadas(
+    public ResponseEntity<?> obtenerPreguntasAsignadasAlEquipo(
             @PathVariable int idEquipo, Authentication authentication) {
-        String usuarioNormalizado = authentication.getName();
-        PreguntasAsignadasDetalleDTO dto = preguntasAsignadasService.getPreguntasAsigandasAlEquipo(idEquipo,
-                usuarioNormalizado);
-        return ResponseEntity.ok(dto);
+        try {
+            String usuarioNormalizado = authentication.getName();
+            PreguntasAsignadasDetalleDTO dto = preguntasAsignadasService.getPreguntasAsignadasAlEquipo(idEquipo,
+                    usuarioNormalizado);
+            return ResponseEntity.ok(dto);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

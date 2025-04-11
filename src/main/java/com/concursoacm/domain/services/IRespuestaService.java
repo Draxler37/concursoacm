@@ -2,6 +2,7 @@ package com.concursoacm.domain.services;
 
 import java.util.List;
 
+import com.concursoacm.application.dtos.ActualizarNotaDTO;
 import com.concursoacm.domain.models.Respuesta;
 
 /**
@@ -25,5 +26,14 @@ public interface IRespuestaService {
      * @param idParticipante ID del participante.
      * @return Lista de respuestas del participante.
      */
-    List<Respuesta> getRespuestasPorParticipante(int idParticipante);
+    List<Respuesta> getRespuestasDelParticipante(int idParticipante);
+
+    /**
+     * *Actualiza la nota de una respuesta.
+     *
+     * @param idRespuesta  ID de la respuesta.
+     * @param notaAsignada Nota asignada a la respuesta.
+     * @return Respuesta actualizada.
+     */
+    Respuesta actualizarNota(int idRespuesta, ActualizarNotaDTO notaDTO);
 }

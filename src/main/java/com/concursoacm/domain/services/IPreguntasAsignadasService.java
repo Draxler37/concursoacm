@@ -19,5 +19,5 @@ public interface IPreguntasAsignadasService {
      * @param usuarioNormalizado Usuario autenticado.
      * @return DTO con los detalles de las preguntas asignadas.
      */
-    PreguntasAsignadasDetalleDTO getPreguntasAsigandasAlEquipo(int idEquipo, String usuarioNormalizado);
+    PreguntasAsignadasDetalleDTO getPreguntasAsignadasAlEquipo(int idEquipo, String usuarioNormalizado);
 }

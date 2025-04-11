@@ -76,17 +76,8 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
                     "No hay suficientes preguntas disponibles para asignar al equipo " + equipo.getNombreEquipo());
         }
 
-        // Mezclar todas las preguntas disponibles
         Collections.shuffle(preguntasDisponibles);
-
-        // Seleccionar un subconjunto de 25 preguntas
-        List<Pregunta> subconjunto25Preguntas = preguntasDisponibles.subList(0, 25);
-
-        // Mezclar el subconjunto de 25 preguntas
-        Collections.shuffle(subconjunto25Preguntas);
-
-        // Seleccionar 5 preguntas del subconjunto de 25
-        List<Pregunta> seleccion5Preguntas = subconjunto25Preguntas.subList(0, 5);
+        List<Pregunta> seleccion5Preguntas = preguntasDisponibles.subList(0, 5);
 
         PreguntasAsignadas asignacion = new PreguntasAsignadas();
         asignacion.setEquipo(equipo);
@@ -130,7 +121,7 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
      * {@inheritDoc}
      */
     @Override
-    public PreguntasAsignadasDetalleDTO getPreguntasAsigandasAlEquipo(int idEquipo, String usuarioNormalizado) {
+    public PreguntasAsignadasDetalleDTO getPreguntasAsignadasAlEquipo(int idEquipo, String usuarioNormalizado) {
         Equipo equipo = equipoRepository.findById(idEquipo)
                 .orElseThrow(() -> new IllegalArgumentException("Equipo no encontrado."));
 

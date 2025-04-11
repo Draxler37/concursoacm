@@ -1,5 +1,6 @@
 package com.concursoacm.presentation.controllers;
 
+import com.concursoacm.application.dtos.ActualizarNotaDTO;
 import com.concursoacm.domain.models.Respuesta;
 import com.concursoacm.domain.services.IRespuestaService;
 
@@ -61,11 +62,28 @@ public class RespuestaController {
      * @return Lista de respuestas o mensaje de error.
      */
     @GetMapping("/participante/{idParticipante}")
-    public ResponseEntity<?> getRespuestasPorParticipante(@PathVariable int idParticipante) {
-        List<Respuesta> respuestas = respuestaService.getRespuestasPorParticipante(idParticipante);
+    public ResponseEntity<?> getRespuestasDelParticipante(@PathVariable int idParticipante) {
+        List<Respuesta> respuestas = respuestaService.getRespuestasDelParticipante(idParticipante);
         if (respuestas.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(respuestas);
+    }
+
+    /**
+     * *Actualiza la nota de una respuesta.
+     *
+     * @param idRespuesta ID de la respuesta.
+     * @param request     Objeto DTO que contiene la nueva nota.
+     * @return Respuesta actualizada o mensaje de error.
+     */
+    @PutMapping("/{idRespuesta}/actualizar-nota")
+    public ResponseEntity<?> actualizarNota(@PathVariable int idRespuesta, @RequestBody ActualizarNotaDTO request) {
+        try {
+            Respuesta respuestaActualizada = respuestaService.actualizarNota(idRespuesta, request);
+            return ResponseEntity.ok(respuestaActualizada);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

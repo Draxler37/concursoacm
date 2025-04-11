@@ -31,8 +31,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/equipos/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
                         .requestMatchers(HttpMethod.DELETE, "/equipos/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
                         .requestMatchers(HttpMethod.PUT, "/jefes-delegacion/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
-                        .requestMatchers(HttpMethod.GET, "/preguntas-asignadas/**")
-                        .hasRole(Constantes.ROL_JEFE_DELEGACION)
+                        .requestMatchers(HttpMethod.GET, "/preguntas-asignadas/equipo/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
                         .anyRequest().permitAll())
                 .httpBasic();
 

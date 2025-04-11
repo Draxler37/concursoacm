@@ -11,6 +11,7 @@ import com.concursoacm.infrastructure.repositories.RespuestaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import com.concursoacm.application.dtos.ActualizarNotaDTO;
 
 /**
  * *Servicio que implementa la lógica de negocio para la gestión de respuestas.
@@ -25,13 +26,16 @@ public class RespuestaService implements IRespuestaService {
     /**
      * *Constructor que inyecta las dependencias necesarias.
      *
-     * @param respuestaRepository         Repositorio para la gestión de respuestas.
-     * @param participanteRepository      Repositorio para la gestión de participantes.
-     * @param preguntasAsignadasRepository Repositorio para la gestión de preguntas asignadas.
+     * @param respuestaRepository          Repositorio para la gestión de
+     *                                     respuestas.
+     * @param participanteRepository       Repositorio para la gestión de
+     *                                     participantes.
+     * @param preguntasAsignadasRepository Repositorio para la gestión de preguntas
+     *                                     asignadas.
      */
     public RespuestaService(RespuestaRepository respuestaRepository,
-                            ParticipanteRepository participanteRepository,
-                            PreguntasAsignadasRepository preguntasAsignadasRepository) {
+            ParticipanteRepository participanteRepository,
+            PreguntasAsignadasRepository preguntasAsignadasRepository) {
         this.respuestaRepository = respuestaRepository;
         this.participanteRepository = participanteRepository;
         this.preguntasAsignadasRepository = preguntasAsignadasRepository;
@@ -59,7 +63,7 @@ public class RespuestaService implements IRespuestaService {
      * {@inheritDoc}
      */
     @Override
-    public List<Respuesta> getRespuestasPorParticipante(int idParticipante) {
+    public List<Respuesta> getRespuestasDelParticipante(int idParticipante) {
         return respuestaRepository.findByIdParticipante(idParticipante);
     }
 
@@ -92,10 +96,10 @@ public class RespuestaService implements IRespuestaService {
                 .orElseThrow(() -> new IllegalArgumentException("No se han asignado preguntas al equipo."));
 
         if (idPregunta != asignacion.getPregunta1() &&
-            idPregunta != asignacion.getPregunta2() &&
-            idPregunta != asignacion.getPregunta3() &&
-            idPregunta != asignacion.getPregunta4() &&
-            idPregunta != asignacion.getPregunta5()) {
+                idPregunta != asignacion.getPregunta2() &&
+                idPregunta != asignacion.getPregunta3() &&
+                idPregunta != asignacion.getPregunta4() &&
+                idPregunta != asignacion.getPregunta5()) {
             throw new IllegalArgumentException("La pregunta no está asignada a este equipo.");
         }
 
@@ -103,8 +107,23 @@ public class RespuestaService implements IRespuestaService {
             throw new IllegalArgumentException("El participante ya ha respondido esta pregunta.");
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Respuesta actualizarNota(int idRespuesta, ActualizarNotaDTO notaDTO) {
+        // Validar que la nota esté en el rango permitido
+        if (notaDTO.getNota() < 0 || notaDTO.getNota() > 100) {
+            throw new IllegalArgumentException("La nota debe estar entre 0 y 100.");
+        }
+
+        // Buscar la respuesta por ID
+        Respuesta respuesta = respuestaRepository.findById(idRespuesta)
+                .orElseThrow(() -> new IllegalArgumentException("No se encuentra la respuesta con ID " + idRespuesta));
+
+        // Actualizar la nota
+        respuesta.setPuntuacionObtenida(notaDTO.getNota());
+        return respuestaRepository.save(respuesta);
+    }
 }
-
-
-
-
