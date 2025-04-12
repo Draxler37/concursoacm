@@ -1,11 +1,15 @@
 package com.concursoacm.application.services;
 
+import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
 import com.concursoacm.domain.models.JefeDelegacion;
+import com.concursoacm.domain.models.Pais;
 import com.concursoacm.domain.models.Participante;
 import com.concursoacm.domain.services.IJefeDelegacionService;
 import com.concursoacm.infrastructure.repositories.JefeDelegacionRepository;
+import com.concursoacm.infrastructure.repositories.PaisRepository;
 import com.concursoacm.infrastructure.repositories.ParticipanteRepository;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,7 @@ public class JefeDelegacionService implements IJefeDelegacionService {
 
     private final JefeDelegacionRepository jefeDelegacionRepository;
     private final ParticipanteRepository participanteRepository;
+    private final PaisRepository paisRepository;
 
     /**
      * *Constructor que inyecta las dependencias necesarias.
@@ -34,10 +39,12 @@ public class JefeDelegacionService implements IJefeDelegacionService {
      * @param participanteRepository   Repositorio para la gestión de participantes.
      */
     public JefeDelegacionService(JefeDelegacionRepository jefeDelegacionRepository,
-            ParticipanteRepository participanteRepository, PasswordEncoder passwordEncoder) {
+            ParticipanteRepository participanteRepository, PaisRepository paisRepository,
+            PasswordEncoder passwordEncoder) {
         this.jefeDelegacionRepository = jefeDelegacionRepository;
         this.participanteRepository = participanteRepository;
         this.passwordEncoder = passwordEncoder;
+        this.paisRepository = paisRepository;
     }
 
     /**
@@ -65,10 +72,25 @@ public class JefeDelegacionService implements IJefeDelegacionService {
      * {@inheritDoc}
      */
     @Override
-    public JefeDelegacion crearJefeDelegacion(int idParticipante, String usuario, String contraseña) {
-        return jefeDelegacionRepository
-                .save(new JefeDelegacion(normalizarTexto(usuario), passwordEncoder.encode(contraseña),
-                        validarParticipanteParaJefe(idParticipante, usuario, contraseña)));
+    public JefeDelegacion crearJefeDelegacion(CrearJefeDelegacionDTO request) {
+        Pais pais = paisRepository.findById(request.getPais().getIdPais())
+                .orElseThrow(() -> new RuntimeException("País no encontrado"));
+
+        // Crear el participante
+        Participante nuevoParticipante = new Participante();
+        nuevoParticipante.setNombre(request.getNombre());
+        nuevoParticipante.setNumCarnet(request.getNumCarnet());
+        nuevoParticipante.setEdad(request.getEdad());
+        nuevoParticipante.setSexo(request.getSexo());
+        nuevoParticipante.setPais(pais); // Convertir DTO a entidad
+        participanteRepository.save(nuevoParticipante);
+
+        // Crear el jefe de delegación
+        JefeDelegacion nuevoJefe = new JefeDelegacion();
+        nuevoJefe.setUsuarioNormalizado(request.getUsuario());
+        nuevoJefe.setContrasena(passwordEncoder.encode(request.getContraseña()));
+        nuevoJefe.setParticipante(nuevoParticipante);
+        return jefeDelegacionRepository.save(nuevoJefe);
     }
 
     /**
@@ -191,6 +213,7 @@ public class JefeDelegacionService implements IJefeDelegacionService {
      */
     private JefeDelegacion buscarJefePorId(int idJefe) {
         return jefeDelegacionRepository.findById(idJefe)
-                .orElseThrow(() -> new IllegalArgumentException("El jefe de delegación con ID " + idJefe + " no existe."));
+                .orElseThrow(
+                        () -> new IllegalArgumentException("El jefe de delegación con ID " + idJefe + " no existe."));
     }
 }

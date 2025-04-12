@@ -1,5 +1,6 @@
 package com.concursoacm.domain.services;
 
+import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
 import com.concursoacm.domain.models.JefeDelegacion;
 
@@ -34,7 +35,7 @@ public interface IJefeDelegacionService {
      * @param contraseñaEncriptada Contraseña encriptada.
      * @return Objeto JefeDelegacion creado.
      */
-    JefeDelegacion crearJefeDelegacion(int idParticipante, String usuario, String contraseñaEncriptada);
+    JefeDelegacion crearJefeDelegacion(CrearJefeDelegacionDTO crearJefeDelegacionDTO);
 
     /**
      * *Cambia la contraseña de un jefe de delegación.

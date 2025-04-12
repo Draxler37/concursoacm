@@ -1,6 +1,6 @@
 package com.concursoacm.presentation.controllers;
 
-import com.concursoacm.application.dtos.ActualizarNotaDTO;
+import com.concursoacm.application.dtos.resultados.ActualizarNotaDTO;
 import com.concursoacm.domain.models.Respuesta;
 import com.concursoacm.domain.services.IRespuestaService;
 

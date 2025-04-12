@@ -1,4 +1,4 @@
-package com.concursoacm.application.dtos;
+package com.concursoacm.application.dtos.resultados;
 
 /**
  * *DTO para actualizar la nota de una respuesta.

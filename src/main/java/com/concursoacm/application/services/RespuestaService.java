@@ -11,7 +11,7 @@ import com.concursoacm.infrastructure.repositories.RespuestaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import com.concursoacm.application.dtos.ActualizarNotaDTO;
+import com.concursoacm.application.dtos.resultados.ActualizarNotaDTO;
 
 /**
  * *Servicio que implementa la lógica de negocio para la gestión de respuestas.

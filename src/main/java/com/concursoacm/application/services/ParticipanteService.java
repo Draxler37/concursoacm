@@ -128,12 +128,8 @@ public class ParticipanteService implements IParticipanteService {
      */
     @Override
     public ParticipanteDTO crearParticipante(Participante participante) {
-        PaisDTO paisDTO = paisService.obtenerPaisPorId(participante.getPais().getIdPais())
-                .orElseThrow(() -> new RuntimeException("País no encontrado"));
-        Pais pais = new Pais();
-        pais.setIdPais(paisDTO.getIdPais());
-        pais.setNombrePais(paisDTO.getNombrePais());
-
+        Pais pais = paisRepository.findById(participante.getPais().getIdPais())
+            .orElseThrow(() -> new RuntimeException("País no encontrado"));
         participante.setPais(pais);
 
         int count = participanteRepository.countByPaisIdPais(participante.getPais().getIdPais());

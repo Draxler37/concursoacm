@@ -6,6 +6,8 @@ import com.concursoacm.application.dtos.jefedelegacion.CambiarContraseñaDTO;
 import com.concursoacm.domain.models.JefeDelegacion;
 import com.concursoacm.domain.services.IJefeDelegacionService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -58,20 +60,12 @@ public class JefeDelegacionController {
     /**
      * *Crea un nuevo jefe de delegación.
      *
-     * @param idParticipante ID del participante que será jefe de delegación.
-     * @param request        DTO con los datos del nuevo jefe.
+     * @param request DTO con los datos del nuevo jefe de delegación.
      * @return Objeto JefeDelegacion creado.
      */
-    @PostMapping("/{idParticipante}")
-    public ResponseEntity<JefeDelegacion> crearJefeDelegacion(
-            @PathVariable int idParticipante,
-            @RequestBody CrearJefeDelegacionDTO request) {
-
-        JefeDelegacion nuevoJefe = jefeDelegacionService.crearJefeDelegacion(
-                idParticipante,
-                request.getUsuario(),
-                request.getContraseña());
-
+    @PostMapping
+    public ResponseEntity<JefeDelegacion> crearJefeDelegacion(@Valid @RequestBody CrearJefeDelegacionDTO request) {
+        JefeDelegacion nuevoJefe = jefeDelegacionService.crearJefeDelegacion(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoJefe);
     }
 

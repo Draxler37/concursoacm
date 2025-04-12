@@ -2,7 +2,7 @@ package com.concursoacm.domain.services;
 
 import java.util.List;
 
-import com.concursoacm.application.dtos.ActualizarNotaDTO;
+import com.concursoacm.application.dtos.resultados.ActualizarNotaDTO;
 import com.concursoacm.domain.models.Respuesta;
 
 /**
