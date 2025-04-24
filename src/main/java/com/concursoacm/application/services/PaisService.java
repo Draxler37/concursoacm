@@ -1,11 +1,11 @@
 package com.concursoacm.application.services;
 
 import com.concursoacm.application.dtos.pais.PaisDTO;
-import com.concursoacm.domain.models.Pais;
-import com.concursoacm.domain.models.Region;
-import com.concursoacm.domain.services.IPaisService;
-import com.concursoacm.infrastructure.repositories.PaisRepository;
-import com.concursoacm.infrastructure.repositories.RegionRepository;
+import com.concursoacm.interfaces.services.IPaisService;
+import com.concursoacm.models.Pais;
+import com.concursoacm.models.Region;
+import com.concursoacm.tools.repositories.PaisRepository;
+import com.concursoacm.tools.repositories.RegionRepository;
 
 import org.springframework.stereotype.Service;
 

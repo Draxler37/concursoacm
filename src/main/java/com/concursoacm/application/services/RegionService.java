@@ -1,8 +1,8 @@
 package com.concursoacm.application.services;
 
-import com.concursoacm.domain.models.Region;
-import com.concursoacm.domain.services.IRegionService;
-import com.concursoacm.infrastructure.repositories.RegionRepository;
+import com.concursoacm.interfaces.services.IRegionService;
+import com.concursoacm.models.Region;
+import com.concursoacm.tools.repositories.RegionRepository;
 
 import org.springframework.stereotype.Service;
 

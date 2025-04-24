@@ -1,8 +1,8 @@
 package com.concursoacm.application.services;
 
-import com.concursoacm.domain.models.Pregunta;
-import com.concursoacm.domain.services.IPreguntaService;
-import com.concursoacm.infrastructure.repositories.PreguntaRepository;
+import com.concursoacm.interfaces.services.IPreguntaService;
+import com.concursoacm.models.Pregunta;
+import com.concursoacm.tools.repositories.PreguntaRepository;
 
 import org.springframework.stereotype.Service;
 

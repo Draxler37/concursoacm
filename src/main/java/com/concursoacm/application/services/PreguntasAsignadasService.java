@@ -2,16 +2,16 @@ package com.concursoacm.application.services;
 
 import com.concursoacm.application.dtos.preguntas.PreguntaDetalleDTO;
 import com.concursoacm.application.dtos.preguntas.PreguntasAsignadasDetalleDTO;
-import com.concursoacm.domain.models.Equipo;
-import com.concursoacm.domain.models.JefeDelegacion;
-import com.concursoacm.domain.models.Pregunta;
-import com.concursoacm.domain.models.PreguntasAsignadas;
-import com.concursoacm.domain.services.IPreguntasAsignadasService;
-import com.concursoacm.infrastructure.repositories.EquipoRepository;
-import com.concursoacm.infrastructure.repositories.JefeDelegacionRepository;
-import com.concursoacm.infrastructure.repositories.PreguntaRepository;
-import com.concursoacm.infrastructure.repositories.PreguntasAsignadasRepository;
-import com.concursoacm.infrastructure.utils.Constantes;
+import com.concursoacm.interfaces.services.IPreguntasAsignadasService;
+import com.concursoacm.models.Equipo;
+import com.concursoacm.models.JefeDelegacion;
+import com.concursoacm.models.Pregunta;
+import com.concursoacm.models.PreguntasAsignadas;
+import com.concursoacm.tools.repositories.EquipoRepository;
+import com.concursoacm.tools.repositories.JefeDelegacionRepository;
+import com.concursoacm.tools.repositories.PreguntaRepository;
+import com.concursoacm.tools.repositories.PreguntasAsignadasRepository;
+import com.concursoacm.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 import org.springframework.security.access.AccessDeniedException;
@@ -81,11 +81,11 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
 
         PreguntasAsignadas asignacion = new PreguntasAsignadas();
         asignacion.setEquipo(equipo);
-        asignacion.setPregunta1(seleccion5Preguntas.get(0).getIdPregunta());
-        asignacion.setPregunta2(seleccion5Preguntas.get(1).getIdPregunta());
-        asignacion.setPregunta3(seleccion5Preguntas.get(2).getIdPregunta());
-        asignacion.setPregunta4(seleccion5Preguntas.get(3).getIdPregunta());
-        asignacion.setPregunta5(seleccion5Preguntas.get(4).getIdPregunta());
+        asignacion.setPregunta1(seleccion5Preguntas.get(0));
+        asignacion.setPregunta2(seleccion5Preguntas.get(1));
+        asignacion.setPregunta3(seleccion5Preguntas.get(2));
+        asignacion.setPregunta4(seleccion5Preguntas.get(3));
+        asignacion.setPregunta5(seleccion5Preguntas.get(4));
 
         preguntasAsignadasRepository.save(asignacion);
     }
@@ -146,14 +146,12 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
     }
 
     /**
-     * *Obtiene los detalles de una pregunta por su ID.
+     * *Obtiene los detalles de una pregunta.
      *
-     * @param idPregunta ID de la pregunta.
+     * @param pregunta Objeto Pregunta.
      * @return DTO con los detalles de la pregunta.
      */
-    private PreguntaDetalleDTO obtenerDetallePregunta(int idPregunta) {
-        Pregunta pregunta = preguntaRepository.findById(idPregunta)
-                .orElseThrow(() -> new IllegalArgumentException("Pregunta con ID " + idPregunta + " no encontrada."));
+    private PreguntaDetalleDTO obtenerDetallePregunta(Pregunta pregunta) {
         return new PreguntaDetalleDTO(pregunta.getIdPregunta(), pregunta.getTexto());
     }
 }

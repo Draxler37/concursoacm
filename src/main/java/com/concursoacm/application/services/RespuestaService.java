@@ -1,12 +1,13 @@
 package com.concursoacm.application.services;
 
-import com.concursoacm.domain.models.Participante;
-import com.concursoacm.domain.models.PreguntasAsignadas;
-import com.concursoacm.domain.models.Respuesta;
-import com.concursoacm.domain.services.IRespuestaService;
-import com.concursoacm.infrastructure.repositories.ParticipanteRepository;
-import com.concursoacm.infrastructure.repositories.PreguntasAsignadasRepository;
-import com.concursoacm.infrastructure.repositories.RespuestaRepository;
+import com.concursoacm.interfaces.services.IRespuestaService;
+import com.concursoacm.models.Participante;
+import com.concursoacm.models.Pregunta;
+import com.concursoacm.models.PreguntasAsignadas;
+import com.concursoacm.models.Respuesta;
+import com.concursoacm.tools.repositories.ParticipanteRepository;
+import com.concursoacm.tools.repositories.PreguntasAsignadasRepository;
+import com.concursoacm.tools.repositories.RespuestaRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -47,12 +48,12 @@ public class RespuestaService implements IRespuestaService {
     @Override
     public Respuesta crearRespuesta(int idParticipante, int idPregunta, String respuestaText) {
         Participante participante = validarParticipante(idParticipante);
-        validarPreguntaAsignada(participante, idPregunta);
+        Pregunta pregunta = validarPreguntaAsignada(participante, idPregunta);
 
         Respuesta respuesta = new Respuesta();
-        respuesta.setIdParticipante(idParticipante);
-        respuesta.setIdEquipo(participante.getEquipo().getIdEquipo());
-        respuesta.setIdPregunta(idPregunta);
+        respuesta.setParticipante(participante); // Relación directa
+        respuesta.setEquipo(participante.getEquipo()); // Relación directa
+        respuesta.setPregunta(pregunta); // Relación directa
         respuesta.setRespuestaParticipante(respuestaText);
         respuesta.setPuntuacionObtenida(0); // Inicialmente 0
 
@@ -89,23 +90,28 @@ public class RespuestaService implements IRespuestaService {
      *
      * @param participante Objeto Participante.
      * @param idPregunta   ID de la pregunta.
+     * @return Objeto Pregunta validado.
      */
-    private void validarPreguntaAsignada(Participante participante, int idPregunta) {
+    private Pregunta validarPreguntaAsignada(Participante participante, int idPregunta) {
         int idEquipo = participante.getEquipo().getIdEquipo();
         PreguntasAsignadas asignacion = preguntasAsignadasRepository.findByEquipoIdEquipo(idEquipo)
                 .orElseThrow(() -> new IllegalArgumentException("No se han asignado preguntas al equipo."));
 
-        if (idPregunta != asignacion.getPregunta1() &&
-                idPregunta != asignacion.getPregunta2() &&
-                idPregunta != asignacion.getPregunta3() &&
-                idPregunta != asignacion.getPregunta4() &&
-                idPregunta != asignacion.getPregunta5()) {
-            throw new IllegalArgumentException("La pregunta no está asignada a este equipo.");
-        }
+        List<Pregunta> preguntasAsignadas = List.of(
+                asignacion.getPregunta1(),
+                asignacion.getPregunta2(),
+                asignacion.getPregunta3(),
+                asignacion.getPregunta4(),
+                asignacion.getPregunta5());
 
         if (respuestaRepository.existsByIdParticipanteAndIdPregunta(participante.getIdParticipante(), idPregunta)) {
             throw new IllegalArgumentException("El participante ya ha respondido esta pregunta.");
         }
+
+        return preguntasAsignadas.stream()
+                .filter(pregunta -> pregunta.getIdPregunta() == idPregunta)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("La pregunta no está asignada a este equipo."));
     }
 
     /**

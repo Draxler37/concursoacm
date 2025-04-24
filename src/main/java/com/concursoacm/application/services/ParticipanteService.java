@@ -5,17 +5,17 @@ import com.concursoacm.application.dtos.participantes.ParticipanteDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorPaisDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorRegionDTO;
 import com.concursoacm.application.dtos.participantes.ParticipantesPorEquipoDTO;
-import com.concursoacm.domain.models.Equipo;
-import com.concursoacm.domain.models.Pais;
-import com.concursoacm.domain.models.Region;
-import com.concursoacm.domain.models.Participante;
-import com.concursoacm.domain.services.IParticipanteService;
-import com.concursoacm.infrastructure.repositories.EquipoRepository;
-import com.concursoacm.infrastructure.repositories.JefeDelegacionRepository;
-import com.concursoacm.infrastructure.repositories.PaisRepository;
-import com.concursoacm.infrastructure.repositories.ParticipanteRepository;
-import com.concursoacm.infrastructure.repositories.RegionRepository;
-import com.concursoacm.infrastructure.utils.Constantes;
+import com.concursoacm.interfaces.services.IParticipanteService;
+import com.concursoacm.models.Equipo;
+import com.concursoacm.models.Pais;
+import com.concursoacm.models.Participante;
+import com.concursoacm.models.Region;
+import com.concursoacm.tools.repositories.EquipoRepository;
+import com.concursoacm.tools.repositories.JefeDelegacionRepository;
+import com.concursoacm.tools.repositories.PaisRepository;
+import com.concursoacm.tools.repositories.ParticipanteRepository;
+import com.concursoacm.tools.repositories.RegionRepository;
+import com.concursoacm.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.concursoacm.application.dtos.pais;
 
-import com.concursoacm.domain.models.Pais;
+import com.concursoacm.models.Pais;
 
 /**
  * *Data Transfer Object (DTO) para la entidad Pais.

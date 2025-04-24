@@ -1,13 +1,15 @@
 package com.concursoacm.application.services;
 
-import com.concursoacm.domain.models.Pregunta;
-import com.concursoacm.domain.models.Respuesta;
-import com.concursoacm.domain.models.Resultado;
-import com.concursoacm.infrastructure.repositories.PreguntaRepository;
-import com.concursoacm.infrastructure.repositories.PreguntasAsignadasRepository;
-import com.concursoacm.infrastructure.repositories.RespuestaRepository;
-import com.concursoacm.infrastructure.repositories.ResultadoRepository;
-import com.concursoacm.infrastructure.utils.Constantes;
+import com.concursoacm.models.Participante;
+import com.concursoacm.models.Pregunta;
+import com.concursoacm.models.Respuesta;
+import com.concursoacm.models.Resultado;
+import com.concursoacm.tools.repositories.ParticipanteRepository;
+import com.concursoacm.tools.repositories.PreguntaRepository;
+import com.concursoacm.tools.repositories.PreguntasAsignadasRepository;
+import com.concursoacm.tools.repositories.RespuestaRepository;
+import com.concursoacm.tools.repositories.ResultadoRepository;
+import com.concursoacm.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ public class ResultadoCalculoService {
     private final PreguntaRepository preguntaRepository;
     private final ResultadoRepository resultadoRepository;
     private final PreguntasAsignadasRepository preguntasAsignadasRepository;
+    private final ParticipanteRepository participanteRepository;
 
     /**
      * *Constructor que inyecta las dependencias necesarias.
@@ -35,15 +38,19 @@ public class ResultadoCalculoService {
      *                                     resultados.
      * @param preguntasAsignadasRepository Repositorio para la gestión de preguntas
      *                                     asignadas.
+     * @param participanteRepository       Repositorio para la gestión de
+     *                                     participantes.
      */
     public ResultadoCalculoService(RespuestaRepository respuestaRepository,
             PreguntaRepository preguntaRepository,
             ResultadoRepository resultadoRepository,
-            PreguntasAsignadasRepository preguntasAsignadasRepository) {
+            PreguntasAsignadasRepository preguntasAsignadasRepository,
+            ParticipanteRepository participanteRepository) {
         this.respuestaRepository = respuestaRepository;
         this.preguntaRepository = preguntaRepository;
         this.resultadoRepository = resultadoRepository;
         this.preguntasAsignadasRepository = preguntasAsignadasRepository;
+        this.participanteRepository = participanteRepository;
     }
 
     /**
@@ -69,13 +76,11 @@ public class ResultadoCalculoService {
         Map<Integer, Integer> sumaPuntosPorParticipante = new HashMap<>();
 
         for (Respuesta respuesta : respuestas) {
-            Pregunta pregunta = preguntaRepository.findById(respuesta.getIdPregunta())
-                    .orElseThrow(() -> new IllegalArgumentException(
-                            "Pregunta no encontrada para ID " + respuesta.getIdPregunta()));
+            Pregunta pregunta = respuesta.getPregunta(); // Acceso directo a la relación
 
             int puntos = calcularPuntos(respuesta.getPuntuacionObtenida(), pregunta.getPuntuacionMaxima(),
                     pregunta.getClase());
-            sumaPuntosPorParticipante.merge(respuesta.getIdParticipante(), puntos, Integer::sum);
+            sumaPuntosPorParticipante.merge(respuesta.getParticipante().getIdParticipante(), puntos, Integer::sum);
         }
 
         return sumaPuntosPorParticipante;
@@ -89,8 +94,11 @@ public class ResultadoCalculoService {
      */
     private void guardarResultados(Map<Integer, Integer> sumaPuntosPorParticipante) {
         sumaPuntosPorParticipante.forEach((idParticipante, puntuacionTotal) -> {
+            Participante participante = participanteRepository.findById(idParticipante)
+                    .orElseThrow(() -> new IllegalArgumentException("Participante no encontrado."));
+
             Resultado resultado = new Resultado();
-            resultado.setIdParticipante(idParticipante);
+            resultado.setParticipante(participante);
             resultado.setPuntuacionTotal(puntuacionTotal);
             resultadoRepository.save(resultado);
         });
@@ -100,21 +108,20 @@ public class ResultadoCalculoService {
      * *Actualiza el estado de las preguntas asignadas como "usadas".
      */
     private void actualizarPreguntasUsadas() {
-        Set<Integer> idsPreguntas = new HashSet<>();
         preguntasAsignadasRepository.findAll().forEach(asignacion -> {
-            idsPreguntas.add(asignacion.getPregunta1());
-            idsPreguntas.add(asignacion.getPregunta2());
-            idsPreguntas.add(asignacion.getPregunta3());
-            idsPreguntas.add(asignacion.getPregunta4());
-            idsPreguntas.add(asignacion.getPregunta5());
-        });
+            List<Pregunta> preguntas = List.of(
+                    asignacion.getPregunta1(),
+                    asignacion.getPregunta2(),
+                    asignacion.getPregunta3(),
+                    asignacion.getPregunta4(),
+                    asignacion.getPregunta5());
 
-        idsPreguntas.forEach(idPregunta -> {
-            Pregunta pregunta = preguntaRepository.findById(idPregunta).orElse(null);
-            if (pregunta != null && !pregunta.isUsada()) {
-                pregunta.setUsada(true);
-                preguntaRepository.save(pregunta);
-            }
+            preguntas.forEach(pregunta -> {
+                if (!pregunta.isUsada()) {
+                    pregunta.setUsada(true);
+                    preguntaRepository.save(pregunta);
+                }
+            });
         });
     }
 

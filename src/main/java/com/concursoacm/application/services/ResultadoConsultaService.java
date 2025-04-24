@@ -5,8 +5,8 @@ import com.concursoacm.application.dtos.resultados.PuntuacionPorCategoriaDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorEquipoDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorPaisDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorRegionDTO;
-import com.concursoacm.infrastructure.repositories.ResultadoRepository;
-import com.concursoacm.infrastructure.utils.Constantes;
+import com.concursoacm.tools.repositories.ResultadoRepository;
+import com.concursoacm.utils.Constantes;
 
 import org.springframework.stereotype.Service;
 

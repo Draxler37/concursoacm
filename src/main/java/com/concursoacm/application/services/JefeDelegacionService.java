@@ -2,13 +2,13 @@ package com.concursoacm.application.services;
 
 import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
-import com.concursoacm.domain.models.JefeDelegacion;
-import com.concursoacm.domain.models.Pais;
-import com.concursoacm.domain.models.Participante;
-import com.concursoacm.domain.services.IJefeDelegacionService;
-import com.concursoacm.infrastructure.repositories.JefeDelegacionRepository;
-import com.concursoacm.infrastructure.repositories.PaisRepository;
-import com.concursoacm.infrastructure.repositories.ParticipanteRepository;
+import com.concursoacm.interfaces.services.IJefeDelegacionService;
+import com.concursoacm.models.JefeDelegacion;
+import com.concursoacm.models.Pais;
+import com.concursoacm.models.Participante;
+import com.concursoacm.tools.repositories.JefeDelegacionRepository;
+import com.concursoacm.tools.repositories.PaisRepository;
+import com.concursoacm.tools.repositories.ParticipanteRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
