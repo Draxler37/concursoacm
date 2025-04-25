@@ -4,6 +4,7 @@ import com.concursoacm.application.dtos.preguntas.PreguntaDetalleDTO;
 import com.concursoacm.application.dtos.preguntas.PreguntasAsignadasDetalleDTO;
 import com.concursoacm.interfaces.services.IPreguntasAsignadasService;
 import com.concursoacm.models.Equipo;
+import com.concursoacm.models.EquipoCategoria;
 import com.concursoacm.models.JefeDelegacion;
 import com.concursoacm.models.Pregunta;
 import com.concursoacm.models.PreguntasAsignadas;
@@ -96,8 +97,8 @@ public class PreguntasAsignadasService implements IPreguntasAsignadasService {
      * @param categoria Categoría del equipo.
      * @return Clase de preguntas requerida.
      */
-    private String determinarClasePorCategoria(String categoria) {
-        switch (categoria.toLowerCase()) {
+    private String determinarClasePorCategoria(EquipoCategoria categoria) {
+        switch (categoria.getNombreCategoria().toLowerCase()) {
             case Constantes.CATEGORIA_COMPETENCIA:
                 return Constantes.CLASE_A;
             case Constantes.CATEGORIA_JUNIOR:

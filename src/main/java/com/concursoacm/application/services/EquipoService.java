@@ -119,14 +119,17 @@ public class EquipoService implements IEquipoService {
      */
     private void validarRestriccionesPorCategoria(Equipo equipo) {
         int idPais = equipo.getPais().getIdPais();
-        if (equipo.getCategoria().equalsIgnoreCase(Constantes.CATEGORIA_COMPETENCIA)) {
-            int countCompetencia = equipoRepository.countByPaisIdPaisAndCategoria(idPais,
-                    Constantes.CATEGORIA_COMPETENCIA);
+        String categoriaNombre = equipo.getCategoria().getNombreCategoria();
+
+        if (categoriaNombre.equalsIgnoreCase(Constantes.CATEGORIA_COMPETENCIA)) {
+            int countCompetencia = equipoRepository.countByPaisIdPaisAndCategoriaIdCategoria(idPais,
+                    equipo.getCategoria().getIdCategoria());
             if (countCompetencia >= 2) {
                 throw new IllegalArgumentException("Ya existen 2 equipos de competencia para este país.");
             }
-        } else if (equipo.getCategoria().equalsIgnoreCase("Junior")) {
-            int countJunior = equipoRepository.countByPaisIdPaisAndCategoria(idPais, Constantes.CATEGORIA_JUNIOR);
+        } else if (categoriaNombre.equalsIgnoreCase("Junior")) {
+            int countJunior = equipoRepository.countByPaisIdPaisAndCategoriaIdCategoria(idPais,
+                    equipo.getCategoria().getIdCategoria());
             if (countJunior >= 1) {
                 throw new IllegalArgumentException("Ya existe un equipo Junior para este país.");
             }
@@ -143,7 +146,7 @@ public class EquipoService implements IEquipoService {
         return new EquipoDTO(
                 equipo.getIdEquipo(),
                 equipo.getNombreEquipo(),
-                equipo.getCategoria(),
+                equipo.getCategoria().toString(),
                 equipo.getPais().getNombrePais());
     }
 }

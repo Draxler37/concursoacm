@@ -129,7 +129,7 @@ public class ParticipanteService implements IParticipanteService {
     @Override
     public ParticipanteDTO crearParticipante(Participante participante) {
         Pais pais = paisRepository.findById(participante.getPais().getIdPais())
-            .orElseThrow(() -> new RuntimeException("País no encontrado"));
+                .orElseThrow(() -> new RuntimeException("País no encontrado"));
         participante.setPais(pais);
 
         int count = participanteRepository.countByPaisIdPais(participante.getPais().getIdPais());
@@ -176,13 +176,15 @@ public class ParticipanteService implements IParticipanteService {
         }
 
         // Validar que los menores de edad solo puedan estar en equipos "Junior"
-        if (participante.getEdad() < 18 && !"Junior".equalsIgnoreCase(equipo.getCategoria())) {
+        if (participante.getEdad() < 18
+                && !Constantes.CATEGORIA_JUNIOR.equalsIgnoreCase(equipo.getCategoria().getNombreCategoria())) {
             throw new IllegalArgumentException(
                     "Los participantes menores de edad solo pueden estar en equipos Junior.");
         }
 
         // Validar que los mayores de edad solo puedan estar en equipos "Competencia"
-        if (participante.getEdad() >= 18 && !"Competencia".equalsIgnoreCase(equipo.getCategoria())) {
+        if (participante.getEdad() >= 18
+                && !Constantes.CATEGORIA_COMPETENCIA.equalsIgnoreCase(equipo.getCategoria().getNombreCategoria())) {
             throw new IllegalArgumentException(
                     "Los participantes mayores de edad solo pueden estar en equipos Competencia.");
         }

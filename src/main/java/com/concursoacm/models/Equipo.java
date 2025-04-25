@@ -20,9 +20,9 @@ public class Equipo {
     @NotBlank(message = "El nombre del equipo no puede estar vacío.")
     private String nombreEquipo;
 
-    @Column(nullable = false)
-    @NotBlank(message = "La categoría del equipo no puede estar vacía.")
-    private String categoria;
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private EquipoCategoria categoria;
 
     @ManyToOne
     @JoinColumn(name = "id_pais", nullable = false)
@@ -80,11 +80,11 @@ public class Equipo {
      *
      * @return Categoría del equipo.
      */
-    public String getCategoria() {
+    public EquipoCategoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(EquipoCategoria categoria) {
         this.categoria = categoria;
     }
 

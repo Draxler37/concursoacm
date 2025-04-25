@@ -14,11 +14,11 @@ import com.concursoacm.models.Equipo;
 public interface EquipoRepository extends JpaRepository<Equipo, Integer> {
 
     /**
-     * *Cuenta el número de equipos de una categoría específica asociados a un país.
+     * *Cuenta el número de equipos asociados a un país y una categoría específicos.
      *
      * @param idPais    ID del país.
-     * @param categoria Categoría del equipo.
-     * @return Número de equipos en la categoría.
+     * @param idCategoria ID de la categoría.
+     * @return Número de equipos asociados al país y la categoría.
      */
-    int countByPaisIdPaisAndCategoria(int idPais, String categoria);
+    int countByPaisIdPaisAndCategoriaIdCategoria(int idPais, int idCategoria);
 }
