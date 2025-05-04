@@ -10,8 +10,8 @@ public class PuntuacionPorPaisDTO {
     /**
      * *Constructor que inicializa el DTO con los datos del país y su puntuación.
      *
-     * @param nombrePais      Nombre del país.
-     * @param puntuacionTotal Puntuación total del país.
+     * @param nombrePais  Nombre del país.
+     * @param totalPuntos Puntuación total del país.
      */
     public PuntuacionPorPaisDTO(String nombrePais, int totalPuntos) {
         this.nombrePais = nombrePais;

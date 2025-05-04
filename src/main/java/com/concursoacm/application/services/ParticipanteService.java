@@ -177,14 +177,15 @@ public class ParticipanteService implements IParticipanteService {
 
         // Validar que los menores de edad solo puedan estar en equipos "Junior"
         if (participante.getEdad() < 18
-                && !Constantes.CATEGORIA_JUNIOR.equalsIgnoreCase(equipo.getCategoria().getNombreCategoria())) {
+                && !Constantes.CATEGORIA_JUNIOR.equalsIgnoreCase(equipo.getEquipoCategoria().getNombreCategoria())) {
             throw new IllegalArgumentException(
                     "Los participantes menores de edad solo pueden estar en equipos Junior.");
         }
 
         // Validar que los mayores de edad solo puedan estar en equipos "Competencia"
         if (participante.getEdad() >= 18
-                && !Constantes.CATEGORIA_COMPETENCIA.equalsIgnoreCase(equipo.getCategoria().getNombreCategoria())) {
+                && !Constantes.CATEGORIA_COMPETENCIA
+                        .equalsIgnoreCase(equipo.getEquipoCategoria().getNombreCategoria())) {
             throw new IllegalArgumentException(
                     "Los participantes mayores de edad solo pueden estar en equipos Competencia.");
         }

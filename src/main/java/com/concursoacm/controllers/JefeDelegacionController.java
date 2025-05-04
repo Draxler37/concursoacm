@@ -2,7 +2,7 @@ package com.concursoacm.controllers;
 
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
-import com.concursoacm.application.dtos.jefedelegacion.CambiarContraseñaDTO;
+import com.concursoacm.application.dtos.jefedelegacion.CambiarContrasenaDTO;
 import com.concursoacm.interfaces.services.IJefeDelegacionService;
 import com.concursoacm.models.JefeDelegacion;
 
@@ -80,15 +80,15 @@ public class JefeDelegacionController {
     @PutMapping("/{id}/cambiar-contrasena")
     public ResponseEntity<String> cambiarContraseña(
             @PathVariable int id,
-            @RequestBody CambiarContraseñaDTO request,
+            @RequestBody CambiarContrasenaDTO request,
             Authentication authentication) {
 
         String usuarioNormalizado = authentication.getName();
         boolean cambiada = jefeDelegacionService.cambiarContraseña(
                 id,
                 usuarioNormalizado,
-                request.getContraseñaActual(),
-                request.getNuevaContraseña());
+                request.getContrasenaActual(),
+                request.getNuevaContrasena());
 
         if (cambiada) {
             return ResponseEntity.ok("Contraseña actualizada correctamente.");

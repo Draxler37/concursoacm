@@ -23,9 +23,9 @@ public class Pregunta {
     @Positive(message = "La puntuación máxima debe ser un número positivo.")
     private int puntuacionMaxima;
 
-    @Column(nullable = false)
-    @NotBlank(message = "La clase de la pregunta no puede estar vacía.")
-    private String clase; // Clase A o B
+    @ManyToOne
+    @JoinColumn(name = "ID_Clase", nullable = false)
+    private PreguntaClase clase; // Clase A o B
 
     @Column(nullable = false)
     private boolean usada; // Indica si la pregunta ya fue utilizada
@@ -74,11 +74,11 @@ public class Pregunta {
      *
      * @return Clase de la pregunta (A o B).
      */
-    public String getClase() {
+    public PreguntaClase getClase() {
         return clase;
     }
 
-    public void setClase(String clase) {
+    public void setClase(PreguntaClase clase) {
         this.clase = clase;
     }
 

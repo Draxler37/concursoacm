@@ -2,8 +2,7 @@ package com.concursoacm.interfaces.services;
 
 import java.util.List;
 
-import com.concursoacm.application.dtos.resultados.ActualizarNotaDTO;
-import com.concursoacm.models.Respuesta;
+import com.concursoacm.application.dtos.respuestas.RespuestaDTO;
 
 /**
  * *Interfaz que define los métodos para la gestión de respuestas.
@@ -18,7 +17,7 @@ public interface IRespuestaService {
      * @param respuestaText  Texto de la respuesta del participante.
      * @return Objeto Respuesta creado.
      */
-    Respuesta crearRespuesta(int idParticipante, int idPregunta, String respuestaText);
+    RespuestaDTO crearRespuesta(int idParticipante, int idPregunta, String respuestaText);
 
     /**
      * *Obtiene las respuestas de un participante.
@@ -26,14 +25,14 @@ public interface IRespuestaService {
      * @param idParticipante ID del participante.
      * @return Lista de respuestas del participante.
      */
-    List<Respuesta> getRespuestasDelParticipante(int idParticipante);
+    List<RespuestaDTO> getRespuestasDelParticipante(int idParticipante);
 
     /**
-     * *Actualiza la nota de una respuesta.
-     *
-     * @param idRespuesta  ID de la respuesta.
-     * @param notaAsignada Nota asignada a la respuesta.
-     * @return Respuesta actualizada.
+     * *Actualiza la puntuación de una respuesta.
+     * 
+     * @param idRespuesta ID de la respuesta.
+     * @param puntuacion  Nueva puntuación (0-100).
+     * @return true si se actualizó correctamente.
      */
-    Respuesta actualizarNota(int idRespuesta, ActualizarNotaDTO notaDTO);
+    boolean calificarRespuesta(int idRespuesta, int puntuacion);
 }

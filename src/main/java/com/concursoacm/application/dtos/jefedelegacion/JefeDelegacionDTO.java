@@ -7,6 +7,9 @@ public class JefeDelegacionDTO {
     private int idJefe;
     private String nombreParticipante;
 
+    public JefeDelegacionDTO() {
+    }
+
     /**
      * *Constructor que inicializa el DTO con los datos del jefe de delegación.
      *

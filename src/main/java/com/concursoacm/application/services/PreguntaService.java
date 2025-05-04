@@ -3,6 +3,7 @@ package com.concursoacm.application.services;
 import com.concursoacm.interfaces.services.IPreguntaService;
 import com.concursoacm.models.Pregunta;
 import com.concursoacm.tools.repositories.PreguntaRepository;
+import com.concursoacm.tools.repositories.PreguntaClaseRepository;
 
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,11 @@ import java.util.List;
 public class PreguntaService implements IPreguntaService {
 
     private final PreguntaRepository preguntaRepository;
+    private final PreguntaClaseRepository preguntaClaseRepository;
 
-    public PreguntaService(PreguntaRepository preguntaRepository) {
+    public PreguntaService(PreguntaRepository preguntaRepository, PreguntaClaseRepository preguntaClaseRepository) {
         this.preguntaRepository = preguntaRepository;
+        this.preguntaClaseRepository = preguntaClaseRepository;
     }
 
     /**
@@ -50,6 +53,11 @@ public class PreguntaService implements IPreguntaService {
      */
     @Override
     public Pregunta crearPregunta(Pregunta pregunta) {
+        pregunta.setClase(preguntaClaseRepository.findById(pregunta.getClase().getIdClase())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La clase con ID " + pregunta.getClase().getIdClase() + " no existe.")));
+
+        pregunta.setUsada(false); // Inicializa la pregunta como no usada
         return preguntaRepository.save(pregunta);
     }
 
@@ -62,6 +70,9 @@ public class PreguntaService implements IPreguntaService {
      */
     @Override
     public Pregunta actualizarPregunta(int idPregunta, Pregunta pregunta) {
+        pregunta.setClase(preguntaClaseRepository.findById(pregunta.getClase().getIdClase())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La clase con ID " + pregunta.getClase().getIdClase() + " no existe.")));
         Pregunta existente = obtenerPreguntaPorId(idPregunta);
         existente.setTexto(pregunta.getTexto());
         existente.setPuntuacionMaxima(pregunta.getPuntuacionMaxima());

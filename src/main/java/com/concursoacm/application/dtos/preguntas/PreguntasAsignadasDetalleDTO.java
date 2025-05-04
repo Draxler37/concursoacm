@@ -10,6 +10,9 @@ public class PreguntasAsignadasDetalleDTO {
     private String nombreEquipo;
     private List<PreguntaDetalleDTO> preguntas;
 
+    public PreguntasAsignadasDetalleDTO() {
+    }
+
     /**
      * *Constructor que inicializa el DTO con los datos de las preguntas asignadas.
      *

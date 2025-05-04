@@ -22,6 +22,7 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    @SuppressWarnings("removal")
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -31,7 +32,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/equipos/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
                         .requestMatchers(HttpMethod.DELETE, "/equipos/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
                         .requestMatchers(HttpMethod.PUT, "/jefes-delegacion/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
-                        .requestMatchers(HttpMethod.GET, "/preguntas-asignadas/equipo/**").hasRole(Constantes.ROL_JEFE_DELEGACION)
+                        .requestMatchers(HttpMethod.GET, "/preguntas-asignadas/equipo/**")
+                        .hasRole(Constantes.ROL_JEFE_DELEGACION)
                         .anyRequest().permitAll())
                 .httpBasic();
 

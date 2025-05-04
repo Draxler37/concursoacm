@@ -16,9 +16,9 @@ public interface EquipoRepository extends JpaRepository<Equipo, Integer> {
     /**
      * *Cuenta el número de equipos asociados a un país y una categoría específicos.
      *
-     * @param idPais    ID del país.
+     * @param idPais      ID del país.
      * @param idCategoria ID de la categoría.
      * @return Número de equipos asociados al país y la categoría.
      */
-    int countByPaisIdPaisAndCategoriaIdCategoria(int idPais, int idCategoria);
+    int countByPaisIdPaisAndEquipoCategoriaIdEquipoCategoria(int idPais, int idCategoria);
 }

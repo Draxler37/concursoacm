@@ -7,6 +7,9 @@ public class PuntuacionPorCategoriaDTO {
     private PuntuacionPorEquipoDTO ganadorCompetencia;
     private PuntuacionPorEquipoDTO ganadorJunior;
 
+    public PuntuacionPorCategoriaDTO() {
+    }
+
     /**
      * *Constructor que inicializa el DTO con los ganadores de cada categoría.
      *

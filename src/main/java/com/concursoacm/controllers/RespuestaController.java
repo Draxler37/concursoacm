@@ -1,8 +1,8 @@
 package com.concursoacm.controllers;
 
-import com.concursoacm.application.dtos.resultados.ActualizarNotaDTO;
 import com.concursoacm.interfaces.services.IRespuestaService;
-import com.concursoacm.models.Respuesta;
+import com.concursoacm.application.dtos.respuestas.RespuestaDTO;
+import com.concursoacm.application.dtos.resultados.CalificacionRequestDTO;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +46,8 @@ public class RespuestaController {
         try {
             int idPregunta = (Integer) requestBody.get("idPregunta");
             String respuestaText = (String) requestBody.get("respuestaParticipante");
-            Respuesta respuesta = respuestaService.crearRespuesta(idParticipante, idPregunta, respuestaText);
-            return ResponseEntity.ok(respuesta);
+            RespuestaDTO respuestaDTO = respuestaService.crearRespuesta(idParticipante, idPregunta, respuestaText);
+            return ResponseEntity.ok(respuestaDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (ClassCastException e) {
@@ -63,11 +63,11 @@ public class RespuestaController {
      */
     @GetMapping("/participante/{idParticipante}")
     public ResponseEntity<?> getRespuestasDelParticipante(@PathVariable int idParticipante) {
-        List<Respuesta> respuestas = respuestaService.getRespuestasDelParticipante(idParticipante);
-        if (respuestas.isEmpty()) {
+        List<RespuestaDTO> respuestasDTO = respuestaService.getRespuestasDelParticipante(idParticipante);
+        if (respuestasDTO.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(respuestas);
+        return ResponseEntity.ok(respuestasDTO);
     }
 
     /**
@@ -77,13 +77,17 @@ public class RespuestaController {
      * @param request     Objeto DTO que contiene la nueva nota.
      * @return Respuesta actualizada o mensaje de error.
      */
-    @PutMapping("/{idRespuesta}/actualizar-nota")
-    public ResponseEntity<?> actualizarNota(@PathVariable int idRespuesta, @RequestBody ActualizarNotaDTO request) {
-        try {
-            Respuesta respuestaActualizada = respuestaService.actualizarNota(idRespuesta, request);
-            return ResponseEntity.ok(respuestaActualizada);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @PutMapping("/{idRespuesta}/calificar")
+    public ResponseEntity<?> calificarRespuesta(
+            @PathVariable int idRespuesta,
+            @RequestBody CalificacionRequestDTO calificacionRequestDTO) {
+
+        boolean actualizado = respuestaService.calificarRespuesta(idRespuesta, calificacionRequestDTO.getPuntuacion());
+
+        if(actualizado){
+            return ResponseEntity.ok("Puntuación actualizada correctamente.");
+        }else{
+            return ResponseEntity.badRequest().body("No se pudo actualizar la puntuación.");
         }
     }
 }

@@ -21,5 +21,5 @@ public interface PreguntaRepository extends JpaRepository<Pregunta, Integer> {
      * @param clase Clase de la pregunta.
      * @return Lista de preguntas no usadas.
      */
-    List<Pregunta> findByClaseAndUsadaFalse(String clase);
+    List<Pregunta> findByClaseNombreClaseAndUsadaFalse(String nombreClase);
 }

@@ -3,16 +3,17 @@ package com.concursoacm.application.services;
 import com.concursoacm.interfaces.services.IRespuestaService;
 import com.concursoacm.models.Participante;
 import com.concursoacm.models.Pregunta;
-import com.concursoacm.models.PreguntasAsignadas;
 import com.concursoacm.models.Respuesta;
+import com.concursoacm.application.dtos.respuestas.RespuestaDTO;
 import com.concursoacm.tools.repositories.ParticipanteRepository;
-import com.concursoacm.tools.repositories.PreguntasAsignadasRepository;
+import com.concursoacm.tools.repositories.EquipoPreguntaRepository;
 import com.concursoacm.tools.repositories.RespuestaRepository;
+import com.concursoacm.tools.repositories.PreguntaRepository;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import com.concursoacm.application.dtos.resultados.ActualizarNotaDTO;
+import java.util.stream.Collectors;
 
 /**
  * *Servicio que implementa la lógica de negocio para la gestión de respuestas.
@@ -22,50 +23,59 @@ public class RespuestaService implements IRespuestaService {
 
     private final RespuestaRepository respuestaRepository;
     private final ParticipanteRepository participanteRepository;
-    private final PreguntasAsignadasRepository preguntasAsignadasRepository;
+    private final EquipoPreguntaRepository equipoPreguntaRepository;
+    private final PreguntaRepository preguntaRepository;
 
     /**
      * *Constructor que inyecta las dependencias necesarias.
      *
-     * @param respuestaRepository          Repositorio para la gestión de
-     *                                     respuestas.
-     * @param participanteRepository       Repositorio para la gestión de
-     *                                     participantes.
-     * @param preguntasAsignadasRepository Repositorio para la gestión de preguntas
-     *                                     asignadas.
+     * @param respuestaRepository      Repositorio para la gestión de
+     *                                 respuestas.
+     * @param participanteRepository   Repositorio para la gestión de
+     *                                 participantes.
+     * @param equipoPreguntaRepository Repositorio para la gestión de preguntas
+     *                                 asignadas.
+     * @param preguntaRepository       Repositorio para la gestión de preguntas.
      */
     public RespuestaService(RespuestaRepository respuestaRepository,
             ParticipanteRepository participanteRepository,
-            PreguntasAsignadasRepository preguntasAsignadasRepository) {
+            EquipoPreguntaRepository equipoPreguntaRepository,
+            PreguntaRepository preguntaRepository) {
         this.respuestaRepository = respuestaRepository;
         this.participanteRepository = participanteRepository;
-        this.preguntasAsignadasRepository = preguntasAsignadasRepository;
+        this.equipoPreguntaRepository = equipoPreguntaRepository;
+        this.preguntaRepository = preguntaRepository;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Respuesta crearRespuesta(int idParticipante, int idPregunta, String respuestaText) {
+    public RespuestaDTO crearRespuesta(int idParticipante, int idPregunta, String respuestaText) {
         Participante participante = validarParticipante(idParticipante);
         Pregunta pregunta = validarPreguntaAsignada(participante, idPregunta);
 
         Respuesta respuesta = new Respuesta();
-        respuesta.setParticipante(participante); // Relación directa
-        respuesta.setEquipo(participante.getEquipo()); // Relación directa
-        respuesta.setPregunta(pregunta); // Relación directa
+        respuesta.setParticipante(participante);
+        respuesta.setPregunta(pregunta);
         respuesta.setRespuestaParticipante(respuestaText);
         respuesta.setPuntuacionObtenida(0); // Inicialmente 0
 
-        return respuestaRepository.save(respuesta);
+        return new RespuestaDTO(respuestaRepository.save(respuesta));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Respuesta> getRespuestasDelParticipante(int idParticipante) {
-        return respuestaRepository.findByIdParticipante(idParticipante);
+    public List<RespuestaDTO> getRespuestasDelParticipante(int idParticipante) {
+        Participante participante = validarParticipante(idParticipante);
+        List<Respuesta> respuestas = respuestaRepository
+                .findByParticipanteIdParticipante(participante.getIdParticipante());
+
+        return respuestas.stream()
+                .map(RespuestaDTO::new)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -94,42 +104,41 @@ public class RespuestaService implements IRespuestaService {
      */
     private Pregunta validarPreguntaAsignada(Participante participante, int idPregunta) {
         int idEquipo = participante.getEquipo().getIdEquipo();
-        PreguntasAsignadas asignacion = preguntasAsignadasRepository.findByEquipoIdEquipo(idEquipo)
-                .orElseThrow(() -> new IllegalArgumentException("No se han asignado preguntas al equipo."));
 
-        List<Pregunta> preguntasAsignadas = List.of(
-                asignacion.getPregunta1(),
-                asignacion.getPregunta2(),
-                asignacion.getPregunta3(),
-                asignacion.getPregunta4(),
-                asignacion.getPregunta5());
+        // Buscar si la pregunta está asignada al equipo
+        boolean preguntaAsignada = equipoPreguntaRepository.findByEquipoIdEquipo(idEquipo).stream()
+                .anyMatch(asignacion -> asignacion.getPregunta().getIdPregunta() == idPregunta);
 
-        if (respuestaRepository.existsByIdParticipanteAndIdPregunta(participante.getIdParticipante(), idPregunta)) {
+        if (!preguntaAsignada) {
+            throw new IllegalArgumentException("La pregunta no está asignada a este equipo.");
+        }
+
+        // Validar si el participante ya respondió la pregunta
+        if (respuestaRepository.existsByParticipanteIdParticipanteAndPreguntaIdPregunta(
+                participante.getIdParticipante(), idPregunta)) {
             throw new IllegalArgumentException("El participante ya ha respondido esta pregunta.");
         }
 
-        return preguntasAsignadas.stream()
-                .filter(pregunta -> pregunta.getIdPregunta() == idPregunta)
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("La pregunta no está asignada a este equipo."));
+        return preguntaRepository.findById(idPregunta)
+                .orElseThrow(() -> new IllegalArgumentException("Pregunta no encontrada."));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Respuesta actualizarNota(int idRespuesta, ActualizarNotaDTO notaDTO) {
-        // Validar que la nota esté en el rango permitido
-        if (notaDTO.getNota() < 0 || notaDTO.getNota() > 100) {
+    public boolean calificarRespuesta(int idRespuesta, int puntuacion) {
+        Respuesta respuesta = respuestaRepository.findById(idRespuesta)
+                .orElseThrow(() -> new IllegalArgumentException("No se encuentra la respuesta con ID " + idRespuesta));
+        
+                // Validar que la nota esté en el rango permitido
+        if (puntuacion < 0 || puntuacion > 100) {
             throw new IllegalArgumentException("La nota debe estar entre 0 y 100.");
         }
 
-        // Buscar la respuesta por ID
-        Respuesta respuesta = respuestaRepository.findById(idRespuesta)
-                .orElseThrow(() -> new IllegalArgumentException("No se encuentra la respuesta con ID " + idRespuesta));
+        respuesta.setPuntuacionObtenida(puntuacion);
+        respuestaRepository.save(respuesta);
 
-        // Actualizar la nota
-        respuesta.setPuntuacionObtenida(notaDTO.getNota());
-        return respuestaRepository.save(respuesta);
+        return true;
     }
 }

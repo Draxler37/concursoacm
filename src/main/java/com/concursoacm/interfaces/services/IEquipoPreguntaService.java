@@ -2,10 +2,10 @@ package com.concursoacm.interfaces.services;
 
 import com.concursoacm.application.dtos.preguntas.PreguntasAsignadasDetalleDTO;
 
-/**
- * *Interfaz que define los métodos para la gestión de preguntas asignadas.
- */
-public interface IPreguntasAsignadasService {
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+
+public interface IEquipoPreguntaService {
 
     /**
      * *Asigna preguntas a todos los equipos sin asignación previa.
@@ -15,9 +15,9 @@ public interface IPreguntasAsignadasService {
     /**
      * *Obtiene los detalles de las preguntas asignadas a un equipo.
      *
-     * @param idEquipo           ID del equipo.
-     * @param usuarioNormalizado Usuario autenticado.
+     * @param idEquipo ID del equipo.
      * @return DTO con los detalles de las preguntas asignadas.
      */
-    PreguntasAsignadasDetalleDTO getPreguntasAsignadasAlEquipo(int idEquipo, String usuarioNormalizado);
+    PreguntasAsignadasDetalleDTO getPreguntasAsignadasAlEquipo(int idEquipo, Authentication authentication)
+            throws IllegalArgumentException, AccessDeniedException;
 }

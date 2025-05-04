@@ -7,18 +7,24 @@ public class EquipoDTO {
 
     private int idEquipo;
     private String nombreEquipo;
-    private String categoria;
+    private String nombreCategoria;
     private String nombrePais;
+
+    /*
+     * *Constructor vacío (necesario para JPA).
+     */
+    public EquipoDTO() {
+    }
 
     /**
      * *Constructor que inicializa el DTO a partir de un objeto Equipo.
      *
      * @param equipo Objeto Equipo.
      */
-    public EquipoDTO(int idEquipo, String nombreEquipo, String categoria, String nombrePais) {
+    public EquipoDTO(int idEquipo, String nombreEquipo, String nombreCategoria, String nombrePais) {
         this.idEquipo = idEquipo;
         this.nombreEquipo = nombreEquipo;
-        this.categoria = categoria;
+        this.nombreCategoria = nombreCategoria;
         this.nombrePais = nombrePais;
     }
 
@@ -39,12 +45,12 @@ public class EquipoDTO {
         this.nombreEquipo = nombreEquipo;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getNombreCategoria() {
+        return nombreCategoria;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 
     public String getNombrePais() {
@@ -52,5 +58,6 @@ public class EquipoDTO {
     }
 
     public void setNombrePais(String nombrePais) {
+        this.nombrePais = nombrePais;
     }
 }

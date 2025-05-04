@@ -24,10 +24,6 @@ public class Respuesta {
     private Participante participante;
 
     @ManyToOne
-    @JoinColumn(name = "id_equipo", nullable = false)
-    private Equipo equipo;
-
-    @ManyToOne
     @JoinColumn(name = "id_pregunta", nullable = false)
     private Pregunta pregunta;
 
@@ -72,19 +68,6 @@ public class Respuesta {
 
     public void setParticipante(Participante participante) {
         this.participante = participante;
-    }
-
-    /**
-     * *Obtiene el equipo asociado a la respuesta.
-     *
-     * @return ID del equipo.
-     */
-    public Equipo getEquipo() {
-        return equipo;
-    }
-
-    public void setEquipo(Equipo equipo) {
-        this.equipo = equipo;
     }
 
     /**

@@ -21,8 +21,8 @@ public class Equipo {
     private String nombreEquipo;
 
     @ManyToOne
-    @JoinColumn(name = "id_categoria", nullable = false)
-    private EquipoCategoria categoria;
+    @JoinColumn(name = "id_equipo_categoria", nullable = false)
+    private EquipoCategoria equipoCategoria;
 
     @ManyToOne
     @JoinColumn(name = "id_pais", nullable = false)
@@ -80,12 +80,12 @@ public class Equipo {
      *
      * @return Categoría del equipo.
      */
-    public EquipoCategoria getCategoria() {
-        return categoria;
+    public EquipoCategoria getEquipoCategoria() {
+        return equipoCategoria;
     }
 
-    public void setCategoria(EquipoCategoria categoria) {
-        this.categoria = categoria;
+    public void setEquipoCategoria(EquipoCategoria equipoCategoria) {
+        this.equipoCategoria = equipoCategoria;
     }
 
     /**

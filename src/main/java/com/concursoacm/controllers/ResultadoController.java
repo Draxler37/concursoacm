@@ -5,8 +5,8 @@ import com.concursoacm.application.dtos.resultados.PuntuacionPorCategoriaDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorEquipoDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorPaisDTO;
 import com.concursoacm.application.dtos.resultados.PuntuacionPorRegionDTO;
-import com.concursoacm.application.services.ResultadoCalculoService;
-import com.concursoacm.application.services.ResultadoConsultaService;
+import com.concursoacm.application.dtos.resultados.ResultadoDTO;
+import com.concursoacm.interfaces.services.IResultadoConsultaService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,30 +20,28 @@ import java.util.List;
 @RequestMapping("/resultados")
 public class ResultadoController {
 
-    private final ResultadoConsultaService resultadoConsultaService;
-    private final ResultadoCalculoService resultadoCalculoService;
+    private final IResultadoConsultaService resultadoConsultaService;
 
     /**
      * *Constructor que inyecta los servicios necesarios.
      *
      * @param resultadoConsultaService Servicio para la consulta de resultados.
-     * @param resultadoCalculoService  Servicio para el cálculo de resultados.
+     * @param IResultadoCalculoService Servicio para el cálculo de resultados.
      */
-    public ResultadoController(ResultadoConsultaService resultadoConsultaService,
-            ResultadoCalculoService resultadoCalculoService) {
+    public ResultadoController(IResultadoConsultaService resultadoConsultaService) {
         this.resultadoConsultaService = resultadoConsultaService;
-        this.resultadoCalculoService = resultadoCalculoService;
     }
 
     /**
-     * *Calcula los resultados del concurso.
+     * *Obtiene el resultado de un participante específico.
      *
-     * @return Mensaje indicando el estado del cálculo.
+     * @param idParticipante ID del participante.
+     * @return Resultado del participante.
      */
-    @PostMapping("/calcular")
-    public ResponseEntity<String> calcularResultados() {
-        String mensaje = resultadoCalculoService.calcularResultados();
-        return ResponseEntity.ok(mensaje);
+    @GetMapping("/{idParticipante}")
+    public ResponseEntity<ResultadoDTO> obtenerResultadoPorParticipante(@PathVariable int idParticipante) {
+        ResultadoDTO resultado = resultadoConsultaService.obtenerResultadoPorParticipante(idParticipante);
+        return ResponseEntity.ok(resultado);
     }
 
     /**

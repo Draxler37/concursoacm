@@ -8,6 +8,9 @@ public class PreguntaDetalleDTO {
     private int idPregunta;
     private String texto;
 
+    public PreguntaDetalleDTO() {
+    }
+
     /**
      * *Constructor que inicializa el DTO con los datos de la pregunta.
      *

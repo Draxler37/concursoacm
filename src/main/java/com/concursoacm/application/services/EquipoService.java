@@ -3,7 +3,9 @@ package com.concursoacm.application.services;
 import com.concursoacm.application.dtos.equipos.EquipoDTO;
 import com.concursoacm.interfaces.services.IEquipoService;
 import com.concursoacm.models.Equipo;
+import com.concursoacm.models.EquipoCategoria;
 import com.concursoacm.models.Pais;
+import com.concursoacm.tools.repositories.EquipoCategoriaRepository;
 import com.concursoacm.tools.repositories.EquipoRepository;
 import com.concursoacm.tools.repositories.JefeDelegacionRepository;
 import com.concursoacm.tools.repositories.PaisRepository;
@@ -23,6 +25,7 @@ public class EquipoService implements IEquipoService {
     private final EquipoRepository equipoRepository;
     private final JefeDelegacionRepository jefeDelegacionRepository;
     private final PaisRepository paisRepository;
+    private final EquipoCategoriaRepository equipoCategoriaRepository;
 
     /**
      * *Constructor que inyecta las dependencias necesarias.
@@ -33,10 +36,11 @@ public class EquipoService implements IEquipoService {
      * @param paisRepository           Repositorio para la gestión de países.
      */
     public EquipoService(EquipoRepository equipoRepository, JefeDelegacionRepository jefeDelegacionRepository,
-            PaisRepository paisRepository) {
+            PaisRepository paisRepository, EquipoCategoriaRepository equipoCategoriaRepository) {
         this.equipoRepository = equipoRepository;
         this.jefeDelegacionRepository = jefeDelegacionRepository;
         this.paisRepository = paisRepository;
+        this.equipoCategoriaRepository = equipoCategoriaRepository;
     }
 
     /**
@@ -108,7 +112,12 @@ public class EquipoService implements IEquipoService {
             if (!paisCompleto.getNombrePais().equalsIgnoreCase(paisJefe)) {
                 throw new SecurityException("No puedes crear equipos para un país diferente al tuyo.");
             }
+            EquipoCategoria equipoCategoria = equipoCategoriaRepository
+                    .findById(equipo.getEquipoCategoria().getIdEquipoCategoria())
+                    .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada."));
+
             equipo.setPais(paisCompleto);
+            equipo.setEquipoCategoria(equipoCategoria);
         }
     }
 
@@ -119,17 +128,19 @@ public class EquipoService implements IEquipoService {
      */
     private void validarRestriccionesPorCategoria(Equipo equipo) {
         int idPais = equipo.getPais().getIdPais();
-        String categoriaNombre = equipo.getCategoria().getNombreCategoria();
+        String categoriaNombre = equipoCategoriaRepository.findById(equipo.getEquipoCategoria().getIdEquipoCategoria())
+                .map(categoria -> categoria.getNombreCategoria())
+                .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada."));
 
         if (categoriaNombre.equalsIgnoreCase(Constantes.CATEGORIA_COMPETENCIA)) {
-            int countCompetencia = equipoRepository.countByPaisIdPaisAndCategoriaIdCategoria(idPais,
-                    equipo.getCategoria().getIdCategoria());
+            int countCompetencia = equipoRepository.countByPaisIdPaisAndEquipoCategoriaIdEquipoCategoria(idPais,
+                    equipo.getEquipoCategoria().getIdEquipoCategoria());
             if (countCompetencia >= 2) {
                 throw new IllegalArgumentException("Ya existen 2 equipos de competencia para este país.");
             }
-        } else if (categoriaNombre.equalsIgnoreCase("Junior")) {
-            int countJunior = equipoRepository.countByPaisIdPaisAndCategoriaIdCategoria(idPais,
-                    equipo.getCategoria().getIdCategoria());
+        } else if (categoriaNombre.equalsIgnoreCase(Constantes.CATEGORIA_JUNIOR)) {
+            int countJunior = equipoRepository.countByPaisIdPaisAndEquipoCategoriaIdEquipoCategoria(idPais,
+                    equipo.getEquipoCategoria().getIdEquipoCategoria());
             if (countJunior >= 1) {
                 throw new IllegalArgumentException("Ya existe un equipo Junior para este país.");
             }
@@ -146,7 +157,7 @@ public class EquipoService implements IEquipoService {
         return new EquipoDTO(
                 equipo.getIdEquipo(),
                 equipo.getNombreEquipo(),
-                equipo.getCategoria().toString(),
+                equipo.getEquipoCategoria().getNombreCategoria(),
                 equipo.getPais().getNombrePais());
     }
 }

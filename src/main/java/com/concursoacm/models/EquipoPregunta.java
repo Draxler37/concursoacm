@@ -2,6 +2,11 @@ package com.concursoacm.models;
 
 import jakarta.persistence.*;
 
+/**
+ * *Clase que representa la relación entre un equipo y una pregunta en el
+ * *sistema.
+ * *Esta entidad se utiliza para asignar preguntas a equipos específicos.
+ */
 @Entity
 @Table(name = "equipos_preguntas")
 public class EquipoPregunta {
@@ -19,6 +24,11 @@ public class EquipoPregunta {
     private Pregunta pregunta;
 
     // Getters y setters
+    /**
+     * *Obtiene el ID de la relación entre el equipo y la pregunta.
+     * 
+     * @return ID de la relación.
+     */
     public int getIdEquipoPregunta() {
         return idEquipoPregunta;
     }
@@ -27,6 +37,11 @@ public class EquipoPregunta {
         this.idEquipoPregunta = idEquipoPregunta;
     }
 
+    /**
+     * *Obtiene el equipo asociado a la pregunta.
+     * 
+     * @return Pregunta asociada.
+     */
     public Equipo getEquipo() {
         return equipo;
     }
@@ -35,6 +50,11 @@ public class EquipoPregunta {
         this.equipo = equipo;
     }
 
+    /**
+     * *Obtiene la pregunta asociada al equipo.
+     * 
+     * @return Pregunta asociada.
+     */
     public Pregunta getPregunta() {
         return pregunta;
     }
