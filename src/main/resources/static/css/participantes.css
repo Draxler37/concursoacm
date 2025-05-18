@@ -1,0 +1,62 @@
+header{
+    background-color: #150B63;
+}
+
+/*header section específico de participantes*/
+.hero_area {
+    position: relative;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.hero_area .hero_bg_box {
+    background-color: #150B63;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* start form section específicos de participantes */
+.perfil-img {
+    object-fit: cover;
+    border: 3px solid #00bbf0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.bandera-img {
+    border-radius: 50%;
+    border: 1px solid #eee;
+}
+
+.participante-card {
+    box-shadow: 0 4px 16px rgba(21, 11, 99, 0.08);
+    border: none;
+    border-radius: 16px;
+    transition: transform 0.2s;
+    background: #fff;
+}
+
+.participante-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 187, 240, 0.10); 
+}
+/* end form section */

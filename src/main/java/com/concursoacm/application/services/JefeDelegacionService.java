@@ -73,8 +73,19 @@ public class JefeDelegacionService implements IJefeDelegacionService {
      */
     @Override
     public JefeDelegacion crearJefeDelegacion(CrearJefeDelegacionDTO request) {
+        // Validar que el país exista
         Pais pais = paisRepository.findById(request.getPais().getIdPais())
                 .orElseThrow(() -> new RuntimeException("País no encontrado"));
+
+        // Validar que no exista ya un jefe de delegación para el país
+        if (jefeDelegacionRepository.countByPaisId(pais.getIdPais()) >= 1) {
+            throw new IllegalArgumentException("Ya existe un jefe de delegación para este país.");
+        }
+
+        // Validar edad mínima
+        if (request.getEdad() < 18) {
+            throw new IllegalArgumentException("El participante debe ser mayor de edad para ser jefe de delegación.");
+        }
 
         // Crear el participante
         Participante nuevoParticipante = new Participante();
@@ -82,12 +93,12 @@ public class JefeDelegacionService implements IJefeDelegacionService {
         nuevoParticipante.setNumCarnet(request.getNumCarnet());
         nuevoParticipante.setEdad(request.getEdad());
         nuevoParticipante.setSexo(request.getSexo());
-        nuevoParticipante.setPais(pais); // Convertir DTO a entidad
+        nuevoParticipante.setPais(pais);
         participanteRepository.save(nuevoParticipante);
 
         // Crear el jefe de delegación
         JefeDelegacion nuevoJefe = new JefeDelegacion();
-        nuevoJefe.setUsuarioNormalizado(request.getUsuario());
+        nuevoJefe.setUsuarioNormalizado(normalizarTexto(request.getUsuario()));
         nuevoJefe.setContrasena(passwordEncoder.encode(request.getContraseña()));
         nuevoJefe.setParticipante(nuevoParticipante);
         return jefeDelegacionRepository.save(nuevoJefe);
@@ -117,41 +128,6 @@ public class JefeDelegacionService implements IJefeDelegacionService {
     public void eliminarJefeDelegacion(int idJefe) {
         JefeDelegacion jefe = buscarJefePorId(idJefe); // Reutilizamos el método privado
         jefeDelegacionRepository.delete(jefe);
-    }
-
-    /**
-     * *Valida si un participante puede ser jefe de delegación.
-     *
-     * @param idParticipante ID del participante.
-     * @param usuario        Usuario.
-     * @param contraseña     Contraseña actual ingresada.
-     * @return Objeto Participante validado.
-     */
-    private Participante validarParticipanteParaJefe(int idParticipante, String usuario, String contraseña) {
-        Participante participante = participanteRepository.findById(idParticipante)
-                .orElseThrow(
-                        () -> new IllegalArgumentException("El participante con ID " + idParticipante + " no existe."));
-
-        if (jefeDelegacionRepository.findByParticipanteIdParticipante(idParticipante).isPresent()) {
-            throw new IllegalArgumentException("El participante ya es un jefe de delegación.");
-        }
-
-        if (participante.getEdad() < 18) {
-            throw new IllegalArgumentException("El participante debe ser mayor de edad para ser jefe de delegación.");
-        }
-
-        if (usuario == null || usuario.isBlank() || contraseña == null
-                || contraseña.isBlank()) {
-            throw new IllegalArgumentException("El 'Usuario' y la 'Contraseña' son obligatorias.");
-        }
-
-        if (jefeDelegacionRepository.countByPaisId(participante.getPais().getIdPais()) >= 1) {
-            throw new IllegalArgumentException("Ya existe un jefe de delegación para este país.");
-        }
-
-        validarLongitudContraseña(contraseña);
-
-        return participante;
     }
 
     /**
