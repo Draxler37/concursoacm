@@ -276,6 +276,18 @@ public class ParticipanteService implements IParticipanteService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ParticipanteDTO> buscarParticipantes(String nombre, Integer idPais, Integer idEquipo,
+            Integer idRegion) {
+        return participanteRepository.buscarFiltrado(nombre, idPais, idEquipo, idRegion)
+                .stream()
+                .map(this::convertirAParticipanteDTO)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * *Busca un participante por su ID.
      *
      * @param idParticipante int idParticipante.

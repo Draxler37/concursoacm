@@ -1,11 +1,15 @@
 package com.concursoacm.controllers;
 
+import com.concursoacm.application.dtos.equipos.EquipoCategoriaDTO;
 import com.concursoacm.application.dtos.equipos.EquipoDTO;
 import com.concursoacm.interfaces.services.IEquipoService;
 import com.concursoacm.models.Equipo;
+import com.concursoacm.models.EquipoCategoria;
+import com.concursoacm.tools.repositories.EquipoCategoriaRepository;
 
 import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +24,9 @@ import org.springframework.http.ResponseEntity;
 public class EquipoController {
 
     private final IEquipoService equipoService;
+
+    @Autowired
+    private EquipoCategoriaRepository equipoCategoriaRepository;
 
     /**
      * *Constructor que inyecta el servicio de equipos.
@@ -96,5 +103,44 @@ public class EquipoController {
         String usuarioNormalizado = authentication.getName();
         equipoService.eliminarEquipo(id, usuarioNormalizado);
         return ResponseEntity.ok("Equipo eliminado correctamente.");
+    }
+
+    /**
+     * *Obtiene una lista de equipos filtrados por país.
+     *
+     * @param paisId ID del país por el que filtrar los equipos.
+     * @return Lista de objetos EquipoDTO que pertenecen al país especificado.
+     */
+    @GetMapping(params = "paisId")
+    public ResponseEntity<List<EquipoDTO>> getEquiposPorPais(@RequestParam("paisId") int paisId) {
+        List<EquipoDTO> equipos = equipoService.getEquiposPorPais(paisId);
+        return ResponseEntity.ok(equipos);
+    }
+
+    /**
+     * Endpoint para obtener la lista de categorías de equipos.
+     * 
+     * @return Lista de EquipoCategoriaDTO
+     */
+    @GetMapping("/categorias")
+    public ResponseEntity<List<EquipoCategoriaDTO>> getCategoriasEquipos() {
+        List<EquipoCategoria> categorias = equipoCategoriaRepository.findAll();
+        List<EquipoCategoriaDTO> dtos = categorias.stream()
+                .map(cat -> new EquipoCategoriaDTO(cat.getIdEquipoCategoria(), cat.getNombreCategoria()))
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
+    /**
+     * *Búsqueda flexible de equipos por nombre, país y/o categoría.
+     * Todos los parámetros son opcionales.
+     */
+    @GetMapping("/buscar")
+    public ResponseEntity<List<EquipoDTO>> buscarEquipos(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) Integer idPais,
+            @RequestParam(required = false) Integer idCategoria) {
+        List<EquipoDTO> resultado = equipoService.buscarEquipos(nombre, idPais, idCategoria);
+        return ResponseEntity.ok(resultado);
     }
 }

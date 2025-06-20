@@ -2,6 +2,7 @@ package com.concursoacm.application.services;
 
 import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
+import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionFiltroDTO;
 import com.concursoacm.interfaces.services.IJefeDelegacionService;
 import com.concursoacm.models.JefeDelegacion;
 import com.concursoacm.models.Pais;
@@ -128,6 +129,53 @@ public class JefeDelegacionService implements IJefeDelegacionService {
     public void eliminarJefeDelegacion(int idJefe) {
         JefeDelegacion jefe = buscarJefePorId(idJefe); // Reutilizamos el método privado
         jefeDelegacionRepository.delete(jefe);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<JefeDelegacionFiltroDTO> obtenerJefesConPaisYRegion() {
+        return jefeDelegacionRepository.findAll().stream()
+                .map(jefe -> {
+                    Participante p = jefe.getParticipante();
+                    Pais pais = p.getPais();
+                    return new JefeDelegacionFiltroDTO(
+                            jefe.getIdJefe(),
+                            p.getNombre(),
+                            pais != null ? pais.getIdPais() : null,
+                            pais != null ? pais.getNombrePais() : null,
+                            pais != null && pais.getRegion() != null ? pais.getRegion().getIdRegion() : null,
+                            pais != null && pais.getRegion() != null ? pais.getRegion().getNombreRegion() : null,
+                            p.getEdad(),
+                            p.getSexo());
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<JefeDelegacionFiltroDTO> buscarJefesDelegacion(String nombre, Integer idPais, Integer idRegion) {
+        // Trae todos los jefes con país y región
+        List<JefeDelegacionFiltroDTO> base = obtenerJefesConPaisYRegion();
+        return base.stream()
+                .filter(j -> {
+                    boolean match = true;
+                    if (nombre != null && !nombre.isBlank()) {
+                        match &= j.getNombreParticipante() != null
+                                && j.getNombreParticipante().toLowerCase().contains(nombre.toLowerCase());
+                    }
+                    if (idPais != null) {
+                        match &= j.getIdPais() != null && j.getIdPais().equals(idPais);
+                    }
+                    if (idRegion != null) {
+                        match &= j.getIdRegion() != null && j.getIdRegion().equals(idRegion);
+                    }
+                    return match;
+                })
+                .collect(Collectors.toList());
     }
 
     /**

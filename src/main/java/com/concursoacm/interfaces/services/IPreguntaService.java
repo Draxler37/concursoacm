@@ -3,6 +3,7 @@ package com.concursoacm.interfaces.services;
 import java.util.List;
 
 import com.concursoacm.models.Pregunta;
+import com.concursoacm.models.PreguntaClase;
 
 /**
  * *Interfaz para la gestión de preguntas.
@@ -48,4 +49,11 @@ public interface IPreguntaService {
      * @return true si la pregunta fue eliminada, false en caso contrario.
      */
     boolean eliminarPregunta(int idPregunta);
+
+    /**
+     * Obtiene todas las clases de preguntas.
+     * 
+     * @return Lista de clases de preguntas.
+     */
+    List<PreguntaClase> obtenerClasesDePreguntas();
 }

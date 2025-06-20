@@ -1,16 +1,9 @@
-/*header section específico de participantes*/
 .hero_area {
     position: relative;
     min-height: 100vh;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
     flex-direction: column;
 }
-
 .hero_area .hero_bg_box {
     background-color: #150B63;
     position: fixed;
@@ -18,19 +11,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
-    -webkit-box-align: end;
-    -ms-flex-align: end;
     align-items: flex-end;
     overflow: hidden;
     z-index: -1;
 }
-
 /* start form section específicos de participantes */
 .perfil-img {
     object-fit: cover;
@@ -41,29 +27,25 @@
     border-radius: 50%;
     border: 1px solid #eee;
 }
-
-.participante-card {
+.equipo-card {
     box-shadow: 0 4px 16px rgba(21, 11, 99, 0.08);
     border: none;
     border-radius: 16px;
     transition: transform 0.2s;
     background: #fff;
+    min-height: 140px;
 }
-
-.participante-card:hover {
+.equipo-card:hover {
     box-shadow: 0px 0px 16px #00bbf0;
 }
-
-#toggleFiltrosBtn {
+#toggleFiltrosEquiposBtn {
     cursor: pointer;
     transition: color 0.2s, transform 0.3s;
     margin-right: 0.5rem;
     display: flex;
     align-items: center;
 }
-
-/* Filtros avanzados animación */
-#filtrosAvanzados {
+#filtrosAvanzadosEquipos {
     background-color: white;
     max-height: 0;
     opacity: 0;
@@ -78,26 +60,16 @@
     box-shadow: 0 2px 8px rgba(21, 11, 99, 0.06);
     transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
 }
-#filtrosAvanzados.show {
+#filtrosAvanzadosEquipos.show {
     max-height: 300px;
     opacity: 1;
 }
-#filtrosAvanzados.visible {
-    opacity: 1;
-} 
-
-.custom-select-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-/* Selects custom */
 .filtro-select {
     border: none !important;
     border-radius: 18px !important;
     background-color: white !important;
     min-width: 120px;
-    max-width: 260px; /* Ajusta este valor según tu preferencia visual */
+    max-width: 260px;
     width: auto;
     padding-right: 2.5rem !important;
     box-shadow: none !important;
@@ -107,7 +79,7 @@
     white-space: nowrap;
     overflow: hidden;
 }
-.filtro-select:hover{
+.filtro-select:hover {
     cursor: pointer;
 }
 .filtro-select:focus {
@@ -117,23 +89,9 @@
 .filtro-select option {
     color: #333;
 }
-
-.col-md-3{
+.col-md-3 {
     margin-top: 5px;
 }
-
-/* Flecha estática */
-.custom-select-wrapper::after {
-    content: '\f282'; /* Bootstrap icon bi-caret-down-fill */
-    font-family: 'bootstrap-icons';
-    position: absolute;
-    right: 1rem;
-    pointer-events: none;
-    color: #00bbf0;
-    font-size: 1.1rem;
-}
-
-/* Paginación Bootstrap 5 personalizada */
 .paginacion-bootstrap5 {
     margin-top: 1.5rem;
 }
@@ -195,40 +153,28 @@
         justify-content: center;
     }
 }
-
-/* Sombra solo en el borde superior del footer */
 .shadow-top {
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
 }
-
-/* Para que el footer no tape contenido, añade un padding-bottom al main */
 .main-with-footer {
     padding-bottom: 40px;
     flex: 1 0 auto;
-    padding-bottom: 0; /* Elimina el espacio extra */
+    padding-bottom: 0;
 }
-
-/* Por defecto no mostrar el footer de paginación */
-#paginacionWrapper {
+#paginacionEquiposWrapper {
     display: none;
     margin-top: auto;
 }
-
-/* ===== 1. Altura uniforme ===== */
 .search-group .form-control,
 .search-group .input-group-text,
 .filter-btn {
     height: 2.5rem;
     border-radius: 0;
 }
-
-/* Dejamos redondeado sólo en los extremos */
 .search-group .input-group-text {
     border-top-left-radius: .375rem;
     border-bottom-left-radius: .375rem;
 }
-
-/* El input y el botón de filtro, estilos finales */
 .search-group .form-control {
     border-radius: 5px 0 0 5px;
     min-width: 180px;
@@ -239,7 +185,6 @@
     display: flex;
     transition: box-shadow 0.2s, border-color 0.2s, background 0.2s, color 0.2s;
 }
-
 .search-group .filter-btn {
     border-radius: 0 5px 5px 0;
     border: 1px solid #ccc;
@@ -250,24 +195,19 @@
     padding: 0 1.1rem;
     height: 40px;
 }
-
-/* Para la imagen dentro del botón */
 .filter-btn img {
     display: block;
     margin: auto;
 }
-
-/* Agrupación visual de búsqueda y botón filtro */
 .search-group {
     display: flex;
     align-items: stretch;
     max-width: 400px;
     width: 100%;
 }
-
 .search-group .form-control:focus,
 .search-group .form-control.active
-.search-group .form-control:active,
+search-group .form-control:active,
 .search-group .filter-btn:focus,
 .search-group .filter-btn.active,
 .search-group .filter-btn:active {
@@ -284,15 +224,13 @@
     border-color: #150B63 !important;
     border-left: 1px solid #150B63 !important;
 }
-
-/* Ajuste para que los selects estén más juntos y centrados */
-#filtroParticipantes {
+#filtroEquipos {
     display: flex;
     min-width: 70%;
     justify-content: center;
     gap: 10px 0;
 }
-#filtroParticipantes .col-md-3 {
+#filtroEquipos .col-md-3 {
     margin-top: 0;
     margin-bottom: 0;
     padding-left: 8px;
@@ -304,91 +242,67 @@
     min-width: 120px;
     max-width: 280px;
 }
-
-/* Opcional: reduce el espacio vertical entre selects en pantallas pequeñas */
 @media (max-width: 768px) {
-    #filtroParticipantes {
-    gap: 4px 0;
+    #filtroEquipos {
+        gap: 4px 0;
     }
-    #filtroParticipantes .col-md-3 {
-    padding-left: 2px;
-    padding-right: 2px;
+    #filtroEquipos .col-md-3 {
+        padding-left: 2px;
+        padding-right: 2px;
     }
 }
-
 .min-vh-100.bg-light {
     flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     min-height: 0;
 }
-
-.participante-card .perfil-fija {
-    min-width: 72px;
-    max-width: 72px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding-right: 0.5rem;
-}
-.participante-card .perfil-img {
-    margin-bottom: 0.5rem;
-    margin-top: 0.2rem;
-    margin-left: 0.2rem;
-}
-.participante-card .datos-participante {
+.equipo-card .datos-equipo {
     min-width: 0;
     flex: 1 1 0%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
-.participante-card .card-title {
+.equipo-card .card-title {
     font-size: 1.3rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
     word-break: break-word;
     white-space: normal;
 }
-.participante-card .fa-flag {
+.equipo-card .fa-flag {
     color: #150B63;
     margin-right: 0.3em;
 }
-.participante-card p {
+.equipo-card p {
     margin-bottom: 0.3rem;
     font-size: 0.97rem;
     word-break: break-word;
 }
-.participante-card .ms-2.mt-1 {
+.equipo-card .ms-2.mt-1 {
     margin-left: 0.5rem !important;
     margin-top: 0.2rem !important;
 }
-
-#participantesContainer {
-    min-height: 0;
+#equiposContainer {
+    min-height: calc(3 * 140px); /* 3 filas x altura tarjeta + margen */
 }
-
-#participantesContainer .participante-card {
+#equiposContainer .equipo-card {
     flex: 1 1 100%;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
-#participantesContainer .d-flex {
+#equiposContainer .d-flex {
     margin-left: 0 !important;
 }
-
 .animate__animated {
     will-change: opacity, transform;
 }
-
-body.animating-participantes {
+body.animating-equipos {
     overflow-y: hidden !important;
 }
-
-/* MODAL PARTICIPANTE */
-.modal-participante {
+.modal-equipo {
     position: fixed;
     z-index: 2000;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -397,10 +311,10 @@ body.animating-participantes {
     justify-content: center;
     pointer-events: none;
 }
-.modal-participante:not(.d-none) {
+.modal-equipo:not(.d-none) {
     pointer-events: auto;
 }
-.modal-participante .modal-backdrop {
+.modal-equipo .modal-backdrop {
     position: absolute;
     inset: 0;
     background: rgba(30, 30, 60, 0.45);
@@ -408,7 +322,7 @@ body.animating-participantes {
     z-index: 1;
     transition: opacity 0.3s;
 }
-.modal-participante .modal-dialog {
+.modal-equipo .modal-dialog {
     position: relative;
     z-index: 2;
     min-width: 340px;
@@ -416,33 +330,31 @@ body.animating-participantes {
     background: transparent;
     animation-duration: 0.4s !important;
 }
-.modal-participante .modal-content {
+.modal-equipo .modal-content {
     background: #fff;
     border-radius: 1.5rem;
     box-shadow: 0 8px 32px rgba(21,11,99,0.18);
     border: none;
 }
-body.modal-open {
+body.modal-equipo-open {
     overflow: hidden !important;
 }
-/* Desenfoque y bloqueo del fondo */
-body.modal-open > *:not(.modal-participante) {
+body.modal-equipo-open > *:not(.modal-equipo) {
     filter: blur(2.5px) grayscale(0.1);
     pointer-events: none !important;
     user-select: none;
 }
 @media (max-width: 600px) {
-    .modal-participante .modal-dialog {
+    .modal-equipo .modal-dialog {
         min-width: 95vw;
         padding: 0 8px;
     }
 }
-
-.participante-actions {
+.equipo-actions {
     z-index: 2;
     pointer-events: auto;
 }
-.participante-actions .btn {
+.equipo-actions .btn {
     width: 32px;
     height: 32px;
     padding: 0;
@@ -453,37 +365,35 @@ body.modal-open > *:not(.modal-participante) {
     font-size: 1rem;
     transition: background 0.2s, color 0.2s;
 }
-.participante-actions .btn-editar-participante {
+.equipo-actions .btn-editar-equipo {
     color: #0d6efd;
 }
-.participante-actions .btn-editar-participante:hover {
+.equipo-actions .btn-editar-equipo:hover {
     background: #e7f1ff;
     color: #084298;
 }
-.participante-actions .btn-eliminar-participante {
+.equipo-actions .btn-eliminar-equipo {
     color: #dc3545;
 }
-.participante-actions .btn-eliminar-participante:hover {
+.equipo-actions .btn-eliminar-equipo:hover {
     background: #f8d7da;
     color: #842029;
 }
-
-/* MODAL ELIMINAR PARTICIPANTE */
-#modalEliminarParticipante {
+#modalEliminarEquipo {
     z-index: 3000;
 }
-#modalEliminarParticipante .modal-dialog {
+#modalEliminarEquipo .modal-dialog {
     min-width: 340px;
     max-width: 95vw;
     animation-duration: 0.6s !important;
 }
-#modalEliminarParticipante .modal-content {
+#modalEliminarEquipo .modal-content {
     background: #fff;
     border-radius: 1.5rem;
     box-shadow: 0 8px 32px rgba(220,53,69,0.18);
     border: none;
 }
-#modalEliminarParticipante .modal-backdrop {
+#modalEliminarEquipo .modal-backdrop {
     position: absolute;
     inset: 0;
     background: rgba(30, 30, 60, 0.45);
@@ -491,26 +401,22 @@ body.modal-open > *:not(.modal-participante) {
     z-index: 1;
     transition: opacity 0.3s;
 }
-body.modal-eliminar-open {
+body.modal-eliminar-equipo-open {
     overflow: hidden !important;
 }
-body.modal-eliminar-open > *:not(#modalEliminarParticipante) {
+body.modal-eliminar-equipo-open > *:not(#modalEliminarEquipo) {
     filter: blur(2.5px) grayscale(0.1);
     pointer-events: none !important;
     user-select: none;
 }
-
-/* Animaciones personalizadas para modales */
 .blur-in {
     animation: blur-in 0.1s linear both
 }
-
 @keyframes blur-in {
     0% {
         filter: blur(12px);
         opacity: 0
     }
-
     100% {
         filter: blur(0);
         opacity: 1
@@ -519,12 +425,10 @@ body.modal-eliminar-open > *:not(#modalEliminarParticipante) {
 .blur-out {
     animation: blur-out 0.4s linear both
 }
-
 @keyframes blur-out {
     0% {
         filter: blur(.01px);
     }
-
     100% {
         filter: blur(12px);
         opacity: 0

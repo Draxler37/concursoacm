@@ -31,30 +31,19 @@
     z-index: -1;
 }
 
-/* start form section específicos de participantes */
-.perfil-img {
-    object-fit: cover;
-    border: 2.0px solid #00bbf0;
-}
-
-.bandera-img {
-    border-radius: 50%;
-    border: 1px solid #eee;
-}
-
-.participante-card {
+.pregunta-card {
     box-shadow: 0 4px 16px rgba(21, 11, 99, 0.08);
     border: none;
     border-radius: 16px;
     transition: transform 0.2s;
     background: #fff;
+    min-height: 140px;
+}
+.pregunta-card:hover {
+    box-shadow: 0px 0px 16px rgb(0, 187, 240);
 }
 
-.participante-card:hover {
-    box-shadow: 0px 0px 16px #00bbf0;
-}
-
-#toggleFiltrosBtn {
+#toggleFiltrosPreguntasBtn {
     cursor: pointer;
     transition: color 0.2s, transform 0.3s;
     margin-right: 0.5rem;
@@ -62,8 +51,7 @@
     align-items: center;
 }
 
-/* Filtros avanzados animación */
-#filtrosAvanzados {
+#filtrosAvanzadosPreguntas {
     background-color: white;
     max-height: 0;
     opacity: 0;
@@ -78,26 +66,29 @@
     box-shadow: 0 2px 8px rgba(21, 11, 99, 0.06);
     transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
 }
-#filtrosAvanzados.show {
+#filtrosAvanzadosPreguntas.show {
     max-height: 300px;
     opacity: 1;
 }
+
 #filtrosAvanzados.visible {
     opacity: 1;
-} 
+}
 
 .custom-select-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
+
 /* Selects custom */
 .filtro-select {
     border: none !important;
     border-radius: 18px !important;
     background-color: white !important;
     min-width: 120px;
-    max-width: 260px; /* Ajusta este valor según tu preferencia visual */
+    max-width: 260px;
+    /* Ajusta este valor según tu preferencia visual */
     width: auto;
     padding-right: 2.5rem !important;
     box-shadow: none !important;
@@ -107,24 +98,28 @@
     white-space: nowrap;
     overflow: hidden;
 }
-.filtro-select:hover{
+
+.filtro-select:hover {
     cursor: pointer;
 }
+
 .filtro-select:focus {
     box-shadow: none !important;
     border: none !important;
 }
+
 .filtro-select option {
     color: #333;
 }
 
-.col-md-3{
+.col-md-3 {
     margin-top: 5px;
 }
 
 /* Flecha estática */
 .custom-select-wrapper::after {
-    content: '\f282'; /* Bootstrap icon bi-caret-down-fill */
+    content: '\f282';
+    /* Bootstrap icon bi-caret-down-fill */
     font-family: 'bootstrap-icons';
     position: absolute;
     right: 1rem;
@@ -133,10 +128,219 @@
     font-size: 1.1rem;
 }
 
-/* Paginación Bootstrap 5 personalizada */
-.paginacion-bootstrap5 {
-    margin-top: 1.5rem;
+.pregunta-actions .btn {
+    margin-left: 0.25rem;
 }
+
+body.animating-preguntas {
+    overflow-y: hidden !important;
+}
+
+#preguntasContainer .pregunta-card {
+    flex: 1 1 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* MODAL PREGUNTA (igual estilo que participantes/equipos) */
+.modal-pregunta {
+    position: fixed;
+    z-index: 2000;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.modal-pregunta:not(.d-none) {
+    pointer-events: auto;
+}
+.modal-pregunta .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(30, 30, 60, 0.45);
+    backdrop-filter: blur(4px);
+    z-index: 1;
+    transition: opacity 0.3s;
+}
+.modal-pregunta .modal-dialog {
+    position: relative;
+    z-index: 2;
+    min-width: 340px;
+    max-width: 95vw;
+    background: transparent;
+    animation-duration: 0.4s !important;
+}
+.modal-pregunta .modal-content {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(21,11,99,0.18);
+    border: none;
+}
+body.modal-pregunta-open {
+    overflow: hidden !important;
+}
+body.modal-pregunta-open > *:not(.modal-pregunta) {
+    filter: blur(2.5px) grayscale(0.1);
+    pointer-events: none !important;
+    user-select: none;
+}
+@media (max-width: 600px) {
+    .modal-pregunta .modal-dialog {
+        min-width: 95vw;
+        padding: 0 8px;
+    }
+}
+
+.pregunta-actions {
+    z-index: 2;
+    pointer-events: auto;
+}
+.pregunta-actions .btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
+}
+.pregunta-actions .btn-editar-pregunta {
+    color: #0d6efd;
+}
+.pregunta-actions .btn-editar-pregunta:hover {
+    background: #e7f1ff;
+    color: #084298;
+}
+.pregunta-actions .btn-eliminar-pregunta {
+    color: #dc3545;
+}
+.pregunta-actions .btn-eliminar-pregunta:hover {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* 2. Estilos de .pregunta-card (igualar a .participante-card) */
+.pregunta-card .card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    word-break: break-word;
+    white-space: normal;
+}
+.pregunta-card p {
+    margin-bottom: 0.3rem;
+    font-size: 0.97rem;
+    word-break: break-word;
+}
+.pregunta-card .ms-2.mt-1 {
+    margin-left: 0.5rem !important;
+    margin-top: 0.2rem !important;
+}
+/* Tarjetas de pregunta: borde y fondo según estado usada */
+.card-usada {
+    border-left: 6px solid #dc3545 !important;
+    background-color: #fff5f5 !important;
+}
+
+.card-no-usada {
+    border-left: 6px solid #198754 !important;
+    background-color: #f6fff8 !important;
+}
+#preguntasContainer .d-flex {
+    margin-left: 0 !important;
+}
+
+/* 4. Animaciones para modales */
+.blur-in {
+    animation: blur-in 0.1s linear both;
+}
+@keyframes blur-in {
+    0% {
+        filter: blur(12px);
+        opacity: 0;
+    }
+    100% {
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+.blur-out {
+    animation: blur-out 0.4s linear both;
+}
+@keyframes blur-out {
+    0% {
+        filter: blur(.01px);
+    }
+    100% {
+        filter: blur(12px);
+        opacity: 0;
+    }
+}
+.animate__animated {
+    will-change: opacity, transform;
+}
+
+/* 5. Ajustes de layout para filtros avanzados */
+#filtroPreguntas {
+    display: flex;
+    min-width: 70%;
+    justify-content: center;
+    gap: 10px 0;
+}
+#filtroPreguntas .col-md-3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 auto;
+    min-width: 120px;
+    max-width: 280px;
+}
+@media (max-width: 768px) {
+    #filtroPreguntas {
+        gap: 4px 0;
+    }
+    #filtroPreguntas .col-md-3 {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+}
+
+/* 6. Ajustes de layout para el contenedor principal */
+.min-vh-100.bg-light {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* Sombra solo en el borde superior del footer */
+.shadow-top {
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Para que el footer no tape contenido, añade un padding-bottom al main */
+.main-with-footer {
+    padding-bottom: 40px;
+    flex: 1 0 auto;
+    padding-bottom: 0;
+    /* Elimina el espacio extra */
+}
+
+/* Por defecto no mostrar el footer de paginación */
+#paginacionWrapper {
+    display: none;
+    margin-top: auto;
+}
+
+/* Paginación Bootstrap 5 personalizada */
 .paginacion-bootstrap5 .pagination {
     --bs-pagination-padding-x: 0.75rem;
     --bs-pagination-padding-y: 0.5rem;
@@ -185,11 +389,13 @@
 .paginacion-bootstrap5 .text-sm {
     font-size: 0.95rem;
 }
+
 @media (max-width: 576px) {
     .paginacion-bootstrap5 .d-flex.flex-column.flex-sm-row {
         flex-direction: column !important;
         gap: 0.5rem !important;
     }
+
     .paginacion-bootstrap5 .pagination {
         flex-wrap: wrap;
         justify-content: center;
@@ -205,7 +411,8 @@
 .main-with-footer {
     padding-bottom: 40px;
     flex: 1 0 auto;
-    padding-bottom: 0; /* Elimina el espacio extra */
+    padding-bottom: 0;
+    /* Elimina el espacio extra */
 }
 
 /* Por defecto no mostrar el footer de paginación */
@@ -266,8 +473,7 @@
 }
 
 .search-group .form-control:focus,
-.search-group .form-control.active
-.search-group .form-control:active,
+.search-group .form-control.active .search-group .form-control:active,
 .search-group .filter-btn:focus,
 .search-group .filter-btn.active,
 .search-group .filter-btn:active {
@@ -276,6 +482,7 @@
     border-color: #150B63 !important;
     border-left: 1px solid #150B63 !important;
 }
+
 .search-group .filter-btn:focus,
 .search-group .filter-btn.active,
 .search-group .filter-btn:active {
@@ -283,250 +490,4 @@
     box-shadow: none !important;
     border-color: #150B63 !important;
     border-left: 1px solid #150B63 !important;
-}
-
-/* Ajuste para que los selects estén más juntos y centrados */
-#filtroParticipantes {
-    display: flex;
-    min-width: 70%;
-    justify-content: center;
-    gap: 10px 0;
-}
-#filtroParticipantes .col-md-3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 8px;
-    padding-right: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 1 auto;
-    min-width: 120px;
-    max-width: 280px;
-}
-
-/* Opcional: reduce el espacio vertical entre selects en pantallas pequeñas */
-@media (max-width: 768px) {
-    #filtroParticipantes {
-    gap: 4px 0;
-    }
-    #filtroParticipantes .col-md-3 {
-    padding-left: 2px;
-    padding-right: 2px;
-    }
-}
-
-.min-vh-100.bg-light {
-    flex: 1 0 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-
-.participante-card .perfil-fija {
-    min-width: 72px;
-    max-width: 72px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding-right: 0.5rem;
-}
-.participante-card .perfil-img {
-    margin-bottom: 0.5rem;
-    margin-top: 0.2rem;
-    margin-left: 0.2rem;
-}
-.participante-card .datos-participante {
-    min-width: 0;
-    flex: 1 1 0%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-.participante-card .card-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    word-break: break-word;
-    white-space: normal;
-}
-.participante-card .fa-flag {
-    color: #150B63;
-    margin-right: 0.3em;
-}
-.participante-card p {
-    margin-bottom: 0.3rem;
-    font-size: 0.97rem;
-    word-break: break-word;
-}
-.participante-card .ms-2.mt-1 {
-    margin-left: 0.5rem !important;
-    margin-top: 0.2rem !important;
-}
-
-#participantesContainer {
-    min-height: 0;
-}
-
-#participantesContainer .participante-card {
-    flex: 1 1 100%;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-#participantesContainer .d-flex {
-    margin-left: 0 !important;
-}
-
-.animate__animated {
-    will-change: opacity, transform;
-}
-
-body.animating-participantes {
-    overflow-y: hidden !important;
-}
-
-/* MODAL PARTICIPANTE */
-.modal-participante {
-    position: fixed;
-    z-index: 2000;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-}
-.modal-participante:not(.d-none) {
-    pointer-events: auto;
-}
-.modal-participante .modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(30, 30, 60, 0.45);
-    backdrop-filter: blur(4px);
-    z-index: 1;
-    transition: opacity 0.3s;
-}
-.modal-participante .modal-dialog {
-    position: relative;
-    z-index: 2;
-    min-width: 340px;
-    max-width: 95vw;
-    background: transparent;
-    animation-duration: 0.4s !important;
-}
-.modal-participante .modal-content {
-    background: #fff;
-    border-radius: 1.5rem;
-    box-shadow: 0 8px 32px rgba(21,11,99,0.18);
-    border: none;
-}
-body.modal-open {
-    overflow: hidden !important;
-}
-/* Desenfoque y bloqueo del fondo */
-body.modal-open > *:not(.modal-participante) {
-    filter: blur(2.5px) grayscale(0.1);
-    pointer-events: none !important;
-    user-select: none;
-}
-@media (max-width: 600px) {
-    .modal-participante .modal-dialog {
-        min-width: 95vw;
-        padding: 0 8px;
-    }
-}
-
-.participante-actions {
-    z-index: 2;
-    pointer-events: auto;
-}
-.participante-actions .btn {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 1rem;
-    transition: background 0.2s, color 0.2s;
-}
-.participante-actions .btn-editar-participante {
-    color: #0d6efd;
-}
-.participante-actions .btn-editar-participante:hover {
-    background: #e7f1ff;
-    color: #084298;
-}
-.participante-actions .btn-eliminar-participante {
-    color: #dc3545;
-}
-.participante-actions .btn-eliminar-participante:hover {
-    background: #f8d7da;
-    color: #842029;
-}
-
-/* MODAL ELIMINAR PARTICIPANTE */
-#modalEliminarParticipante {
-    z-index: 3000;
-}
-#modalEliminarParticipante .modal-dialog {
-    min-width: 340px;
-    max-width: 95vw;
-    animation-duration: 0.6s !important;
-}
-#modalEliminarParticipante .modal-content {
-    background: #fff;
-    border-radius: 1.5rem;
-    box-shadow: 0 8px 32px rgba(220,53,69,0.18);
-    border: none;
-}
-#modalEliminarParticipante .modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(30, 30, 60, 0.45);
-    backdrop-filter: blur(4px);
-    z-index: 1;
-    transition: opacity 0.3s;
-}
-body.modal-eliminar-open {
-    overflow: hidden !important;
-}
-body.modal-eliminar-open > *:not(#modalEliminarParticipante) {
-    filter: blur(2.5px) grayscale(0.1);
-    pointer-events: none !important;
-    user-select: none;
-}
-
-/* Animaciones personalizadas para modales */
-.blur-in {
-    animation: blur-in 0.1s linear both
-}
-
-@keyframes blur-in {
-    0% {
-        filter: blur(12px);
-        opacity: 0
-    }
-
-    100% {
-        filter: blur(0);
-        opacity: 1
-    }
-}
-.blur-out {
-    animation: blur-out 0.4s linear both
-}
-
-@keyframes blur-out {
-    0% {
-        filter: blur(.01px);
-    }
-
-    100% {
-        filter: blur(12px);
-        opacity: 0
-    }
 }

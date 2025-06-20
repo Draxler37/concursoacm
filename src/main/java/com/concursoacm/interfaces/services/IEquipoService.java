@@ -41,4 +41,18 @@ public interface IEquipoService {
      * @param usuarioNormalizado Usuario autenticado.
      */
     void eliminarEquipo(int idEquipo, String usuarioNormalizado);
+
+    /**
+     * *Obtiene una lista de equipos por el ID de su país.
+     *
+     * @param paisId ID del país.
+     * @return Lista de objetos EquipoDTO.
+     */
+    List<EquipoDTO> getEquiposPorPais(int paisId);
+
+    /**
+     * Búsqueda flexible de equipos por nombre, país y/o categoría.
+     * Todos los parámetros son opcionales.
+     */
+    List<EquipoDTO> buscarEquipos(String nombre, Integer idPais, Integer idCategoria);
 }

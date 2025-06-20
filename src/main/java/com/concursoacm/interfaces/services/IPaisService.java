@@ -50,4 +50,12 @@ public interface IPaisService {
      * @return true si el país fue eliminado, false en caso contrario.
      */
     String eliminarPais(int id);
+
+    /**
+     * *Obtiene una lista de países por su región.
+     *
+     * @param regionId ID de la región.
+     * @return Lista de objetos PaisDTO.
+     */
+    List<PaisDTO> obtenerPaisesPorRegion(int regionId);
 }

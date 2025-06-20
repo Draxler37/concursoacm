@@ -60,7 +60,7 @@ $(document).ready(function () {
                 method: 'GET',
                 success: function (response) {
                     if (response) {
-                        window.location.href = 'http://127.0.0.1:5500/src/main/resources/templates/index.html';
+                        // window.location.href = 'http://127.0.0.1:5500/src/main/resources/templates/index.html';
                     } else {
                         restoreButton();
                         $('#errorMessage').text('Credenciales inválidas').show();
@@ -78,7 +78,7 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     if (response) {
-                        window.location.href = 'http://127.0.0.1:5500/src/main/resources/templates/index.html';
+                        // window.location.href = 'http://127.0.0.1:5500/src/main/resources/templates/index.html';
                     } else {
                         restoreButton();
                         $('#errorMessage').text('Credenciales inválidas').show();

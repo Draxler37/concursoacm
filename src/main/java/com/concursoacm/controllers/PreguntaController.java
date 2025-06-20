@@ -2,7 +2,7 @@ package com.concursoacm.controllers;
 
 import com.concursoacm.interfaces.services.IPreguntaService;
 import com.concursoacm.models.Pregunta;
-
+import com.concursoacm.models.PreguntaClase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,5 +90,15 @@ public class PreguntaController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * Obtiene todas las clases de preguntas.
+     *
+     * @return Lista de clases de preguntas.
+     */
+    @GetMapping("/clases")
+    public List<PreguntaClase> obtenerClasesDePreguntas() {
+        return preguntaService.obtenerClasesDePreguntas();
     }
 }

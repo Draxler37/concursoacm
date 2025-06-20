@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.concursoacm.models.Pais;
 
+import java.util.List;
+
 /**
  * *Repositorio para la gestión de la entidad Pais.
  * *Proporciona métodos para realizar operaciones CRUD y consultas
@@ -12,4 +14,6 @@ import com.concursoacm.models.Pais;
  */
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Integer> {
+    // Devuelve todos los países de una región
+    List<Pais> findByRegionIdRegion(int idRegion);
 }

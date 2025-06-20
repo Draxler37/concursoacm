@@ -94,4 +94,16 @@ public interface IParticipanteService {
      * @return true si el participante fue eliminado, false en caso contrario.
      */
     boolean deleteParticipante(int id);
+
+    /**
+     * Búsqueda flexible de participantes por nombre, país, equipo y/o región.
+     * Todos los parámetros son opcionales.
+     * 
+     * @param nombre   Nombre del participante (opcional)
+     * @param idPais   ID del país (opcional)
+     * @param idEquipo ID del equipo (opcional)
+     * @param idRegion ID de la región (opcional)
+     * @return Lista de ParticipanteDTO que cumplen los criterios
+     */
+    List<ParticipanteDTO> buscarParticipantes(String nombre, Integer idPais, Integer idEquipo, Integer idRegion);
 }

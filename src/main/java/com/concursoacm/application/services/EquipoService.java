@@ -86,6 +86,28 @@ public class EquipoService implements IEquipoService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EquipoDTO> getEquiposPorPais(int paisId) {
+        return equipoRepository.findByPaisIdPais(paisId)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<EquipoDTO> buscarEquipos(String nombre, Integer idPais, Integer idCategoria) {
+        return equipoRepository.buscarFiltrado(nombre, idPais, idCategoria)
+                .stream()
+                .map(this::convertToDto)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
      * *Valida que el jefe de delegación tenga permisos para gestionar el equipo.
      *
      * @param equipo             Objeto Equipo.

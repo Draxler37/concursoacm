@@ -83,4 +83,15 @@ public class PaisController {
     public String eliminarPais(@PathVariable int id) {
         return paisService.eliminarPais(id);
     }
+
+    /**
+     * *Obtiene una lista de países por su región.
+     *
+     * @param regionId ID de la región.
+     * @return Lista de objetos PaisDTO pertenecientes a la región.
+     */
+    @GetMapping(params = "regionId")
+    public List<PaisDTO> obtenerPaisesPorRegion(@RequestParam("regionId") int regionId) {
+        return paisService.obtenerPaisesPorRegion(regionId);
+    }
 }

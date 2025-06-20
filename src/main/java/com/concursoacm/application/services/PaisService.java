@@ -106,4 +106,13 @@ public class PaisService implements IPaisService {
         return regionRepository.findById(idRegion)
                 .orElseThrow(() -> new RuntimeException("La región con ID " + idRegion + " no existe."));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<PaisDTO> obtenerPaisesPorRegion(int regionId) {
+        return paisRepository.findByRegionIdRegion(regionId)
+                .stream().map(PaisDTO::new).collect(Collectors.toList());
+    }
 }

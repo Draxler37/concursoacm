@@ -2,6 +2,7 @@ package com.concursoacm.application.services;
 
 import com.concursoacm.interfaces.services.IPreguntaService;
 import com.concursoacm.models.Pregunta;
+import com.concursoacm.models.PreguntaClase;
 import com.concursoacm.tools.repositories.PreguntaRepository;
 import com.concursoacm.tools.repositories.PreguntaClaseRepository;
 
@@ -94,5 +95,14 @@ public class PreguntaService implements IPreguntaService {
             return true;
         }
         throw new IllegalArgumentException("La pregunta con ID " + idPregunta + " no existe.");
+    }
+
+    /**
+     * Obtiene todas las clases de preguntas.
+     * 
+     * @return Lista de clases de preguntas.
+     */
+    public List<PreguntaClase> obtenerClasesDePreguntas() {
+        return preguntaClaseRepository.findAll();
     }
 }

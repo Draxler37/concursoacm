@@ -198,4 +198,18 @@ public class ParticipanteController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /**
+     * *Búsqueda flexible de participantes por nombre, país, equipo y/o región.
+     * *Todos los parámetros son opcionales.
+     */
+    @GetMapping("/buscar")
+    public ResponseEntity<?> buscarParticipantes(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) Integer idPais,
+            @RequestParam(required = false) Integer idEquipo,
+            @RequestParam(required = false) Integer idRegion) {
+        List<ParticipanteDTO> resultado = participanteService.buscarParticipantes(nombre, idPais, idEquipo, idRegion);
+        return ResponseEntity.ok(resultado);
+    }
 }

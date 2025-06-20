@@ -2,6 +2,8 @@ package com.concursoacm.tools.repositories;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.concursoacm.models.Participante;
@@ -54,4 +56,26 @@ public interface ParticipanteRepository extends JpaRepository<Participante, Inte
      * @return Número de participantes en el equipo.
      */
     int countByEquipoIdEquipo(int idEquipo);
+
+    /**
+     * *Busca participantes filtrando por nombre, país, equipo y región.
+     *
+     * @param nombre   Nombre del participante.
+     * @param idPais   ID del país.
+     * @param idEquipo ID del equipo.
+     * @param idRegion ID de la región.
+     * @return Lista de participantes que coinciden con los criterios de búsqueda.
+     */
+    @Query("""
+                SELECT p FROM Participante p
+                WHERE (:nombre IS NULL OR :nombre = '' OR LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%')))
+                AND (:idPais IS NULL OR p.pais.idPais = :idPais)
+                AND (:idEquipo IS NULL OR p.equipo.idEquipo = :idEquipo)
+                AND (:idRegion IS NULL OR p.pais.region.idRegion = :idRegion)
+            """)
+    List<Participante> buscarFiltrado(
+            @Param("nombre") String nombre,
+            @Param("idPais") Integer idPais,
+            @Param("idEquipo") Integer idEquipo,
+            @Param("idRegion") Integer idRegion);
 }

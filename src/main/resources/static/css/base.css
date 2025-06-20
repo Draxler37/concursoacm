@@ -1,6 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap');
 
+html, body {
+    height: 100%;
+}
+
+header {
+    background-color: #150B63;
+}
+
 body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     font-family: "Ubuntu", sans-serif;
     color: #0c0c0c;
     background-color: #ffffff;
@@ -77,7 +88,9 @@ body {
     background-size: contain;
 }
 
-.nav-link.dropdown-toggle:hover::after {
+.nav-item.dropdown:hover > .nav-link.dropdown-toggle::after,
+.nav-item.dropdown.show > .nav-link.dropdown-toggle::after,
+.nav-link.dropdown-toggle[aria-expanded="true"]::after {
     background-image: url("../images/dropdown_hover_after.svg");
 }
 
@@ -150,7 +163,7 @@ body {
 }
 
 .btn-login {
-    background-color: #00bbf0 !important;
+    background-color: #0095c7 !important;
     color: #ffffff !important;
     border-radius: 5px;
     padding: 8px 20px !important;
@@ -163,7 +176,7 @@ body {
 }
 
 .btn-login:hover {
-    background-color: #0095c7 !important;
+    background-color: #00bbf0 !important;
     color: #ffffff !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -185,7 +198,7 @@ body {
 }
 
 .custom_nav-container .navbar-nav .nav-item:hover .nav-link,
-.custom_nav-container .navbar-nav .nav-item.active .nav-link {
+.custom_nav-container .navbar-nav .nav-item.active .nav-link{
     color: #00bbf0;
 }
 

@@ -3,6 +3,7 @@ package com.concursoacm.controllers;
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.CambiarContrasenaDTO;
+import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionFiltroDTO;
 import com.concursoacm.interfaces.services.IJefeDelegacionService;
 import com.concursoacm.models.JefeDelegacion;
 
@@ -41,6 +42,18 @@ public class JefeDelegacionController {
     @GetMapping
     public ResponseEntity<List<JefeDelegacionDTO>> obtenerTodosLosJefes() {
         List<JefeDelegacionDTO> jefes = jefeDelegacionService.obtenerTodosLosJefes();
+        return ResponseEntity.ok(jefes);
+    }
+
+    /**
+     * *Obtiene una lista de todos los jefes de delegación con país y región para
+     * filtrado frontend.
+     * 
+     * @return Lista de objetos JefeDelegacionFiltroDTO.
+     */
+    @GetMapping("/con-pais-region")
+    public ResponseEntity<List<JefeDelegacionFiltroDTO>> obtenerJefesConPaisYRegion() {
+        List<JefeDelegacionFiltroDTO> jefes = jefeDelegacionService.obtenerJefesConPaisYRegion();
         return ResponseEntity.ok(jefes);
     }
 
@@ -107,5 +120,19 @@ public class JefeDelegacionController {
     public ResponseEntity<String> eliminarJefeDelegacion(@PathVariable int idJefe) {
         jefeDelegacionService.eliminarJefeDelegacion(idJefe);
         return ResponseEntity.ok("Jefe de delegación eliminado correctamente.");
+    }
+
+    /**
+     * Endpoint para buscar jefes de delegación por nombre, país y región (filtros
+     * opcionales).
+     * Devuelve una lista de JefeDelegacionFiltroDTO para el frontend.
+     */
+    @GetMapping("/buscar")
+    public ResponseEntity<List<JefeDelegacionFiltroDTO>> buscarJefesDelegacion(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) Integer idPais,
+            @RequestParam(required = false) Integer idRegion) {
+        List<JefeDelegacionFiltroDTO> jefes = jefeDelegacionService.buscarJefesDelegacion(nombre, idPais, idRegion);
+        return ResponseEntity.ok(jefes);
     }
 }

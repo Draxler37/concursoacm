@@ -2,6 +2,7 @@ package com.concursoacm.interfaces.services;
 
 import com.concursoacm.application.dtos.jefedelegacion.CrearJefeDelegacionDTO;
 import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionDTO;
+import com.concursoacm.application.dtos.jefedelegacion.JefeDelegacionFiltroDTO;
 import com.concursoacm.models.JefeDelegacion;
 
 import java.util.List;
@@ -54,4 +55,22 @@ public interface IJefeDelegacionService {
      * @param idJefe ID del jefe de delegación a eliminar.
      */
     void eliminarJefeDelegacion(int idJefe);
+
+    /**
+     * Obtiene una lista de todos los jefes de delegación con país y región para
+     * filtrado frontend.
+     * 
+     * @return Lista de objetos JefeDelegacionFiltroDTO.
+     */
+    List<JefeDelegacionFiltroDTO> obtenerJefesConPaisYRegion();
+
+    /**
+     * Busca jefes de delegación por nombre, país y región (filtros opcionales).
+     * 
+     * @param nombre   Nombre del participante (opcional)
+     * @param idPais   ID del país (opcional)
+     * @param idRegion ID de la región (opcional)
+     * @return Lista de JefeDelegacionFiltroDTO filtrados
+     */
+    List<JefeDelegacionFiltroDTO> buscarJefesDelegacion(String nombre, Integer idPais, Integer idRegion);
 }
