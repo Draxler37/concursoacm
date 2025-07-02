@@ -388,7 +388,7 @@ $(function () {
     // --- Filtros y búsqueda ---
     function todosLosEquiposFiltrados() {
         let equipos = todosLosEquipos;
-        const texto = $('#filtroNombreEquipoAsignar').val()?.trim().toLowerCase() || '';
+        const texto = $('#filtroNombreEquipo').val()?.trim().toLowerCase() || '';
         const filtroAsignacion = $('#filtroAsignacionPreguntas').val();
         if (texto) {
             equipos = equipos.filter(e => e.nombreEquipo.toLowerCase().includes(texto) || (e.pais?.nombre || '').toLowerCase().includes(texto));
@@ -401,7 +401,8 @@ $(function () {
         return equipos;
     }
 
-    $('#filtroNombreEquipoAsignar').on('input', function () {
+    // Cambiado el selector aquí para que funcione el input de búsqueda
+    $('#filtroNombreEquipo').on('input', function () {
         paginaActual = 1;
         renderEquiposPaginados(todosLosEquiposFiltrados());
     });

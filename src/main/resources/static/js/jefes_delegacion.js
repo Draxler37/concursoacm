@@ -219,7 +219,15 @@ $(function () {
                 container.appendChild(card);
             });
         }
+        renderJefesDelegacion(paginaJefes);
         renderPaginacionBootstrap(jefes.length, paginaActual, jefesPorPagina);
+        const userRole = localStorage.getItem('userRole');
+        if (userRole === 'JEFE_DELEGACION' && window.handleDelegationChief) {
+            window.handleDelegationChief();
+        }
+        else if (userRole === 'PARTICIPANTE' && window.handleParticipant) {
+            window.handleParticipant();
+        }
     }
 
     function aplicarFiltrosJefesDelegacion() {

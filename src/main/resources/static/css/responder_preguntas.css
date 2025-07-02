@@ -85,7 +85,26 @@
   background: #4361ee;
   border: none;
 }
-#tarjeta-preguntas,
-#tarjeta-responder {
-    display: none; 
+/* Estilo para textarea deshabilitado */
+.answer-form textarea:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+/* Estilo para botón deshabilitado */
+.btn-primary:disabled {
+  background-color: #6c757d !important;
+  cursor: not-allowed;
+}
+
+/* Estilo para items de preguntas respondidas */
+.question-item.answered {
+  background-color: #f8f9fa;
+  border-left: 4px solid #6c757d;
+  color: #6c757d;
+}
+
+.question-item.answered:hover {
+  background-color: #e9ecef;
+  cursor: default;
 }

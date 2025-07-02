@@ -71,7 +71,7 @@ $(function () {
                 </div>
             `;
             // Detectar fin de animación en la última tarjeta
-            card.querySelector('.equipo-card').addEventListener('animationend', function() {
+            card.querySelector('.equipo-card').addEventListener('animationend', function () {
                 animCount--;
                 if (animCount === 0) {
                     document.body.classList.remove('animating-equipos');
@@ -136,7 +136,7 @@ $(function () {
             ${navHtml}
             </div>
         `);
-        $wrapper.find('.page-link').off('click').on('click', function(e) {
+        $wrapper.find('.page-link').off('click').on('click', function (e) {
             e.preventDefault();
             const accion = $(this).data('page');
             let nueva = pagina;
@@ -154,15 +154,22 @@ $(function () {
         const inicio = (paginaActual - 1) * equiposPorPagina;
         const fin = inicio + equiposPorPagina;
         renderEquipos(equipos.slice(inicio, fin));
+        const userRole = localStorage.getItem('userRole');
+        if (userRole === 'JEFE_DELEGACION' && window.handleDelegationChief) {
+            window.handleDelegationChief();
+        }
+        else if (userRole === 'PARTICIPANTE' && window.handleParticipant) {
+            window.handleParticipant();
+        }
         renderPaginacionEquipos(equipos.length, paginaActual, equiposPorPagina);
     }
 
     // --- FILTRO NOMBRE, PAÍS, CATEGORÍA ---
-    $('#filtroNombreEquipo').on('input', function() { buscarEquipos(); });
-    $('#filtroCategoriaEquipo').on('change', function() { buscarEquipos(); });
-    $('#filtroPaisEquipo').on('change', function() { buscarEquipos(); });
+    $('#filtroNombreEquipo').on('input', function () { buscarEquipos(); });
+    $('#filtroCategoriaEquipo').on('change', function () { buscarEquipos(); });
+    $('#filtroPaisEquipo').on('change', function () { buscarEquipos(); });
 
-    window.buscarEquipos = function() {
+    window.buscarEquipos = function () {
         const nombre = $('#filtroNombreEquipo').val().trim();
         const idCategoria = $('#filtroCategoriaEquipo').val();
         const idPais = $('#filtroPaisEquipo').val();
@@ -171,11 +178,11 @@ $(function () {
         if (idCategoria) url += `idCategoria=${idCategoria}&`;
         if (idPais) url += `idPais=${idPais}&`;
         url = url.replace(/&$/, '');
-        $.get(url, function(data) {
+        $.get(url, function (data) {
             todosLosEquipos = data;
             paginaActual = 1;
             renderEquiposPaginados(todosLosEquipos);
-        }).fail(function(xhr, status, error) {
+        }).fail(function (xhr, status, error) {
             console.error('Error al buscar equipos:', error);
             $('#equiposContainer').html('<div class="col-12 text-center text-danger">No se pudo cargar la lista de equipos.</div>');
         });
@@ -183,7 +190,7 @@ $(function () {
 
     // Mostrar/ocultar filtros avanzados
     let filtrosVisibles = false;
-    $('#toggleFiltrosEquiposBtn').on('click', function() {
+    $('#toggleFiltrosEquiposBtn').on('click', function () {
         filtrosVisibles = !filtrosVisibles;
         const $panel = $('#filtrosAvanzadosEquipos');
         if (filtrosVisibles) {
@@ -206,7 +213,7 @@ $(function () {
         const $dialog = $('#modalAddEquipo .modal-dialog');
         $dialog.removeClass('blur-out').addClass('blur-in');
         setTimeout(() => { $dialog.removeClass('blur-in'); }, 200);
-        poblarSelectPaises(function(){
+        poblarSelectPaises(function () {
             poblarSelectCategorias();
         });
         // Limpiar selects y campos
@@ -219,7 +226,7 @@ $(function () {
         cerrarModalEquipo();
     });
     // Cerrar modal con Escape
-    $(document).on('keydown', function(e){
+    $(document).on('keydown', function (e) {
         if (e.key === 'Escape' && !$('#modalAddEquipo').hasClass('d-none')) {
             cerrarModalEquipo();
         }
@@ -239,7 +246,7 @@ $(function () {
     // Editar equipo
     $(document).on('click', '.btn-editar-equipo', function () {
         const id = $(this).data('id');
-        $.get(`http://localhost:8080/equipos/${id}` , function (e) {
+        $.get(`http://localhost:8080/equipos/${id}`, function (e) {
             $('#addNombreEquipo').val(e.nombreEquipo);
             $('#formAddEquipo').data('edit-id', id);
             $('#modalAddEquipo h2').text('Editar Equipo');
@@ -254,7 +261,7 @@ $(function () {
                 let paisNombre = e.nombrePais || (e.pais && e.pais.nombrePais);
                 let paisSeleccionado = false;
                 if (paisNombre) {
-                    $('#addPaisEquipo option').each(function() {
+                    $('#addPaisEquipo option').each(function () {
                         if ($(this).text().trim() === paisNombre.trim()) {
                             $('#addPaisEquipo').val($(this).val()).trigger('change');
                             paisSeleccionado = true;
@@ -265,12 +272,12 @@ $(function () {
                         console.warn('No se encontró el país por nombre:', paisNombre);
                     }
                 }
-            poblarSelectCategorias(function () {
+                poblarSelectCategorias(function () {
                     // Selección SOLO por nombre para categoría
                     let catNombre = e.nombreCategoria || (e.equipoCategoria && e.equipoCategoria.nombreCategoria);
                     let catSeleccionada = false;
                     if (catNombre) {
-                        $('#addCategoriaEquipo option').each(function() {
+                        $('#addCategoriaEquipo option').each(function () {
                             if ($(this).text().trim() === catNombre.trim()) {
                                 $('#addCategoriaEquipo').val($(this).val()).trigger('change');
                                 catSeleccionada = true;
@@ -386,7 +393,7 @@ $(function () {
         ajaxOpts.success = function () {
             $btn.html('<span class="fa fa-check me-2" style="color:#fff;"></span>Guardado')
                 .removeClass('btn-primary').addClass('btn-success');
-            $btn.css({transition: 'background 0.4s, color 0.4s'});
+            $btn.css({ transition: 'background 0.4s, color 0.4s' });
             setTimeout(() => {
                 cerrarModalEquipo();
                 setTimeout(() => {

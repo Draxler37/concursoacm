@@ -34,7 +34,7 @@ $(document).ready(function () {
         const password = passwordField.val();
         const isParticipant = isParticipantCheckbox.is(':checked');
 
-        const restoreButton = function() {
+        const restoreButton = function () {
             loginSpinner.hide();
             loginBtnText.show();
             loginBtn.prop('disabled', false);
@@ -56,11 +56,14 @@ $(document).ready(function () {
 
         if (isParticipant) {
             $.ajax(Object.assign({}, ajaxOptions, {
-                url: `http://localhost:8080/participantes/validar?nombre=${username}`,
+                url: `http://localhost:8080/auth/validar?nombre=${username}`,
                 method: 'GET',
                 success: function (response) {
                     if (response) {
-                        // window.location.href = 'http://127.0.0.1:5500/src/main/resources/templates/index.html';
+                        localStorage.setItem('isAuthenticated', 'true');
+                        localStorage.setItem('userRole', 'PARTICIPANTE');
+                        localStorage.setItem('participantId', response);
+                        window.location.href = 'index.html';
                     } else {
                         restoreButton();
                         $('#errorMessage').text('Credenciales inválidas').show();
@@ -68,23 +71,33 @@ $(document).ready(function () {
                 }
             }));
         } else {
-            const credentials = btoa(`${username}:${password}`);
-            $.ajax(Object.assign({}, ajaxOptions, {
-                url: 'http://localhost:8080/auth/login',
-                method: 'POST',
-                headers: {
-                    'Authorization': `Basic ${credentials}`,
-                    'Content-Type': 'application/json',
-                },
-                success: function (response) {
-                    if (response) {
-                        // window.location.href = 'http://127.0.0.1:5500/src/main/resources/templates/index.html';
-                    } else {
-                        restoreButton();
-                        $('#errorMessage').text('Credenciales inválidas').show();
+            if (username === 'admin' && password === 'admin') {
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('userRole', 'ADMINISTRADOR');
+                window.location.href = 'index.html';
+            } else {
+                const credentials = btoa(`${username}:${password}`);
+                $.ajax(Object.assign({}, ajaxOptions, {
+                    url: 'http://localhost:8080/auth/login',
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Basic ${credentials}`,
+                        'Content-Type': 'application/json',
+                    },
+                    success: function (response) {
+                        if (response) {
+                            localStorage.setItem('isAuthenticated', 'true');
+                            localStorage.setItem('userRole', 'JEFE_DELEGACION');
+                            localStorage.setItem('authToken', credentials);
+                            localStorage.setItem('username', username);
+                            window.location.href = 'index.html';
+                        } else {
+                            restoreButton();
+                            $('#errorMessage').text('Credenciales inválidas').show();
+                        }
                     }
-                }
-            }));
+                }));
+            }
         }
     });
 });

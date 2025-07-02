@@ -203,6 +203,13 @@ $(function () {
         const inicio = (paginaActual - 1) * participantesPorPagina;
         const fin = inicio + participantesPorPagina;
         renderParticipantes(participantes.slice(inicio, fin));
+        const userRole = localStorage.getItem('userRole');
+        if (userRole === 'JEFE_DELEGACION' && window.handleDelegationChief) {
+            window.handleDelegationChief();
+        }
+        else if (userRole === 'PARTICIPANTE' && window.handleParticipant) {
+            window.handleParticipant();
+        }
         renderPaginacionBootstrap(participantes.length, paginaActual, participantesPorPagina);
     }
 

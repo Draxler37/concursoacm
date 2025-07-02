@@ -133,7 +133,7 @@ $(function () {
     $('#filtroUsadaPregunta').on('change', function() { buscarPreguntas(); });
 
     window.buscarPreguntas = function() {
-        const texto = $('#filtroTextoPregunta').val().trim();
+        const texto = $('#filtroTextoPregunta').val().trim().toLowerCase();
         const clase = $('#filtroClasePregunta').val();
         const usada = $('#filtroUsadaPregunta').val();
         let url = 'http://localhost:8080/preguntas?';
@@ -142,7 +142,23 @@ $(function () {
         if (usada) url += `usada=${usada}&`;
         url = url.replace(/&$/, '');
         $.get(url, function(data) {
-            todasLasPreguntas = data;
+            // Si el backend no filtra, filtramos aquí:
+            let preguntas = Array.isArray(data) ? data : (data.preguntas || []);
+            // Filtro por texto
+            if (texto) {
+                preguntas = preguntas.filter(p => (p.texto || '').toLowerCase().includes(texto));
+            }
+            // Filtro por clase
+            if (clase) {
+                preguntas = preguntas.filter(p => p.clase && p.clase.nombreClase === clase);
+            }
+            // Filtro por usada
+            if (usada === 'true') {
+                preguntas = preguntas.filter(p => p.usada === true);
+            } else if (usada === 'false') {
+                preguntas = preguntas.filter(p => p.usada === false);
+            }
+            todasLasPreguntas = preguntas;
             paginaActual = 1;
             renderPreguntasPaginadas(todasLasPreguntas);
         }).fail(function(xhr, status, error) {

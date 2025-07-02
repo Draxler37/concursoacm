@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responder Preguntas</title>
+    <title>Resultados</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../static/css/responder_preguntas.css" />
+    <link rel="stylesheet" href="../static/css/resultados.css" />
     <link rel="stylesheet" href="../static/css/base.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -59,11 +59,11 @@
                                     Evaluación
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item active" href="responder_preguntas.html">Responder
+                                    <li><a class="dropdown-item" href="responder_preguntas.html">Responder
                                             Preguntas</a>
                                     </li>
                                     <li><a class="dropdown-item" href="respuestas.html">Respuestas</a></li>
-                                    <li><a class="dropdown-item" href="resultados.html">Resultados</a></li>
+                                    <li><a class="dropdown-item active" href="resultados.html">Resultados</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -85,51 +85,97 @@
         <header class="bg-white shadow-sm">
             <div class="container-xl py-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <h1 class="h3 mb-0 d-flex align-items-center ms-0 gap-2 flex-wrap">
-                    Responder Preguntas
+                    Resultados
                 </h1>
             </div>
         </header>
         <main class="main-with-footer">
-            <div class="container-xl py-4">
-                <div id="equiposContainer" class="row g-4">
-                    <div class="container">
-                        <div class="main-content"
-                            style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 40px 0;">
-                            <!-- Tarjeta de Preguntas Asignadas -->
-                            <div class="card" id="tarjeta-preguntas">
-                                <div class="card-header">
-                                    <i class="fa fa-question-circle"></i> Preguntas Asignadas
-                                </div>
-                                <div class="card-body">
-                                    <ul id="preguntas-list" class="questions-list"
-                                        style="max-height: 500px; overflow-y: auto;"></ul>
-                                    <div id="no-preguntas" class="no-questions"
-                                        style="display:none; text-align:center; margin-top:30px;">
-                                        <i class="fa fa-info-circle" style="font-size:2rem; color:#6c757d;"></i>
-                                        <p style="margin-top:10px; color:#6c757d;">No tienes preguntas asignadas.</p>
-                                    </div>
+            <div class="container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="results">Resultados</div>
+                    <div class="tab" data-tab="stats">Estadísticas</div>
+                </div>
+
+                <div class="tab-content active" id="results">
+                    <div class="dashboard">
+                        <!-- Ganadores por categoría -->
+                        <div class="card winner-card animate-fade">
+                            <div class="card-header">
+                                <h2 class="card-title">Ganadores del Concurso</h2>
+                                <i class="fas fa-trophy card-icon"></i>
+                            </div>
+                            <div id="winners-content">
+                                <div class="loading">
+                                    <div class="spinner"></div>
                                 </div>
                             </div>
-                            <!-- Tarjeta de Responder Pregunta -->
-                            <div class="card" id="tarjeta-responder">
-                                <div class="card-header">
-                                    <i class="fa fa-pen"></i> Responder Pregunta
+                        </div>
+
+                        <!-- Competencia -->
+                        <div class="card animate-fade delay-1">
+                            <div class="card-header">
+                                <h2 class="card-title">Categoría Competencia</h2>
+                                <i class="fas fa-code card-icon"></i>
+                            </div>
+                            <div id="competencia-content">
+                                <div class="loading">
+                                    <div class="spinner"></div>
                                 </div>
-                                <div class="card-body">
-                                    <div id="pregunta-seleccionada" class="question-content"
-                                        style="color:#6c757d; font-size:0.95rem; min-height:60px;"></div>
-                                    <form id="form-respuesta" class="answer-form"
-                                        style="display:none; margin-top:20px;">
-                                        <div class="form-group">
-                                            <label for="respuesta">Tu respuesta:</label>
-                                            <textarea id="respuesta" rows="5" required
-                                                style="width:100%; border-radius:8px; border:1px solid #dee2e6; padding:10px;"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-block"
-                                            style="width:100%; background:#150B63; border:none;">Enviar
-                                            Respuesta</button>
-                                    </form>
-                                    <div id="estado-respuesta" class="response-status" style="margin-top:15px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Junior -->
+                        <div class="card animate-fade delay-2">
+                            <div class="card-header">
+                                <h2 class="card-title">Categoría Junior</h2>
+                                <i class="fas fa-laptop-code card-icon"></i>
+                            </div>
+                            <div id="junior-content">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="stats">
+                    <div class="dashboard">
+                        <!-- Top Preguntas Junior -->
+                        <div class="card animate-fade">
+                            <div class="card-header">
+                                <h2 class="card-title">Top Preguntas Junior</h2>
+                                <i class="fas fa-star card-icon"></i>
+                            </div>
+                            <div id="top-preguntas-content">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- País con mayor puntuación -->
+                        <div class="card animate-fade delay-1">
+                            <div class="card-header">
+                                <h2 class="card-title">País Destacado</h2>
+                                <i class="fas fa-globe-americas card-icon"></i>
+                            </div>
+                            <div id="top-pais-content">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Región con mayor puntuación -->
+                        <div class="card animate-fade delay-2">
+                            <div class="card-header">
+                                <h2 class="card-title">Región Destacada</h2>
+                                <i class="fas fa-map-marked-alt card-icon"></i>
+                            </div>
+                            <div id="top-region-content">
+                                <div class="loading">
+                                    <div class="spinner"></div>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +188,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../static/js/responder_preguntas.js"></script>
+    <script src="../static/js/resultados.js"></script>
     <script src="../static/js/auth-guard.js"></script>
     <script src="../static/js/user-menu.js"></script>
     <script src="../static/js/role-guard.js"></script>
